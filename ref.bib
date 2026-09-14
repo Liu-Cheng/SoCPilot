@@ -1,0 +1,702 @@
+%%%以下是关于soc一些集成工具的
+@ARTICLE{chipyard,
+  author={Amid, Alon and Biancolin, David and Gonzalez, Abraham and Grubb, Daniel and Karandikar, Sagar and Liew, Harrison and Magyar, Albert and Mao, Howard and Ou, Albert and Pemberton, Nathan and Rigge, Paul and Schmidt, Colin and Wright, John and Zhao, Jerry and Shao, Yakun Sophia and Asanović, Krste and Nikolić, Borivoje},
+  journal={IEEE Micro}, 
+  title={Chipyard: Integrated Design, Simulation, and Implementation Framework for Custom SoCs}, 
+  year={2020},
+  volume={40},
+  number={4},
+  pages={10-21},
+  keywords={Generators;Open source software;Computational modeling;IP networks;Hardware;Physical design;Computer architecture},
+  doi={10.1109/MM.2020.2996616}}
+
+@misc{collini2024c2hlscleveraginglargelanguage,
+      title={C2HLSC: Leveraging Large Language Models to Bridge the Software-to-Hardware Design Gap}, 
+      author={Luca Collini and Siddharth Garg and Ramesh Karri},
+      year={2024},
+      eprint={2412.00214},
+      archivePrefix={arXiv},
+      primaryClass={cs.AR},
+      url={https://arxiv.org/abs/2412.00214}, 
+}
+@misc{minaee2025largelanguagemodelssurvey,
+      title={Large Language Models: A Survey}, 
+      author={Shervin Minaee and Tomas Mikolov and Narjes Nikzad and Meysam Chenaghlu and Richard Socher and Xavier Amatriain and Jianfeng Gao},
+      year={2025},
+      eprint={2402.06196},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2402.06196}, 
+}
+
+@inproceedings{Chisel,
+author = {Bachrach, Jonathan and Vo, Huy and Richards, Brian and Lee, Yunsup and Waterman, Andrew and Avi\v{z}ienis, Rimas and Wawrzynek, John and Asanovi\'{c}, Krste},
+title = {Chisel: constructing hardware in a Scala embedded language},
+year = {2012},
+isbn = {9781450311991},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2228360.2228584},
+doi = {10.1145/2228360.2228584},
+abstract = {In this paper we introduce Chisel, a new hardware construction language that supports advanced hardware design using highly parameterized generators and layered domain-specific hardware languages. By embedding Chisel in the Scala programming language, we raise the level of hardware design abstraction by providing concepts including object orientation, functional programming, parameterized types, and type inference. Chisel can generate a high-speed C++-based cycle-accurate software simulator, or low-level Verilog designed to map to either FPGAs or to a standard ASIC flow for synthesis. This paper presents Chisel, its embedding in Scala, hardware examples, and results for C++ simulation, Verilog emulation and ASIC synthesis.},
+booktitle = {Proceedings of the 49th Annual Design Automation Conference},
+pages = {1216–1225},
+numpages = {10},
+keywords = {CAD},
+location = {San Francisco, California},
+series = {DAC '12}
+}
+
+
+
+@ARTICLE{soc-challenges,
+  author={Chen, Wen and Ray, Sandip and Bhadra, Jayanta and Abadir, Magdy and Wang, Li-C},
+  journal={IEEE Design \& Test}, 
+  title={Challenges and Trends in Modern SoC Design Verification}, 
+  year={2017},
+  volume={34},
+  number={5},
+  pages={7-22},
+  keywords={IP networks;System-on-chip;Field programmable gate arrays;Formal verification;Observability;Computer architecture;Verification and validation;Emulation;Postsilicon validation;System-level validation;Hardware/Software covalidation},
+  doi={10.1109/MDAT.2017.2735383}}
+
+
+@inproceedings{soc-productivity,
+author = {Khailany, Brucek and Khmer, Evgeni and Venkatesan, Rangharajan and Clemons, Jason and Emer, Joel S. and Fojtik, Matthew and Klinefelter, Alicia and Pellauer, Michael and Pinckney, Nathaniel and Shao, Yakun Sophia and Srinath, Shreesha and Torng, Christopher and Xi, Sam (Likun) and Zhang, Yanqing and Zimmer, Brian},
+title = {A modular digital VLSI flow for high-productivity SoC design},
+year = {2018},
+isbn = {9781450357005},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3195970.3199846},
+doi = {10.1145/3195970.3199846},
+abstract = {A high-productivity digital VLSI flow for designing complex SoCs is presented. The flow includes high-level synthesis tools, an object-oriented library of synthesizable SystemC and C++ components, and a modular VLSI physical design approach based on fine-grained globally asynchronous locally synchronous (GALS) clocking. The flow was demonstrated on a 16nm FinFET testchip targeting machine learning and computer vision.},
+booktitle = {Proceedings of the 55th Annual Design Automation Conference},
+articleno = {72},
+numpages = {6},
+keywords = {SoC design, VLSI design, high-level synthesis, machine learning},
+location = {San Francisco, California},
+series = {DAC '18}
+}
+
+@article{Chen_2024,
+   title={Large circuit models: opportunities and challenges},
+   volume={67},
+   ISSN={1869-1919},
+   url={http://dx.doi.org/10.1007/s11432-024-4155-7},
+   DOI={10.1007/s11432-024-4155-7},
+   number={10},
+   journal={Science China Information Sciences},
+   publisher={Springer Science and Business Media LLC},
+   author={Chen, Lei and Chen, Yiqi and Chu, Zhufei and Fang, Wenji and Ho, Tsung-Yi and Huang, Ru and Huang, Yu and Khan, Sadaf and Li, Min and Li, Xingquan and Li, Yu and Liang, Yun and Liu, Jinwei and Liu, Yi and Lin, Yibo and Luo, Guojie and Pan, Hongyang and Shi, Zhengyuan and Sun, Guangyu and Tsaras, Dimitrios and Wang, Runsheng and Wang, Ziyi and Wei, Xinming and Xie, Zhiyao and Xu, Qiang and Xue, Chenhao and Yan, Junchi and Yang, Jun and Yu, Bei and Yuan, Mingxuan and Young, Evangeline F. Y. and Zeng, Xuan and Zhang, Haoyi and Zhang, Zuodong and Zhao, Yuxiang and Zhen, Hui-Ling and Zheng, Ziyang and Zhu, Binwu and Zhu, Keren and Zou, Sunan},
+   year={2024},
+   month=sep }
+
+
+@misc{fahim2021hls4mlopensourcecodesignworkflow,
+      title={hls4ml: An Open-Source Codesign Workflow to Empower Scientific Low-Power Machine Learning Devices}, 
+      author={Farah Fahim and Benjamin Hawks and Christian Herwig and James Hirschauer and Sergo Jindariani and Nhan Tran and Luca P. Carloni and Giuseppe Di Guglielmo and Philip Harris and Jeffrey Krupa and Dylan Rankin and Manuel Blanco Valentin and Josiah Hester and Yingyi Luo and John Mamish and Seda Orgrenci-Memik and Thea Aarrestad and Hamza Javed and Vladimir Loncar and Maurizio Pierini and Adrian Alan Pol and Sioni Summers and Javier Duarte and Scott Hauck and Shih-Chieh Hsu and Jennifer Ngadiuba and Mia Liu and Duc Hoang and Edward Kreinar and Zhenbin Wu},
+      year={2021},
+      eprint={2103.05579},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2103.05579}, 
+}
+
+@inproceedings{ChatCPU,
+author = {Wang, Xi and Wan, Gwok-Waa and Wong, Sam-Zaak and Zhang, Layton and Liu, Tianyang and Tian, Qi and Ye, Jianmin},
+title = {ChatCPU: An Agile CPU Design and Verification Platform with LLM},
+year = {2024},
+isbn = {9798400706011},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3649329.3658493},
+doi = {10.1145/3649329.3658493},
+abstract = {The increasing complexity of semiconductor designs necessitates agile hardware development methodologies to keep pace with rapid technological advancements. Following this trend, the Large Language Models (LLMs) emerge as a potential solution, providing new opportunities in hardware design automation. However, existing LLMs exhibit challenges in HDL design and verification, especially for complicated hardware systems. Addressing this need, we introduce ChatCPU, the first end-to-end agile hardware design and verification platform with LLM. ChatCPU streamlines the ASIC design and verification process, guiding it from initial specifications to the final RTL implementations with enhanced design agility. Incorporating the LLM fine-tuning and the processor description language design for CPU design automation, ChatCPU significantly enhances the hardware design capability using LLM. Utilizing ChatCPU, we developed a 6-stage in-order RISC-V CPU prototype, achieving successful tape-out using SkyWater 130nm MPW project with Efabless, which is currently the largest CPU design generated by LLM. Our results demonstrate a remarkable improvement in CPU design efficiency, accelerating the design iteration process by an average of 3.81X, and peaking at 12X and 9.33X in HDL implementations and verification stages, respectively. The ChatCPU also enhances the design capability of LLM by 2.63X as compared to base LLama2. These advancements in ChatCPU represent a significant milestone in LLM-driven ASIC design and optimization.},
+booktitle = {Proceedings of the 61st ACM/IEEE Design Automation Conference},
+articleno = {212},
+numpages = {6},
+keywords = {ChatCPU, LLM, agile hardware design, verification},
+location = {San Francisco, CA, USA},
+series = {DAC '24}
+}
+
+@software{chipflow2023,
+  author = {ChipFlow Team},
+  title = {ChipFlow},
+  year = {2023},
+  version = {1.0},
+  url = {https://www.chipflow.io},
+  note = {Open-source chip design platform}
+}
+
+@inproceedings{mantovani2020agile,
+  title={Agile SoC development with open ESP},
+  author={Mantovani, Paolo and Giri, Davide and Di Guglielmo, Giuseppe and Piccolboni, Luca and Zuckerman, Joseph and Cota, Emilio G and Petracca, Michele and Pilato, Christian and Carloni, Luca P},
+  booktitle={Proceedings of the 39th International Conference on Computer-Aided Design},
+  pages={1--9},
+  year={2020}
+}
+
+@INPROCEEDINGS{processor-verification,
+  author={Xiao, Chao and Deng, Yifei and Yang, Zhijie and Chen, Renzhi and Wang, Hong and Zhao, Jingyue and Dai, Huadong and Wang, Lei and Tang, Yuhua and Xu, Weixia},
+  booktitle={2024 Design, Automation \& Test in Europe Conference \& Exhibition (DATE)}, 
+  title={LLM-based Processor Verification: A Case Study for Neuromorphic Processor}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-6},
+  keywords={Program processors;Neuromorphics;Scalability;Large language models;Instruction sets;Computer architecture;Manuals;Life estimation;Test pattern generators;Task analysis;processor function verification;large language model (LLM);test generation;neuromorphic processor},
+  doi={10.23919/DATE58400.2024.10546707}}
+
+
+@INPROCEEDINGS{esp4ml,
+  author={Giri, Davide and Chiu, Kuan-Lin and Di Guglielmo, Giuseppe and Mantovani, Paolo and Carloni, Luca P.},
+  booktitle={2020 Design, Automation \& Test in Europe Conference \& Exhibition (DATE)}, 
+  title={ESP4ML: Platform-Based Design of Systems-on-Chip for Embedded Machine Learning}, 
+  year={2020},
+  volume={},
+  number={},
+  pages={1049-1054},
+  keywords={Computer architecture;Kernel;Pipelines;Registers;Machine learning;Linux},
+  doi={10.23919/DATE48585.2020.9116317}}
+
+@inproceedings{10.1145/3400302.3415753,
+author = {Mantovani, Paolo and Giri, Davide and Di Guglielmo, Giuseppe and Piccolboni, Luca and Zuckerman, Joseph and Cota, Emilio G. and Petracca, Michele and Pilato, Christian and Carloni, Luca P.},
+title = {Agile SoC development with open ESP},
+year = {2020},
+isbn = {9781450380263},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3400302.3415753},
+doi = {10.1145/3400302.3415753},
+abstract = {ESP is an open-source research platform for heterogeneous SoC design. The platform combines a modular tile-based architecture with a variety of application-oriented flows for the design and optimization of accelerators. The ESP architecture is highly scalable and strikes a balance between regularity and specialization. The companion methodology raises the level of abstraction to system-level design and enables an automated flow from software and hardware development to full-system prototyping on FPGA. For application developers, ESP offers domain-specific automated solutions to synthesize new accelerators for their software and to map complex workloads onto the SoC architecture. For hardware engineers, ESP offers automated solutions to integrate their accelerator designs into the complete SoC. Conceived as a heterogeneous integration platform and tested through years of teaching at Columbia University, ESP supports the open-source hardware community by providing a flexible platform for agile SoC development.},
+booktitle = {Proceedings of the 39th International Conference on Computer-Aided Design},
+articleno = {96},
+numpages = {9},
+keywords = {SoC, accelerators, network-on-chip, system-level design},
+location = {Virtual Event, USA},
+series = {ICCAD '20}
+}
+@inproceedings{kermarrec:hal-02088044,
+  TITLE = {{LiteX: an open-source SoC builder and library based on Migen Python DSL}},
+  AUTHOR = {Kermarrec, Florent and Bourdeauducq, S{\'e}bastien and Badier, Hannah and Le Lann, Jean-Christophe},
+  URL = {https://hal.science/hal-02088044},
+  BOOKTITLE = {{OSDA 2019, colocated with DATE 2019 Design Automation and Test in Europe}},
+  ADDRESS = {Florence, Italy},
+  YEAR = {2019},
+  MONTH = Mar,
+  KEYWORDS = {open-source ; SoC ; Python ; DSL ; FPGA ; IP library},
+  PDF = {https://hal.science/hal-02088044v1/file/litex.pdf},
+  HAL_ID = {hal-02088044},
+  HAL_VERSION = {v1},
+}
+
+@techreport{Asanović:EECS-2016-17,
+    Author= {Asanović, Krste and Avizienis, Rimas and Bachrach, Jonathan and Beamer, Scott and Biancolin, David and Celio, Christopher and Cook, Henry and Dabbelt, Daniel and Hauser, John and Izraelevitz, Adam and Karandikar, Sagar and Keller, Ben and Kim, Donggyu and Koenig, John and Lee, Yunsup and Love, Eric and Maas, Martin and Magyar, Albert and Mao, Howard and Moreto, Miquel and Ou, Albert and Patterson, David A. and Richards, Brian and Schmidt, Colin and Twigg, Stephen and Vo, Huy and Waterman, Andrew},
+    Title= {The Rocket Chip Generator},
+    Year= {2016},
+    Month= {Apr},
+    Url= {http://www2.eecs.berkeley.edu/Pubs/TechRpts/2016/EECS-2016-17.html},
+    Number= {UCB/EECS-2016-17},
+    Abstract= {Rocket Chip is an open-source Sysem-on-Chip design generator that emits synthesizable RTL. It leverages the Chisel hardware construction language to compose a library of sophisticated generators for cores, caches, and interconnects into an integrated SoC. Rocket Chip generates general-purpose processor cores that use the open RISC-V ISA, and provides both an in-order core generator (Rocket) and an out-of-order core generator (BOOM). For SoC designers interested in utilizing heterogeneous specialization for added efficiency gains, Rocket Chip supports the integration of custom accelerators in the form of instruction set extensions, coprocessors, or fully independent novel cores. Rocket Chip has been taped out (manufactured) eleven times, and yielded functional silicon prototypes capable of booting Linux.},
+}
+@INPROCEEDINGS{10456791,
+  author={Jellum, Erling Rennemo and Umuruglu, Yaman and Orlandic, Milica and Schoeberl, Martin},
+  booktitle={2023 26th Euromicro Conference on Digital System Design (DSD)}, 
+  title={FPGA-tidbits: Rapid Prototyping of FPGA Accelerators in Chisel}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={153-160},
+  keywords={Writing;Rapid prototyping;Hardware;Libraries;Heterogeneous networks;Generators;System-on-chip;Hardware-software codesign;reconfigurable computing;programmable logic},
+  doi={10.1109/DSD60849.2023.00031}}
+
+%%以下是关于llm相关的
+
+@article{xiong2024hlspilot,
+  title={HLSPilot: LLM-based High-Level Synthesis},
+  author={Xiong, Chenwei and Liu, Cheng and Li, Huawei and Li, Xiaowei},
+  journal={arXiv preprint arXiv:2408.06810},
+  year={2024}
+}
+@misc{ridnik2024codegenerationalphacodiumprompt,
+      title={Code Generation with AlphaCodium: From Prompt Engineering to Flow Engineering}, 
+      author={Tal Ridnik and Dedy Kredo and Itamar Friedman},
+      year={2024},
+      eprint={2401.08500},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2401.08500}, 
+}
+@article{10.1145/3672459,
+author = {Dong, Yihong and Jiang, Xue and Jin, Zhi and Li, Ge},
+title = {Self-Collaboration Code Generation via ChatGPT},
+year = {2024},
+issue_date = {September 2024},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {33},
+number = {7},
+issn = {1049-331X},
+url = {https://doi.org/10.1145/3672459},
+doi = {10.1145/3672459},
+abstract = {Although large language models (LLMs) have demonstrated remarkable code-generation ability, they still struggle with complex tasks. In real-world software development, humans usually tackle complex tasks through collaborative teamwork, a strategy that significantly controls development complexity and enhances software quality. Inspired by this, we present a self-collaboration framework for code generation employing LLMs, exemplified by ChatGPT. Specifically, through role instructions, (1) Multiple LLM agents act as distinct “experts,” each responsible for a specific subtask within a complex task; (2) Specify the way to collaborate and interact, so that different roles form a virtual team to facilitate each other’s work, ultimately the virtual team addresses code generation tasks collaboratively without the need for human intervention. To effectively organize and manage this virtual team, we incorporate software-development methodology into the framework. Thus, we assemble an elementary team consisting of three LLM roles (i.e., analyst, coder, and tester) responsible for software development’s analysis, coding, and testing stages. We conduct comprehensive experiments on various code-generation benchmarks. Experimental results indicate that self-collaboration code generation relatively improves 29.9–47.1\% Pass@1 compared to the base LLM agent. Moreover, we showcase that self-collaboration could potentially enable LLMs to efficiently handle complex repository-level tasks that are not readily solved by the single LLM agent.},
+journal = {ACM Trans. Softw. Eng. Methodol.},
+month = sep,
+articleno = {189},
+numpages = {38},
+keywords = {Code generation, large language models, multi-agent collaboration, software development}
+}
+%llm 生成verilog vhdl
+@inproceedings{10.1145/3625223.3649280,
+author = {Morgan, Fearghal and Byrne, John Patrick and Bupathi, Abishek and George, Roshan and Elahi, Adnan and Callaly, Frank and Kelly, Se\'{a}n and O'Loughlin, Declan},
+title = {HDLGen-ChatGPT Case Study: RISC-V Processor VHDL and Verilog Model - Testbench and EDA Project Generation},
+year = {2024},
+isbn = {9798400704109},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3625223.3649280},
+doi = {10.1145/3625223.3649280},
+abstract = {This paper presents the open source HDLGen-ChatGPT application, working in tandem with ChatGPT-3.5, the free online large language model (LLM) chat interface. The tools enable fast digital systems design and test specification capture, and automatic generation of both VHDL and Verilog models, and testbenches, and AMD Vivado and Intel Quartus Electronic Design Automation (EDA) projects. EDA tools check the generated HDL syntax, simulate and synthesise HDL models, and follow the steps to FPGA hardware prototyping. The tools exploit a formal, top-down design and test specification documentation process, domain knowledge, and the flexibility of LLMs, for HDL code generation. Results are included for a hierarchical RV32I RISC-V processor design. Process steps are illustrated for the RISC-V 32 \texttimes{} 32-bit register bank component. The process typically requires only minimal manual HDL capture or editing, and often none at all. URLs to tutorial videos for the complete RISC-V design are provided on the GitHub project repository. The paper evaluates the results and provides HDLGen-ChatGPT and ChatGPT usage recommendations. The tools can be applied in digital systems training programmes, with reduced emphasis on the assessment of HDL model and testbench capture and generation, while maintaining strong emphasis on the assessment of system design, test planning and documentation, HDL simulation verification/debug, and analysis of synthesised netlists.},
+booktitle = {Proceedings of the 34th International Workshop on Rapid System Prototyping},
+articleno = {11},
+numpages = {7},
+keywords = {digital systems design, HDLGen-ChatGPT, LLM, ChatGPT, generative AI, design capture, automation, HDL, EDA, FPGA, testbench, VHDL, verilog},
+location = {Hamburg, Germany},
+series = {RSP '23}
+}
+@misc{tsai2024rtlfixerautomaticallyfixingrtl,
+      title={RTLFixer: Automatically Fixing RTL Syntax Errors with Large Language Models}, 
+      author={Yun-Da Tsai and Mingjie Liu and Haoxing Ren},
+      year={2024},
+      eprint={2311.16543},
+      archivePrefix={arXiv},
+      primaryClass={cs.AR},
+      url={https://arxiv.org/abs/2311.16543}, 
+}
+
+%这篇涉及到llm在SoC的综述
+@inproceedings{10.1145/3649476.3660393,
+author = {Paria, Sudipta and Dasgupta, Aritra and Bhunia, Swarup},
+title = {Navigating SoC Security Landscape on LLM-Guided Paths},
+year = {2024},
+isbn = {9798400706059},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3649476.3660393},
+doi = {10.1145/3649476.3660393},
+abstract = {The increasing prominence of Large Language Models (LLMs) is being acknowledged for their exceptional abilities in comprehending natural language, conducting advanced reasoning, and generating contextual responses. LLMs expedite code generation, verification, and bug-fixing tasks across software and hardware domains. Development of hardware designs typically involves translating natural language specifications into Hardware Description Languages (HDLs) like Verilog or SystemVerilog, followed by circuit synthesis, physical layout, and fabrication, with the potential for human errors in the process. In the current industry practice, HDL verification tasks typically rely on manual expertise from security professionals to detect and address vulnerabilities. Modern System-on-Chip (SoC) designs integrate several Intellectual Property (IP) blocks implemented using HDL and communicate through a common bus to perform intended functions. Ensuring security throughout the SoC design process requires innovative solutions due to the complex nature of SoC designs and the distribution of assets across multiple IP blocks. Popular conversation LLMs such as Open AI’s ChatGPT and Google’s GEMINI (formerly BARD) offer the potential to automate HDL code generation and verification tasks by interpreting user prompts represented in natural language descriptions, thereby minimizing manual effort and enhancing hardware design quality. This paper explores recent research works on HDL generation, verification, and bug fix leveraging LLMs while addressing prevailing challenges and presenting potential opportunities for improvement.},
+booktitle = {Proceedings of the Great Lakes Symposium on VLSI 2024},
+pages = {252–257},
+numpages = {6},
+keywords = {Bug Fix, CWEs., Formal Verification, HDL Code, LLMs, SVA, SoC Security, Verilog},
+location = {Clearwater, FL, USA},
+series = {GLSVLSI '24}
+}
+%llm verification
+@INPROCEEDINGS{10473893,
+  author={Wan, Lily Jiaxin and Huang, Yingbing and Li, Yuhong and Ye, Hanchen and Wang, Jinghua and Zhang, Xiaofan and Chen, Deming},
+  booktitle={2024 29th Asia and South Pacific Design Automation Conference (ASP-DAC)}, 
+  title={Invited Paper: Software/Hardware Co-design for LLM and Its Application for Design Verification}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={435-441},
+  keywords={Training;Quantization (signal);Design automation;Source coding;Focusing;Hardware;Software;Large Language Models;software/hardware co-design;functional verification},
+  doi={10.1109/ASP-DAC58780.2024.10473893}}
+
+@ARTICLE{10779517,
+  author={Paria, Sudipta and Dasgupta, Aritra and Bhunia, Swarup},
+  journal={IEEE Embedded Systems Letters}, 
+  title={SPELL: An End-to-End Tool Flow for LLM-Guided Secure SoC Design for Embedded Systems}, 
+  year={2024},
+  volume={16},
+  number={4},
+  pages={365-368},
+  keywords={Embedded systems;Prevention and mitigation;Large language models;Network-on-chip;Manuals;Intellectual property;Hardware;Security;Internet of Things;Microprogramming;Assertion-based verification (ABV);common weakness enumerations (CWEs);large language models (LLMs);security policies;system-on-chip (SoC) security},
+  doi={10.1109/LES.2024.3447691}}
+@misc{blocklove2025automaticallyimprovingllmbasedverilog,
+      title={Automatically Improving LLM-based Verilog Generation using EDA Tool Feedback},
+      author={Jason Blocklove and Shailja Thakur and Benjamin Tan and Hammond Pearce and Siddharth Garg and Ramesh Karri},
+      year={2025},
+      eprint={2411.11856},
+      archivePrefix={arXiv},
+      primaryClass={cs.AR},
+      url={https://arxiv.org/abs/2411.11856},
+}
+
+@inproceedings{esmaeilzadeh2011dark,
+  title={Dark silicon and the end of multicore scaling},
+  author={Esmaeilzadeh, Hadi and Blem, Emily and St. Amant, Renee and Sankaralingam, Karthikeyan and Burger, Doug},
+  booktitle={Proceedings of the 38th annual international symposium on Computer architecture},
+  pages={365--376},
+  year={2011}
+}
+
+@inproceedings{amid2020chipyard,
+  title={Chipyard-An integrated SoC research and implementation environment},
+  author={Amid, Alon and Biancolin, David and Gonzalez, Abraham and Grubb, Daniel and Karandikar, Sagar and Liew, Harrison and Magyar, Albert and Mao, Howard and Ou, Albert and Pemberton, Nathan and others},
+  booktitle={2020 57th ACM/IEEE Design Automation Conference (DAC)},
+  pages={1--6},
+  year={2020},
+  organization={IEEE}
+}
+
+@article{hardavellas2012rise,
+  title={The rise and fall of dark silicon},
+  author={Hardavellas, Nikos},
+  journal={The advanced computing systems association},
+  pages={7--17},
+  year={2012}
+}
+
+@INPROCEEDINGS{10323953,
+  author={Fu, Yonggan and Zhang, Yongan and Yu, Zhongzhi and Li, Sixu and Ye, Zhifan and Li, Chaojian and Wan, Cheng and Lin, Yingyan Celine},
+  booktitle={2023 IEEE/ACM International Conference on Computer Aided Design (ICCAD)}, 
+  title={GPT4AIGChip: Towards Next-Generation AI Accelerator Design Automation via Large Language Models}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={1-9},
+  keywords={Technological innovation;Design automation;Computational modeling;Catalysts;Pipelines;Natural languages;AI accelerators;AI Accelerators;Design Automation;Large Language Models},
+  doi={10.1109/ICCAD57390.2023.10323953}}
+
+@INPROCEEDINGS{10299874,
+  author={Blocklove, Jason and Garg, Siddharth and Karri, Ramesh and Pearce, Hammond},
+  booktitle={2023 ACM/IEEE 5th Workshop on Machine Learning for CAD (MLCAD)}, 
+  title={Chip-Chat: Challenges and Opportunities in Conversational Hardware Design}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={1-6},
+  keywords={Solid modeling;Codes;Microprocessors;Conferences;Natural languages;Machine learning;Chatbots;Hardware Design;CAD;LLM},
+  doi={10.1109/MLCAD58807.2023.10299874}}
+@misc{thakur2024autochipautomatinghdlgeneration,
+      title={AutoChip: Automating HDL Generation Using LLM Feedback}, 
+      author={Shailja Thakur and Jason Blocklove and Hammond Pearce and Benjamin Tan and Siddharth Garg and Ramesh Karri},
+      year={2024},
+      eprint={2311.04887},
+      archivePrefix={arXiv},
+      primaryClass={cs.PL},
+      url={https://arxiv.org/abs/2311.04887}, 
+}
+@article{10.1145/3643681,
+author = {Thakur, Shailja and Ahmad, Baleegh and Pearce, Hammond and Tan, Benjamin and Dolan-Gavitt, Brendan and Karri, Ramesh and Garg, Siddharth},
+title = {VeriGen: A Large Language Model for Verilog Code Generation},
+year = {2024},
+issue_date = {May 2024},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {29},
+number = {3},
+issn = {1084-4309},
+url = {https://doi.org/10.1145/3643681},
+doi = {10.1145/3643681},
+abstract = {In this study, we explore the capability of Large Language Models (LLMs) to automate hardware design by automatically completing partial Verilog code, a common language for designing and modeling digital systems. We fine-tune pre-existing LLMs on Verilog datasets compiled from GitHub and Verilog textbooks. We evaluate the functional correctness of the generated Verilog code using a specially designed test suite, featuring a custom problem set and testing benches. Here, our fine-tuned open-source CodeGen-16B model outperforms the commercial state-of-the-art GPT-3.5-turbo model with a 1.1\% overall increase. Upon testing with a more diverse and complex problem set, we find that the fine-tuned model shows competitive performance against state-of-the-art gpt-3.5-turbo, excelling in certain scenarios. Notably, it demonstrates a 41\% improvement in generating syntactically correct Verilog code across various problem categories compared to its pre-trained counterpart, highlighting the potential of smaller, in-house LLMs in hardware design automation. We release our training/evaluation scripts and LLM checkpoints as open-source contributions.},
+journal = {ACM Trans. Des. Autom. Electron. Syst.},
+month = apr,
+articleno = {46},
+numpages = {31},
+keywords = {Transformers, verilog, GPT, large language models, EDA}
+}
+%llm 与c
+@INPROCEEDINGS{10691856,
+  author={Collini, Luca and Garg, Siddharth and Karri, Ramesh},
+  booktitle={2024 IEEE LLM Aided Design Workshop (LAD)}, 
+  title={C2HLSC: Can LLMs Bridge the Software-to-Hardware Design Gap?}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-12},
+  keywords={Bridges;Codes;Large language models;Conferences;Transforms;NIST;Hardware;High level synthesis;Chip scale packaging;Chip Design;LLM;Catapult HLS;Cryptocores},
+  doi={10.1109/LAD62341.2024.10691856}}
+@inproceedings{10.1145/3670474.3685953,
+author = {Xu, Kangwei and Zhang, Grace Li and Yin, Xunzhao and Zhuo, Cheng and Schlichtmann, Ulf and Li, Bing},
+title = {Automated C/C++ Program Repair for High-Level Synthesis via Large Language Models},
+year = {2024},
+isbn = {9798400706998},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3670474.3685953},
+doi = {10.1145/3670474.3685953},
+abstract = {In High-Level Synthesis (HLS), converting a regular C/C++ program into its HLS-compatible counterpart (HLS-C) still requires tremendous manual effort. Various program scripts have been introduced to automate this process. But the resulting codes usually contain many issues that should be manually repaired by developers. Since Large Language Models (LLMs) have the ability to automate code generation, they can also be used for automated program repair in HLS. However, due to the limited training of LLMs considering hardware and software simultaneously, hallucinations may occur during program repair using LLMs, leading to compilation failures. Besides, using LLMs for iterative repair also incurs a high cost. To address these challenges, we propose an LLM-driven program repair framework that takes regular C/C++ code as input and automatically generates its corresponding HLS-C code for synthesis while minimizing human repair effort. To mitigate the hallucinations in LLMs and enhance the prompt quality, a Retrieval-Augmented Generation (RAG) paradigm is introduced to guide the LLMs toward correct repair. In addition, we use LLMs to create a static bit width optimization program to identify the optimized bit widths for variables. Moreover, LLM-driven HLS optimization strategies are introduced to add/tune pragmas in HLS-C programs for circuit optimization. Experimental results demonstrate that the proposed LLM-driven automated framework can achieve much higher repair pass rates in 24 real-world applications compared with the traditional scripts and the direct application of LLMs for program repair. The codes are open-sourced at this link: https://github.com/code-source1/catapult.},
+booktitle = {Proceedings of the 2024 ACM/IEEE International Symposium on Machine Learning for CAD},
+articleno = {15},
+numpages = {9},
+location = {Salt Lake City, UT, USA},
+series = {MLCAD '24}
+}
+@ARTICLE{10720939,
+  author={Liu, Shang and Fang, Wenji and Lu, Yao and Wang, Jing and Zhang, Qijun and Zhang, Hongce and Xie, Zhiyao},
+  journal={IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems}, 
+  title={RTLCoder: Fully Open-Source and Efficient LLM-Assisted RTL Code Generation Technique}, 
+  year={2025},
+  volume={44},
+  number={4},
+  pages={1448-1461},
+  keywords={Codes;Hardware design languages;Training;Integrated circuit modeling;Data models;Natural languages;Hardware;Data collection;Benchmark testing;Privacy;Dataset generation;hardware code generation;Verilog;large language model;preference finetuning},
+  doi={10.1109/TCAD.2024.3483089}}
+
+%llm与Dse
+@ARTICLE{10577671,
+  author={Fang, Wenji and Lu, Yao and Liu, Shang and Zhang, Qijun and Xu, Ceyu and Wu Wills, Lisa and Zhang, Hongce and Xie, Zhiyao},
+  journal={IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems}, 
+  title={Transferable Presynthesis PPA Estimation for RTL Designs With Data Augmentation Techniques}, 
+  year={2025},
+  volume={44},
+  number={1},
+  pages={200-213},
+  keywords={Data models;Layout;Timing;Data augmentation;Codes;Predictive models;Logic gates;Data augmentation;power modeling;register-transfer level (RTL);timing analysis},
+  doi={10.1109/TCAD.2024.3420904}}
+
+
+
+%全流程端对端的，但是是基于软件的
+@Article{computers14030094,
+AUTHOR = {Sonkin, Vladimir and Tudose, Cătălin},
+TITLE = {Beyond Snippet Assistance: A Workflow-Centric Framework for End-to-End AI-Driven Code Generation},
+JOURNAL = {Computers},
+VOLUME = {14},
+YEAR = {2025},
+NUMBER = {3},
+ARTICLE-NUMBER = {94},
+URL = {https://www.mdpi.com/2073-431X/14/3/94},
+ISSN = {2073-431X},
+ABSTRACT = {Recent AI-assisted coding tools, such as GitHub Copilot and Cursor, have enhanced developer productivity through real-time snippet suggestions. However, these tools primarily assist with isolated coding tasks and lack a structured approach to automating complex, multi-step software development workflows. This paper introduces a workflow-centric AI framework for end-to-end automation, from requirements gathering to code generation, validation, and integration, while maintaining developer oversight. Key innovations include automatic context discovery, which selects relevant codebase elements to improve LLM accuracy; a structured execution pipeline using Prompt Pipeline Language (PPL) for iterative code refinement; self-healing mechanisms that generate tests, detect errors, trigger rollbacks, and regenerate faulty code; and AI-assisted code merging, which preserves manual modifications while integrating AI-generated updates. These capabilities enable efficient automation of repetitive tasks, enforcement of coding standards, and streamlined development workflows. This approach lays the groundwork for AI-driven development that remains adaptable as LLM models advance, progressively reducing the need for human intervention while ensuring code reliability.},
+DOI = {10.3390/computers14030094}
+}
+%IP库
+@ARTICLE{5549951,
+  author={Trummer, Christoph and Ruggenthaler, Christoph and Kirchsteiger, Christoph M. and Steger, Christian and Weiß, Reinhold and Pistauer, Markus and Dalton, Damian},
+  journal={IEEE Systems Journal}, 
+  title={Searching Extended IP-XACT Components for SoC Design Based on Requirements Similarity}, 
+  year={2011},
+  volume={5},
+  number={1},
+  pages={70-79},
+  keywords={Libraries;Power dissipation;Intellectual property;Power system management;System-on-a-chip;Power engineering and energy;Systems engineering and theory;Informatics;Counting circuits;Consumer electronics;Component selection;intellectual property (IP);IP reuse;IP-XACT;library;requirements;similarity analysis},
+  doi={10.1109/JSYST.2010.2065010}}
+%工具
+@ARTICLE{7106399,
+  author={Shao, Yakun Sophia and Reagen, Brandon and Wei, Gu-Yeon and Brooks, David},
+  journal={IEEE Micro}, 
+  title={The Aladdin Approach to Accelerator Design and Modeling}, 
+  year={2015},
+  volume={35},
+  number={3},
+  pages={58-70},
+  keywords={Hardware;System-on-chip;Algorithm design and analysis;Space exploration;Computer architecture;Accelerators;Modeling;hardware accelerators;modeling and simulation;design space exploration},
+  doi={10.1109/MM.2015.50}}
+@article{10.1145/2024716.2024718,
+author = {Binkert, Nathan and Beckmann, Bradford and Black, Gabriel and Reinhardt, Steven K. and Saidi, Ali and Basu, Arkaprava and Hestness, Joel and Hower, Derek R. and Krishna, Tushar and Sardashti, Somayeh and Sen, Rathijit and Sewell, Korey and Shoaib, Muhammad and Vaish, Nilay and Hill, Mark D. and Wood, David A.},
+title = {The gem5 simulator},
+year = {2011},
+issue_date = {May 2011},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {39},
+number = {2},
+issn = {0163-5964},
+url = {https://doi.org/10.1145/2024716.2024718},
+doi = {10.1145/2024716.2024718},
+abstract = {The gem5 simulation infrastructure is the merger of the best aspects of the M5 [4] and GEMS [9] simulators. M5 provides a highly configurable simulation framework, multiple ISAs, and diverse CPU models. GEMS complements these features with a detailed and exible memory system, including support for multiple cache coherence protocols and interconnect models. Currently, gem5 supports most commercial ISAs (ARM, ALPHA, MIPS, Power, SPARC, and x86), including booting Linux on three of them (ARM, ALPHA, and x86).The project is the result of the combined efforts of many academic and industrial institutions, including AMD, ARM, HP, MIPS, Princeton, MIT, and the Universities of Michigan, Texas, and Wisconsin. Over the past ten years, M5 and GEMS have been used in hundreds of publications and have been downloaded tens of thousands of times. The high level of collaboration on the gem5 project, combined with the previous success of the component parts and a liberal BSD-like license, make gem5 a valuable full-system simulation tool.},
+journal = {SIGARCH Comput. Archit. News},
+month = aug,
+pages = {1–7},
+numpages = {7}
+}
+
+@INPROCEEDINGS{9124618,
+  author={Nardi, Luigi and Souza, Artur and Koeplinger, David and Olukotun, Kunle},
+  booktitle={2019 IEEE 27th International Symposium on Modeling, Analysis, and Simulation of Computer and Telecommunication Systems (MASCOTS)}, 
+  title={HyperMapper: a Practical Design Space Exploration Framework}, 
+  year={2019},
+  volume={},
+  number={},
+  pages={425-426},
+  keywords={Optimization;Software;Space exploration;Field programmable gate arrays;Computational modeling;Tuning;Response surface methodology},
+  doi={10.1109/MASCOTS.2019.00053}}
+@INPROCEEDINGS{7428012,
+  author={Mantovani, Paolo and Di Guglielmo, Giuseppe and Carloni, Luca P.},
+  booktitle={2016 21st Asia and South Pacific Design Automation Conference (ASP-DAC)}, 
+  title={High-level synthesis of accelerators in embedded scalable platforms}, 
+  year={2016},
+  volume={},
+  number={},
+  pages={204-211},
+  keywords={Hardware;Kernel;Sockets;Programming;Complexity theory;Superluminescent diodes},
+  doi={10.1109/ASPDAC.2016.7428012}}
+@inproceedings{10.1145/3466752.3480065,
+author = {Zuckerman, Joseph and Giri, Davide and Kwon, Jihye and Mantovani, Paolo and Carloni, Luca P.},
+title = {Cohmeleon: Learning-Based Orchestration of Accelerator Coherence in Heterogeneous SoCs},
+year = {2021},
+isbn = {9781450385572},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3466752.3480065},
+doi = {10.1145/3466752.3480065},
+abstract = {One of the most critical aspects of integrating loosely-coupled accelerators in heterogeneous SoC architectures is orchestrating their interactions with the memory hierarchy, especially in terms of navigating the various cache-coherence options: from accelerators accessing off-chip memory directly, bypassing the cache hierarchy, to accelerators having their own private cache. By running real-size applications on FPGA-based prototypes of many-accelerator multi-core SoCs, we show that the best cache-coherence mode for a given accelerator varies at runtime, depending on the accelerator’s characteristics, the workload size, and the overall SoC status. Cohmeleon applies reinforcement learning to select the best coherence mode for each accelerator dynamically at runtime, as opposed to statically at design time. It makes these selections adaptively, by continuously observing the system and measuring its performance. Cohmeleon is accelerator-agnostic, architecture-independent, and it requires minimal hardware support. Cohmeleon is also transparent to application programmers and has a negligible software overhead. FPGA-based experiments show that our runtime approach offers, on average, a 38\% speedup with a 66\% reduction of off-chip memory accesses compared to state-of-the-art design-time approaches. Moreover, it can match runtime solutions that are manually tuned for the target architecture.},
+booktitle = {MICRO-54: 54th Annual IEEE/ACM International Symposium on Microarchitecture},
+pages = {350–365},
+numpages = {16},
+keywords = {cache coherence, hardware accelerators, q-learning, system-on-chip},
+location = {Virtual Event, Greece},
+series = {MICRO '21}
+}
+%benchmark
+@ARTICLE{6807518,
+  author={Schafer, Benjamin Carrion and Mahapatra, Anushree},
+  journal={IEEE Embedded Systems Letters}, 
+  title={S2CBench: Synthesizable SystemC Benchmark Suite for High-Level Synthesis}, 
+  year={2014},
+  volume={6},
+  number={3},
+  pages={53-56},
+  keywords={Benchmark testing;Arrays;Optimization;Algorithm design and analysis;Finite impulse response filters;Encryption;Benchmark testing;design automation;high level synthesis},
+  doi={10.1109/LES.2014.2320556}}
+@inproceedings{10.1145/1735688.1735702,
+author = {Danalis, Anthony and Marin, Gabriel and McCurdy, Collin and Meredith, Jeremy S. and Roth, Philip C. and Spafford, Kyle and Tipparaju, Vinod and Vetter, Jeffrey S.},
+title = {The Scalable Heterogeneous Computing (SHOC) benchmark suite},
+year = {2010},
+isbn = {9781605589350},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/1735688.1735702},
+doi = {10.1145/1735688.1735702},
+abstract = {Scalable heterogeneous computing systems, which are composed of a mix of compute devices, such as commodity multicore processors, graphics processors, reconfigurable processors, and others, are gaining attention as one approach to continuing performance improvement while managing the new challenge of energy efficiency. As these systems become more common, it is important to be able to compare and contrast architectural designs and programming systems in a fair and open forum. To this end, we have designed the Scalable HeterOgeneous Computing benchmark suite (SHOC). SHOC's initial focus is on systems containing graphics processing units (GPUs) and multi-core processors, and on the new OpenCL programming standard. SHOC is a spectrum of programs that test the performance and stability of these scalable heterogeneous computing systems. At the lowest level, SHOC uses microbenchmarks to assess architectural features of the system. At higher levels, SHOC uses application kernels to determine system-wide performance including many system features such as intranode and internode communication among devices. SHOC includes benchmark implementations in both OpenCL and CUDA in order to provide a comparison of these programming models.},
+booktitle = {Proceedings of the 3rd Workshop on General-Purpose Computation on Graphics Processing Units},
+pages = {63–74},
+numpages = {12},
+keywords = {GPGPU, benchmarking, graphics processors, performance},
+location = {Pittsburgh, Pennsylvania, USA},
+series = {GPGPU-3}
+}
+
+
+@INPROCEEDINGS{6983050,
+  author={Reagen, Brandon and Adolf, Robert and Shao, Yakun Sophia and Wei, Gu-Yeon and Brooks, David},
+  booktitle={2014 IEEE International Symposium on Workload Characterization (IISWC)}, 
+  title={MachSuite: Benchmarks for accelerator design and customized architectures}, 
+  year={2014},
+  volume={},
+  number={},
+  pages={110-119},
+  keywords={Benchmark testing;Kernel;Hardware;Algorithm design and analysis;Sparse matrices;Acceleration;Communities},
+  doi={10.1109/IISWC.2014.6983050}}
+
+ 
+
+@misc{DeepSeek,
+Author ={DeepSeek},
+Year={2025},
+Title={DeepSeek
+},
+url={https://www.deepseek.com/zh}
+}
+
+
+@misc{cadence,
+Author ={cadence},
+Year={2025},
+Title={Cadence Stratus HLS Tool
+},
+url={https://www.cadence.com/zh_CN/home/tools/digital-design-and-signoff/synthesis/stratus-high-level-synthesis.html},
+note         = {Accessed: 2025-4-15}
+}
+%sniper
+@inproceedings{sniper,
+author = {Carlson, Trevor E. and Heirman, Wim and Eeckhout, Lieven},
+title = {Sniper: exploring the level of abstraction for scalable and accurate parallel multi-core simulation},
+year = {2011},
+isbn = {9781450307710},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/2063384.2063454},
+doi = {10.1145/2063384.2063454},
+abstract = {Two major trends in high-performance computing, namely, larger numbers of cores and the growing size of on-chip cache memory, are creating significant challenges for evaluating the design space of future processor architectures. Fast and scalable simulations are therefore needed to allow for sufficient exploration of large multi-core systems within a limited simulation time budget. By bringing together accurate high-abstraction analytical models with fast parallel simulation, architects can trade off accuracy with simulation speed to allow for longer application runs, covering a larger portion of the hardware design space. Interval simulation provides this balance between detailed cycle-accurate simulation and one-IPC simulation, allowing long-running simulations to be modeled much faster than with detailed cycle-accurate simulation, while still providing the detail necessary to observe core-uncore interactions across the entire system. Validations against real hardware show average absolute errors within 25\% for a variety of multi-threaded workloads; more than twice as accurate on average as one-IPC simulation. Further, we demonstrate scalable simulation speed of up to 2.0 MIPS when simulating a 16-core system on an 8-core SMP machine.},
+booktitle = {Proceedings of 2011 International Conference for High Performance Computing, Networking, Storage and Analysis},
+articleno = {52},
+numpages = {12},
+keywords = {interval model, interval simulation, multi-core processor, performance modeling},
+location = {Seattle, Washington},
+series = {SC '11}
+}
+
+
+#new related work 
+@INPROCEEDINGS{gensoc2025,
+  author={Yan, Peiran and Zhi, Qinzhe and Liu, Lifeng and Jia, Tianyu},
+  booktitle={2025 IEEE/ACM International Symposium on Low Power Electronics and Design (ISLPED)}, 
+  title={GenSoC: A Multi-Agent-Assisted SoC Generation Methodology Leveraging Open-Source Hardware}, 
+  year={2025},
+  volume={},
+  number={},
+  pages={1-7},
+  keywords={Costs;Design methodology;Large language models;Low power electronics;Production;Energy efficiency;Libraries;System-on-chip;Open source hardware;IP networks;SoC;LLM Multi-Agent;Design Methodology},
+  doi={10.1109/ISLPED65674.2025.11261756}}
+
+ @INPROCEEDINGS{sldb2025,
+  author={Alvanaki, Elisavet Lydia and Lee, Kevin and Carloni, Luca P.},
+  booktitle={2025 IEEE International Conference on LLM-Aided Design (ICLAD)}, 
+  title={SLDB: An End-To-End Heterogeneous System-on-Chip Benchmark Suite for LLM-Aided Design}, 
+  year={2025},
+  volume={},
+  number={},
+  pages={227-234},
+  keywords={Codes;Design automation;Large language models;Life estimation;Benchmark testing;Libraries;Hardware;System-on-chip;System-level design;System-on-Chip;Electronic Design Automation;Benchmark;LLM-aided Design},
+  doi={10.1109/ICLAD65226.2025.00016}}
+
+@misc{hscobench2026,
+      title={HSCO-Bench: An Agent-Driven End-to-End Hardware-Software Co-design Benchmark for Systems-on-Chip}, 
+      author={Pei-Huan Tsai and Kuan-Lin Chiu and William Baisi and Pin-Yu Chen and Luca P. Carloni},
+      year={2026},
+      eprint={2605.19399},
+      archivePrefix={arXiv},
+      primaryClass={cs.AR},
+      url={https://arxiv.org/abs/2605.19399}, 
+}
+
+@INPROCEEDINGS{socdev2025,
+  author={Zhao, Wenjie and Gao, Yunlong and Shen, Linlin and Luo, Qiuming},
+  booktitle={2025 International Joint Conference on Neural Networks (IJCNN)}, 
+  title={SoCDev: SoC Design Automation through TCL Code Generation via LLM-Based Agents}, 
+  year={2025},
+  volume={},
+  number={},
+  pages={1-8},
+  keywords={Codes;Design automation;Operating systems;Microprocessors;Neural networks;System-on-chip;Resource management;Field programmable gate arrays;Multi-agent systems;SoC Design;LLM-Based Agents;code generation;TCL},
+  doi={10.1109/IJCNN64981.2025.11228763}}
+
+@inproceedings{tapca2025,
+author = {Li, Enlai and Lin, Zhe and Sinha, Sharad and Zhang, Wei},
+title = {TAPCA: An Interface-Aware Cache Management Framework for Task Partitioning on CPU-FPGA SoC Platforms},
+year = {2025},
+isbn = {9798400713965},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3706628.3708824},
+doi = {10.1145/3706628.3708824},
+abstract = {CPU-FPGA SoC architectures with multiple shared coherent caches reduce inter-component communication overhead and enable efficient CPU-FPGA collaboration through task partitioning. However, existing studies primarily focus on optimizing partitioning units and ignore the benefits and diversity of coherent cache architectures on CPU-FPGA SoCs, leading to extra communication overhead in the final partitioning decisions. To address this, we propose TAPCA, a memory interface-aware task partitioning framework that integrates coherent cache management and selection. TAPCA includes an adaptive partitioning unit generator to identify essential application structures for efficient design space exploration, a design space exploration module to profile partitioning units across various design points, a memory management modeling module based on cache bypassing to match each unit with its optimal memory architecture and assess communication overhead, and a knapsack problem partitioning solver to determine partitioning decisions with appropriate configurations of hardware and memory architectures for partitioning units. TAPCA has two key features: rapid and accurate profiling of partitioning units without full simulation, and an automated memory management and selection mechanism to minimize communication overhead. When compared to non-partitioning schemes and a state-of-the-art partitioning framework lacking efficient memory management, TAPCA exhibits an average enhancement of 42.8\% and 29.7\% in execution time, along with a 62.8\% reduction in communication overhead.},
+booktitle = {Proceedings of the 2025 ACM/SIGDA International Symposium on Field Programmable Gate Arrays},
+pages = {85–91},
+numpages = {7},
+keywords = {dse modeling, knapsack problem, memory management, shared coherent cache, task partitioning},
+location = {Monterey, CA, USA},
+series = {FPGA '25}
+}
+
+@ARTICLE{omega2026,
+  author={Montanaro, Gabriele and Galimberti, Andrea and Zoni, Davide},
+  journal={IEEE Transactions on Computers}, 
+  title={Omega: A Hardware-Software Framework for Complete Design Space Exploration of FPGA-Based Heterogeneous Multi-Core SoCs}, 
+  year={2026},
+  volume={75},
+  number={2},
+  pages={435-447},
+  keywords={Field programmable gate arrays;Space exploration;Hardware acceleration;Optimization;Computer architecture;Computers;Central Processing Unit;Binary sequences;Multicore processing;Logic;Design space exploration;system-on-chip;heterogeneous;multi-core;FPGA;dynamic partial reconfiguration},
+  doi={10.1109/TC.2025.3624704}}
+
+
+
+
