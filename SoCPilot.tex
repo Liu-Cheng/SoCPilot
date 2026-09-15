@@ -1,6 +1,11 @@
-\documentclass[conference]{IEEEtran}
-\IEEEoverridecommandlockouts
-% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\RequirePackage[T1]{fontenc}
+\documentclass[10pt,journal]{IEEEtran}
+% IEEE TCAD: IEEE Transactions two-column journal format.
+% Preserve Unicode punctuation and names with traditional IEEE fonts.
+\usepackage{newunicodechar}
+\newunicodechar{‑}{\mbox{-}}
+\newunicodechar{–}{--}
+\newunicodechar{ć}{\'{c}}
 \usepackage{cite}
 %\usepackage{biblatex}
 %\addbibresource{ref.bib}
@@ -54,93 +59,22 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 	
-\title{SoCPilot: An LLM-powered End-to-End SoC Design Framework\\
-\vspace{-0.2em}
-}
+\title{SoCPilot: An Agentic SoC Design Framework}
 
-%\title{An Open Source Mixed-Precision Neural Network Accelerator Design Framework for FPGAs\\
-%%\title{DeepBurning-MixQ: An Open Source Mixed-Precision Neural Network Accelerator Design Framework for FPGAs\\
-%%\vspace{-0.7em}
-%}
+\author{Wanshan~Hu, Jiazheng~Zhang, Yichen~Si, Shengwen~Liang,
+Long~Cheng,~\IEEEmembership{Senior Member,~IEEE,}
+Cheng~Liu,~\IEEEmembership{Senior Member,~IEEE,}
+Xiaowei~Li,~\IEEEmembership{Senior Member,~IEEE,}
+and Huawei~Li,~\IEEEmembership{Senior Member,~IEEE}%
+\thanks{Wanshan Hu, Jiazheng Zhang, Shengwen Liang, Xiaowei Li, and Huawei Li are with the Institute of Computing Technology, Chinese Academy of Sciences, and the University of Chinese Academy of Sciences, Beijing, China (e-mail: huwanshan25s@ict.ac.cn; lihuawei@ict.ac.cn).}%
+\thanks{Yichen Si is with Beijing University of Technology and the Institute of Computing Technology, Chinese Academy of Sciences, Beijing, China.}%
+\thanks{Long Cheng and Cheng Liu are with North China Electric Power University, China (e-mail: liucheng@ict.ac.cn).}%
+\thanks{Corresponding author: Cheng Liu.}}
 
-\makeatletter
-\newcommand{\linebreakand}{%
-\end{@IEEEauthorhalign}
-\hfill\mbox{}\par
-\mbox{}\hfill\begin{@IEEEauthorhalign}
-}
-\makeatother
-
-%---------------------combined author format------------------
-\author{
-	\IEEEauthorblockN{Wanshan Hu, Jiazheng Zhang, Yichen Si, Junfeng Gong, Shengwen Liang, Long Cheng, \\Cheng Liu\IEEEauthorrefmark{1}\thanks{\IEEEauthorrefmark{1} Corresponding author.}, Xiaowei Li, Huawei Li}
-	 %\IEEEauthorblockA{
- %	$^{1}$SKLP, Institute of Computing Technology, Chinese Academy of Sciences, Beijing, China
- %}
- \IEEEauthorblockA{
- 	SKLP, Institute of Computing Technology, Chinese Academy of Sciences, Beijing, China
- }
-% \IEEEauthorblockA{
- 	%$^{2}$Dept. of Computer Science, University of Chinese Academy of Sciences, Beijing, China
- %}
-	%\IEEEauthorblockA{1120192664@bit.edu.cn, \{huanghaitong21s, liucheng, liguoyu21s,\\ wangying2009, lihuawei, lxw\}@ict.ac.cn, byang@hrbust.edu.cn}
- \IEEEauthorblockA{\{huwanshan25s, liucheng, lihuawei\}@ict.ac.cn}
-
- %\thanks{This work is supported by the National Key R\&D Program of China under Grant (2022YFB4500405), and the National Natural Science Foundation of China under Grant 62174162.}
-}
-
-%---------------------original author format------------------
-%\author{\IEEEauthorblockN{Erjing Luo\IEEEauthorrefmark{1}}
-%	\IEEEauthorblockA{\textit{School of Information and Electronics} \\
-%		\textit{Beijing Institute of Technology}\\
-%		Beijing, China \\
-%		1120192664@bit.edu.cn}
-%	\and
-%	\IEEEauthorblockN{Haitong Huang\IEEEauthorrefmark{1}}
-%	\IEEEauthorblockA{\textit{Institute of Computing Technology} \\
-%		\textit{Chinese Academy of Sciences}\\
-%		Beijing, China \\
-%		huanghaitong21s@ict.ac.cn}
-%	\and
-%	\IEEEauthorblockN{Cheng Liu\IEEEauthorrefmark{2}}
-%	\IEEEauthorblockA{\textit{Institute of Computing Technology} \\
-%		\textit{Chinese Academy of Sciences}\\
-%		Beijing, China \\
-%		liucheng@ict.ac.cn}
-%	\linebreakand
-%	\IEEEauthorblockN{Guoyu Li}
-%	\IEEEauthorblockA{\textit{Institute of Computing Technology} \\
-%		\textit{Chinese Academy of Sciences}\\
-%		Beijing, China \\
-%		liguoyu21s@ict.ac.cn}
-%	\and
-%	\IEEEauthorblockN{Bing Yang}
-%	\IEEEauthorblockA{\textit{Dept. of Computer Science and Technology} \\
-%		\textit{Harbin University of Science of Technology}\\
-%		Harbin, China \\
-%		byang@hrbust.edu.cn}
-%	\and
-%	\IEEEauthorblockN{Ying Wang}
-%	\IEEEauthorblockA{\textit{Institute of Computing Technology} \\
-%		\textit{Chinese Academy of Sciences}\\
-%		Beijing, China \\
-%		wangying2009@ict.ac.cn}
-%	\linebreakand
-%	\IEEEauthorblockN{Huawei Li}
-%	\IEEEauthorblockA{\textit{Institute of Computing Technology} \\
-%		\textit{Chinese Academy of Sciences}\\
-%		Beijing, China \\
-%		lihuawei@ict.ac.cn}
-%	\and
-%	\IEEEauthorblockN{Xiaowei Li}
-%	\IEEEauthorblockA{\textit{Institute of Computing Technology} \\
-%		\textit{Chinese Academy of Sciences}\\
-%		Beijing, China \\
-%		lxw@ict.ac.cn}
-%}
+\markboth{IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems}%
+{Hu \MakeLowercase{\textit{et al.}}: SoCPilot: An Agentic SoC Design Framework}
 
 \maketitle
-%\IEEEpeerreviewmaketitle
 
 \begin{abstract}
 
@@ -161,7 +95,6 @@ Evaluations on representative applications show that SoCPilot completes the end-
 	large language model, high-level synthesis, system-on-chip, hardware/software partitioning
 \end{IEEEkeywords}
 
-\IEEEpeerreviewmaketitle
 
 \section{Introduction}
 System-on-Chip (SoC) design lies at the heart of modern computing systems, enabling efficient integration of processors, accelerators, and interconnects onto a single chip for domain-specific applications. However, designing an SoC is an inherently complex and multidisciplinary task \cite{soc-productivity}, typically requiring close collaboration among experts in hardware architecture, embedded software, performance optimization, and integrated circuit design. As application demands for both performance and energy efficiency continue to grow while semiconductor technology scaling slows down \cite{esmaeilzadeh2011dark} \cite{hardavellas2012rise}, SoCs must integrate increasingly heterogeneous components to meet stringent performance, power, and area (PPA) requirements. This growing complexity introduces significant challenges across multiple stages of the SoC design flow \cite{soc-challenges}, necessitating more intensive cross-layer optimizations. 
@@ -195,7 +128,7 @@ High-level synthesis (HLS) provides another route for LLM-assisted hardware gene
 These approaches primarily optimize individual modules or accelerators. They do not address the system-level decisions required to transform a complete application into a customized SoC, including hotspot identification, hardware/software partitioning, accelerator generation and integration, and joint processor--accelerator optimization. SoCPilot builds on the code-generation and HLS capabilities of LLMs but applies them within an end-to-end, application-driven SoC design flow.
  
 \subsection{SoC Design Automation}
-Generator-based frameworks have substantially improved the modularity and reuse of SoC designs. Chisel provides a software-inspired hardware construction language for developing reusable and parameterized generators \cite{Chisel}. Rocket Chip builds on this abstraction to generate configurable RISC-V processors, caches, interconnects, and peripheral subsystems \cite{Asanović:EECS-2016-17}. Chipyard integrates these generators with simulation, verification, and implementation tools, providing an extensible environment for full-system SoC exploration \cite{amid2020chipyard}.
+Generator-based frameworks have substantially improved the modularity and reuse of SoC designs. Chisel provides a software-inspired hardware construction language for developing reusable and parameterized generators \cite{Chisel}. Rocket Chip builds on this abstraction to generate configurable RISC-V processors, caches, interconnects, and peripheral subsystems \cite{Asanovic:EECS-2016-17}. Chipyard integrates these generators with simulation, verification, and implementation tools, providing an extensible environment for full-system SoC exploration \cite{amid2020chipyard}.
 
 Other platforms focus on heterogeneous integration and design space exploration. ESP provides a tile-based methodology for integrating RTL- and HLS-based accelerators, generating hardware/software interfaces, and prototyping complete systems on FPGAs \cite{mantovani2020agile}. ESP4ML specializes this flow for machine-learning accelerators \cite{esp4ml}, while ChipFlow supports hardware/software co-design for custom FPGA and ASIC systems \cite{chipflow2023}. MasterRTL accelerates early-stage architectural exploration using fast power, performance, and area estimation \cite{10577671}. Although these frameworks automate substantial portions of SoC construction, they generally require designers to specify the target architecture, select hardware components, and develop customized accelerators to be integrated.
 
