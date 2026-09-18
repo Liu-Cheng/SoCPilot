@@ -704,8 +704,8 @@ Can SoCPilot adapt its CPU--accelerator configuration to application-specific ar
 
 SoCPilot uses DeepSeek~\cite{DeepSeek} as the default LLM, Vivado HLS for accelerator synthesis, Sniper~\cite{sniper} for CPU performance estimation, HyperMapper~\cite{9124618} for design space exploration, and ESP~\cite{mantovani2020agile} for SoC integration and FPGA prototyping. Table~\ref{tab:experimental_setup} summarizes the common experimental environment and reproducibility settings used throughout the evaluation.
 
-%这个地方嵌入式代码手动实现需要强调吗
-```latex
+%这个地方嵌入式代码手动实现需要强调吗以及这个地方工具链展现
+
 \begin{table}[t]
 \centering
 \caption{Experimental platforms and common evaluation settings.}
@@ -718,9 +718,11 @@ SoCPilot uses DeepSeek~\cite{DeepSeek} as the default LLM, Vivado HLS for accele
 \textbf{Item} & \textbf{Configuration} \\
 \midrule
 
-\multicolumn{2}{l}{\textit{LLM and agent configuration}} \\
+\multicolumn{2}{l}{\textit{LLM configuration}} \\
 LLM &
-DeepSeek API with \texttt{deepseek-v4-pro}; temperature $=0$. \\
+DeepSeek API with \texttt{deepseek-v4-pro};
+
+temperature $=0$. \\
 
 \midrule
 \multicolumn{2}{l}{\textit{Processor and software environment}} \\
@@ -728,7 +730,7 @@ CPU candidates &
 Ariane/CVA6 (RV64), Ibex (RV32), and Leon3 (SPARC V8). \\
 
 Compilation &
-RISC-V GCC for Ariane/CVA6 and Ibex; [SPARC toolchain] for Leon3.
+RISC-V GCC for Ariane/CVA6 and Ibex; \texttt{sparc-elf} GCC for Leon3.
 CPU-only and CPU--accelerator implementations use identical compiler
 settings for each application. \\
 
@@ -743,8 +745,7 @@ HLS &
 Vitis/Vivado HLS 2021.2 with a 10-ns target clock. \\
 
 CPU estimation &
-Sniper-based CPU performance estimation; Spike is used for RISC-V
-functional simulation where applicable. \\
+Sniper-based CPU performance estimation. \\
 
 Area estimation &
 A common analytical SoC-area model is used for hardware/software
@@ -761,12 +762,16 @@ configuration parameters under application-specific area constraints. \\
 
 FPGA validation &
 Xilinx Zynq UltraScale+ \texttt{xczu9eg-ffvb1156-2-e};
+
+
 ESP runtime clock of 75~MHz. \\
 
 \bottomrule
 \end{tabularx}
 \end{table}
-```
+
+
+
 
 
 % TODO: The final version should explicitly document how CPU, cache/system, and accelerator
@@ -775,15 +780,25 @@ ESP runtime clock of 75~MHz. \\
 
 \subsubsection{Baselines and measurement protocol}
 
-Our evaluation follows the progression of the three research questions: RQ1 determines whether the generated system works end to end and improves latency, RQ2 tests whether the specialized workflow is more reliable than open-ended general-agent execution on the hardware/SoC stages common to both methods, and RQ3 evaluates architecture selection under different area constraints.
+Our evaluation is organized around three research questions: RQ1 assesses the end-to-end correctness and latency improvement of the generated systems, RQ2 compares the reliability of the specialized workflow with open-ended general-agent execution over the hardware/SoC stages common to both methods, and RQ3 evaluates architecture selection under different area constraints.
+
 
 \textbf{Paired CPU-only baseline.}
-For RQ1, each generated SoC is compared against an application-specific paired CPU-only baseline. After SoCPilot selects the CPU type and memory-system parameters, the matched CPU-only configuration retains the same CPU, cache configuration, clock target, compiler, input data, and application algorithm, but executes the selected hot functions on the CPU rather than invoking accelerators. The benchmark-specific embedded code for the accelerated system is manually prepared using the ESP runtime API and is not part of the LLM-generated output. This paired comparison isolates the end-to-end latency benefit of accelerator integration from differences in CPU choice, cache configuration, compiler settings, or application inputs.
+For RQ1, each generated SoC is compared against an application-specific paired CPU-only baseline. After SoCPilot selects the CPU type and memory-system parameters, the matched CPU-only configuration retains the same CPU, cache configuration, clock target, compiler, input data, and application algorithm, but executes the selected hot functions on the CPU rather than invoking accelerators. The benchmark-specific embedded code for the accelerated system is manually prepared and is not part of the LLM-generated output. This paired comparison isolates the end-to-end latency benefit of accelerator integration from differences in CPU choice, cache configuration, compiler settings, or application inputs.
 
-Reported latency covers the complete application, including CPU execution, accelerator invocation, data transfer, synchronization, and all unaccelerated functions. Correctness is checked against the CPU reference output before performance results are accepted.
+Reported total latency covers the complete baremetal application execution, including CPU computation, accelerator invocation, cache flushing and synchronization, and all functions that remain on the CPU. Per-accelerator latency is measured only over the accelerated kernel region, from accelerator configuration and launch to completion detection. A result is considered functionally correct only when the hardware output matches the corresponding CPU or golden reference.
+
 
 \textbf{General-purpose agent baseline.}
-For RQ2, we compare SoCPilot with a general-purpose LLM agent following the HSCO-Bench \cite{hscobench2026} evaluation protocol. Because SoCPilot does not generate benchmark-specific embedded runtime software, the comparison focuses on the automated hardware/SoC stages shared by both flows: acceleration-target handling, accelerator implementation, functional verification, HLS synthesis, and ESP integration. FPGA board execution of the SoCPilot designs is reported separately in RQ1 using the manually prepared runtime code and is not used to give SoCPilot an advantage in the agent comparison.
+For RQ2, we compare SoCPilot with a general-purpose LLM agent following the HSCO-Bench~\cite{hscobench2026} evaluation protocol. Because SoCPilot does not generate benchmark-specific embedded runtime software, the comparison is restricted to the automated hardware/SoC stages common to both flows, including acceleration-target identification, accelerator implementation, functional verification, HLS synthesis, and ESP integration. FPGA board execution of the SoCPilot-generated designs is evaluated separately in RQ1 using manually prepared runtime software and is therefore excluded from the RQ2 comparison.
+
+\textbf{Baseline execution settings.}
+The general-purpose agent baseline is evaluated within the HSCO-Bench execution environment using DeepSeek-v4-pro as the underlying LLM. For each application, the agent is provided with the migrated benchmark workspace, including the application source code, the HSCO-Bench template structure, and access to the local hardware/software co-design toolchain. The target platform is fixed to the Xilinx ZCU102 configuration (\texttt{xilinx-zcu102-xczu9eg}) used by the ESP infrastructure. All applications are evaluated under a consistent tool environment comprising Catapult HLS, SystemC, MatchLib, ESP, and Vivado.
+
+The agent is not provided with SoCPilot-derived profiling results, hardware/software partitioning decisions, or pre-generated accelerator implementations. Instead, it must independently identify an acceleration target, instantiate the corresponding accelerator within the HSCO-Bench template structure, integrate the required software-driver and ESP configuration entries, and construct a workspace that satisfies the benchmark flow. Each run terminates when the agent completes its execution, exhausts the configured agent budget, or encounters a failure at a required tool-flow stage.
+
+In our experiments, FPGA synthesis and board-level execution are disabled using \texttt{--skip-fpga}. Accordingly, the evaluated baseline flow includes workspace validation, device-ID checking, behavioral SystemC simulation (\texttt{bev-sim}), and Catapult HLS, but excludes Vivado bitstream generation and FPGA board execution. This configuration focuses the comparison on the shared hardware-generation and SoC-integration stages while excluding benchmark-specific board bring-up from RQ2.
+
 
 \textbf{Area-constrained design evaluation.}
 For RQ3, we vary the application-specific area constraint and examine how SoCPilot adapts the generated architecture. For each constraint, we record the selected CPU, accelerator set, relevant system parameters, estimated area, and resulting end-to-end latency. The FPGA board is used to validate the selected configurations, whereas area is obtained from the common analytical area model rather than from FPGA resource utilization.
