@@ -1,0 +1,59 @@
+\RequirePackage[T1]{fontenc}
+\documentclass[10pt,journal]{IEEEtran}
+% IEEE TCAD: IEEE Transactions two-column journal format.
+% Preserve Unicode punctuation and names with traditional IEEE fonts.
+\usepackage{newunicodechar}
+\newunicodechar{‑}{\mbox{-}}
+\newunicodechar{–}{--}
+\newunicodechar{ć}{\'{c}}
+\usepackage{cite}
+%\usepackage{biblatex}
+%\addbibresource{ref.bib}
+%表格脚注标
+\usepackage{tablefootnote} 
+\usepackage{amsmath,amssymb,amsfonts}
+%\usepackage{algorithm}
+%\usepackage{algorithmic}
+\usepackage[ruled,norelsize,vlined,linesnumbered]{algorithm2e}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage{url}
+\usepackage{cite}
+\usepackage{hyperref}
+\hyphenation{op-tical net-works semi-conduc-tor IEEE-Xplore}
+
+\usepackage{array}
+%\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+\usepackage{textcomp}
+\usepackage{stfloats}
+\usepackage{verbatim}
+\usepackage{subfigure}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{multirow}
+% \usepackage{fontspec}
+% \newfontfamily\menlo{Menlo}
+\usepackage{listings}
+\lstset{
+    language=C++, 
+    linewidth=0.48\textwidth, 
+    columns=flexible, 
+    basicstyle=\ttfamily \fontsize{8pt}{9pt}\selectfont , 
+    breaklines=true,
+    frame=single, 
+    backgroundcolor=\color[RGB]{252,252,252}, 
+    keywordstyle=\textcolor{Orchid}, 
+    commentstyle=\textcolor{Gray}, 
+    stringstyle=\textcolor{Orange}, 
+    emph={merge, merge_arrays, histogram, histogram_parallel, histogram_map, histogram_reduce, bfs_kernel, read_frontier_vertex, traverse, convolve, read_dataflow, compute_dataflow, empty, read}, 
+    emphstyle=\textcolor{NavyBlue}
+}
+
+
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}

@@ -1,0 +1,66 @@
+\subsection{End-to-End Effectiveness (RQ1)}
+\label{subsec:e2e_evaluation}
+
+We first evaluate whether SoCPilot can produce a functionally correct CPU--accelerator SoC and whether the resulting system improves complete-application latency over its paired CPU-only implementation. FPGA board execution is used as the final validation step. Importantly, this experiment evaluates the generated hardware and SoC configuration with manually prepared embedded runtime software; it does not attribute embedded-software generation to SoCPilot.
+
+% Missing-result table: fill with measured board-level latency and validation outcomes.
+\begin{table*}[t]
+\centering
+\caption{End-to-end effectiveness and FPGA-board validation of SoCPilot-generated SoCs.}
+\label{tab:e2e_performance}
+\renewcommand{\arraystretch}{1.12}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{lllrrrcc}
+\toprule
+\textbf{Application} &
+\textbf{Selected CPU} &
+\textbf{Selected accelerator(s)} &
+\textbf{CPU-only latency (ms)} &
+\textbf{SoCPilot latency (ms)} &
+\textbf{Speedup} &
+\textbf{Correct} &
+\textbf{Board validated} \\
+\midrule
+\texttt{plate\_recognition} & -- & -- & -- & -- & -- & -- & -- \\
+\texttt{recognition}        & -- & -- & -- & -- & -- & -- & -- \\
+\texttt{scan}               & -- & -- & -- & -- & -- & -- & -- \\
+\texttt{wami}               & -- & -- & -- & -- & -- & -- & -- \\
+\texttt{nightvision}        & -- & -- & -- & -- & -- & -- & -- \\
+\midrule
+Geometric mean                & -- & -- & -- & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+Reported speedup is computed from complete-application latency rather than isolated accelerator latency. We therefore recommend reporting a latency breakdown that separates CPU-resident execution, accelerator execution, and CPU--accelerator communication/synchronization overhead for each benchmark.
+
+% Recommended figure (data still required):
+% Fig. X. End-to-end latency breakdown for CPU-only and SoCPilot designs.
+% Components for SoCPilot: remaining CPU execution / accelerator execution /
+% data transfer + invocation + synchronization.
+
+Because the abstract reports the wall-clock completion time of the automated flow, the final evaluation should also document automation cost. The manually written embedded runtime is excluded from this timing and should be stated explicitly.
+
+% Missing-result table: fill if the ``within 24 hours'' claim is retained.
+\begin{table*}[t]
+\centering
+\caption{Automation cost of the SoCPilot hardware/SoC generation flow. Manually prepared embedded runtime software is excluded.}
+\label{tab:automation_cost}
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Application} &
+\textbf{Total automated flow time (h)} &
+\textbf{LLM calls} &
+\textbf{Auto-repair iterations} &
+\textbf{Manual edits within automated flow} \\
+\midrule
+\texttt{plate\_recognition} & -- & -- & -- & -- \\
+\texttt{recognition}        & -- & -- & -- & -- \\
+\texttt{scan}               & -- & -- & -- & -- \\
+\texttt{wami}               & -- & -- & -- & -- \\
+\texttt{nightvision}        & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table*}
+

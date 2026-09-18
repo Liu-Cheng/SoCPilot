@@ -1,0 +1,15 @@
+\section{Experiments}
+\label{sec:evaluation}
+
+We evaluate SoCPilot as an application-driven CPU--accelerator SoC design system rather than as a collection of isolated code-generation tasks. The experiments address three research questions:
+\begin{itemize}
+\item \textbf{RQ1: End-to-end effectiveness.}
+Can SoCPilot derive and integrate a functionally correct CPU--accelerator SoC from a complete edge application and its design constraints, validate it on an FPGA board, and reduce end-to-end latency relative to a matched CPU-only implementation?
+
+\item \textbf{RQ2: Specialized workflow vs.\ general-purpose agent.}
+Does SoCPilot’s specialized hardware/SoC workflow complete accelerator generation, verification, HLS synthesis, and ESP integration more reliably than a general-purpose LLM agent following the HSCO-Bench\cite{hscobench2026} protocol? 
+
+\item \textbf{RQ3: Area-aware design selection.}
+Can SoCPilot adapt its CPU--accelerator configuration to application-specific area constraints, and how do the resulting designs trade off end-to-end latency against estimated area?
+\end{itemize}
+
