@@ -1,24 +1,13 @@
 \section{Experiments}
 \label{sec:evaluation}
 
-We evaluate SoCPilot as an application-driven CPU--accelerator SoC design system rather than as a collection of isolated code-generation tasks. The experiments address three research questions:
-\begin{itemize}
-\item \textbf{RQ1: End-to-end effectiveness.}
-Can SoCPilot derive and integrate a functionally correct CPU--accelerator SoC from a complete edge application and its design constraints, validate it on an FPGA board, and reduce end-to-end latency relative to a matched CPU-only implementation?
+We evaluate SoCPilot at both the system and component levels. The experiments cover comparison with general-purpose agents, end-to-end acceleration over matched CPU-only implementations, Pareto design exploration under area constraints, hardware/software partitioning, and IP selection. The available results support the first two comparisons; the remaining subsections define the evaluation protocols and identify the measurements still required.
 
-\item \textbf{RQ2: Specialized workflow vs.\ general-purpose agent.}
-Does SoCPilot’s specialized hardware/SoC workflow complete accelerator generation, verification, HLS synthesis, and ESP integration more reliably than a general-purpose LLM agent following the HSCO-Bench\cite{hscobench2026} protocol? 
-
-\item \textbf{RQ3: Area-aware design selection.}
-Can SoCPilot adapt its CPU--accelerator configuration to application-specific area constraints, and how do the resulting designs trade off end-to-end latency against estimated area?
-\end{itemize}
-
-\subsection{Experiment Setups}
+\subsection{Experimental Setup}
 \subsubsection{Platforms and toolchain}
 
 SoCPilot uses DeepSeek~\cite{DeepSeek} as the default LLM, Vivado HLS for accelerator synthesis, Sniper~\cite{sniper} for CPU performance estimation, HyperMapper~\cite{9124618} for design space exploration, and ESP~\cite{mantovani2020agile} for SoC integration and FPGA prototyping. Table~\ref{tab:experimental_setup} summarizes the common experimental environment and reproducibility settings used throughout the evaluation.
 
-%这个地方嵌入式代码手动实现需要强调吗以及这个地方工具链展现
 \begin{table}[t]
 \centering
 \caption{Experimental platforms and common evaluation settings.}
@@ -82,25 +71,17 @@ ESP runtime clock of 75~MHz. \\
 \bottomrule
 \end{tabularx}
 \end{table}
-%这部分是否过于啰嗦和后面重复了
 \subsubsection{Baselines and measurement protocol}
 
-Our evaluation is organized around three research questions: RQ1 assesses the end-to-end correctness and latency improvement of the generated systems, RQ2 compares the reliability of the specialized workflow with open-ended general-agent execution over the hardware/SoC stages common to both methods, and RQ3 evaluates architecture selection under different area constraints.
-
-
 \textbf{Paired CPU-only baseline.}
-For RQ1, each generated SoC is compared against an application-specific paired CPU-only baseline. After SoCPilot selects the CPU type and memory-system parameters, the matched CPU-only configuration retains the same CPU, cache configuration, clock target, compiler, input data, and application algorithm, but executes the selected hot functions on the CPU rather than invoking accelerators. The benchmark-specific embedded code for the accelerated system is manually prepared and is not part of the LLM-generated output. This paired comparison isolates the end-to-end latency benefit of accelerator integration from differences in CPU choice, cache configuration, compiler settings, or application inputs.
+Each generated SoC is compared against an application-specific paired CPU-only baseline. After SoCPilot selects the CPU type and memory-system parameters, the matched CPU-only configuration retains the same CPU, cache configuration, clock target, compiler, input data, and application algorithm, but executes the selected hot functions on the CPU rather than invoking accelerators. This paired comparison isolates the end-to-end latency benefit of accelerator integration from differences in CPU choice, cache configuration, compiler settings, or application inputs.
 
 Reported total latency covers the complete baremetal application execution, including CPU computation, accelerator invocation, cache flushing and synchronization, and all functions that remain on the CPU. Per-accelerator latency is measured only over the accelerated kernel region, from accelerator configuration and launch to completion detection. A result is considered functionally correct only when the hardware output matches the corresponding CPU or golden reference.
 
-\textbf{General-agent execution protocol.}
-We instantiate the general-purpose-agent baseline using DeepSeek-v4-pro and evaluate it following the HSCO-Bench~\cite{hscobench2026} execution protocol. DeepSeek was not among the five frontier models evaluated in the original HSCO-Bench study; therefore, our experiment should be viewed as an independent execution of the HSCO-Bench protocol with the same application workloads rather than a reproduction of one of its reported model configurations.
-
-
 \textbf{Area-constrained design evaluation.}
-For RQ3, we vary the application-specific area constraint and examine how SoCPilot adapts the generated architecture. For each constraint, we record the selected CPU, accelerator set, relevant system parameters, estimated area, and resulting end-to-end latency. The FPGA board is used to validate the selected configurations, whereas area is obtained from the common analytical area model rather than from FPGA resource utilization.
+We vary the application-specific area constraint and examine how SoCPilot adapts the generated architecture. For each constraint, we record the selected CPU, accelerator set, relevant system parameters, estimated area, and resulting end-to-end latency. The FPGA board is used to validate the selected configurations, whereas area is obtained from the common analytical area model rather than from FPGA resource utilization.
 
-A generated SoCPilot design is counted as an \emph{end-to-end validated design} when it produces a valid SoC configuration, synthesizable accelerators, a successfully generated FPGA bitstream, correct accelerator invocation through the manually prepared embedded runtime, and application outputs that pass the predefined correctness checks against the CPU reference.
+A generated SoCPilot design is counted as an \emph{end-to-end validated design} when it produces a valid SoC configuration, synthesizable accelerators, a successfully generated FPGA bitstream, correct accelerator invocation through the embedded runtime, and application outputs that pass the predefined correctness checks against the CPU reference.
 
 \subsubsection{Application Benchmark}
 \label{subsec:application_suite}
@@ -153,11 +134,90 @@ Enhanced-image quality / contrast preservation &
 \end{tabular}}
 \end{table*}
 
-\subsection{End-to-End Effectiveness (RQ1)}
-\label{subsec:e2e_evaluation}
-We first evaluate whether SoCPilot can produce a functionally correct CPU--accelerator SoC and whether the generated SoC reduces complete-application latency relative to its paired CPU-only implementation. FPGA board execution serves as the final validation step. This experiment evaluates the hardware and SoC configuration generated by SoCPilot using manually prepared embedded runtime software; embedded-software generation is therefore outside the scope of this evaluation.
+\subsection{Comparison with General-Purpose Agents}
+\label{subsec:general_agent}
 
-Table~\ref{tab:e2e_performance} reports one primary design point for each application, selected under the predefined application-specific area budget used in the main RQ1 evaluation. Alternative area budgets and the corresponding architectural choices are analyzed separately in RQ3.
+We compare SoCPilot's structured workflow with a general-purpose LLM agent following the HSCO-Bench~\cite{hscobench2026} evaluation protocol. The comparison focuses on the agent's ability to progress through the automated accelerator-design and SoC-integration workflow, including acceleration-target identification, accelerator implementation, functional verification, HLS synthesis, and ESP integration.
+
+\textbf{General-agent execution protocol.}
+We instantiate the general-purpose-agent baseline using DeepSeek-v4-pro as the underlying LLM. DeepSeek-v4-pro is not among the five frontier models evaluated in the original HSCO-Bench study; therefore, our experiment represents an independent execution of the HSCO-Bench protocol rather than a reproduction of one of its reported model configurations. For each application, the agent is provided with the migrated benchmark workspace, including the application source code, the HSCO-Bench template structure, and access to the local hardware/software co-design toolchain. The target platform is configured as Xilinx ZCU102 (\texttt{xilinx-zcu102-xczu9eg}) within the ESP infrastructure, and all applications use a consistent tool environment comprising Catapult HLS, SystemC, MatchLib, ESP, and Vivado.
+
+The general-purpose agent receives no SoCPilot-derived profiling results, hardware/software partitioning decisions, or pre-generated accelerator implementations. It must independently identify an acceleration target, construct the corresponding accelerator within the HSCO-Bench template structure, integrate the required software-driver and ESP configuration entries, and produce a workspace accepted by the benchmark flow. Each run terminates when the agent completes the evaluated workflow, exhausts the configured agent budget, or encounters a failure at a required tool-flow stage.
+
+FPGA synthesis and board-level execution are disabled using \texttt{--skip-fpga}. Accordingly, the evaluated baseline flow includes workspace validation, device-ID checking, behavioral SystemC simulation (\texttt{bev-sim}), and Catapult HLS, but excludes Vivado bitstream generation and FPGA board execution. Table~\ref{tab:hscobench_results} reports the furthest stage reached by the general-purpose agent and the corresponding failure mode for each application.
+
+\begin{table*}[t]
+\centering
+\caption{Execution results of DeepSeek-v4-pro as a general-purpose agent following the HSCO-Bench protocol on our application set.}
+\label{tab:hscobench_results}
+\renewcommand{\arraystretch}{1.18}
+\setlength{\tabcolsep}{4.5pt}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{l l r l l p{6.0cm}}
+\toprule
+\textbf{Application} &
+\textbf{Generated Accelerator Scope} &
+\textbf{\begin{tabular}[c]{@{}c@{}}Agent Time\\(s)\end{tabular}} &
+\textbf{Furthest Passed Stage} &
+\textbf{Failure Stage} &
+\textbf{Failure Cause} \\
+\midrule
+
+\texttt{nightvision} &
+Laplacian fusion (\texttt{lapfusion}) &
+3974 &
+Device-ID check &
+BEV-Sim compilation &
+Invalid C++ type operation: \texttt{to\_uint()} is applied to variables of type \texttt{uint32\_t}. \\
+
+\texttt{scan} &
+Scan post-processing (\texttt{scanpp}) &
+2563 &
+BEV-Sim compilation/execution &
+BEV-Sim verification &
+Functional mismatch with the software golden output; 17 output pixels differ from the reference results. \\
+
+\texttt{plate\_recognition} &
+Plate-localization pipeline (\texttt{plateaccel}) &
+2325 &
+Device-ID check &
+BEV-Sim compilation &
+Invalid C++ type operation: \texttt{to\_int()} is applied to configuration fields of type \texttt{int32\_t}. \\
+
+\texttt{recognition} &
+HSV mask and dilation pipeline (\texttt{recog}) &
+1910 &
+BEV-Sim &
+Catapult HLS &
+Variable-division operators cannot be scheduled under the available Catapult resource and multicycle constraints. \\
+
+\texttt{wami} &
+WAMI frame pipeline (\texttt{wami}) &
+4024 &
+BEV-Sim &
+Catapult HLS &
+Catapult reports no definition for \texttt{floorf()} during HLS compilation. \\
+
+\bottomrule
+\end{tabular}}
+\end{table*}
+
+As shown in Table~\ref{tab:hscobench_results}, the general-purpose agent fails at different stages across all five applications. The observed failures span source-level type correctness, functional equivalence, and HLS compatibility. For \texttt{nightvision} and \texttt{plate\_recognition}, the generated implementations fail during BEV-Sim compilation because of invalid C++ type operations. The \texttt{scan} implementation proceeds further but fails functional verification because its output differs from the software reference. The \texttt{recognition} and \texttt{wami} implementations both pass behavioral simulation but fail during Catapult HLS because of synthesis-related language or scheduling constraints. These results indicate that successfully generating an accelerator candidate does not by itself guarantee progression through the subsequent verification and synthesis stages.
+
+The four FPGA-validated SoCPilot designs in Table~\ref{tab:e2e_performance} complete accelerator generation, functional verification, HLS synthesis, and ESP integration. None of the five recorded general-agent runs completes the evaluated pre-FPGA flow. These observations characterize the available runs; they do not establish a repeated-run success rate. Moreover, the two workflows use different HLS toolchains, and the general-agent runs omit FPGA execution, so this comparison evaluates the configured workflows rather than isolating the effect of the orchestration method alone.
+
+% TODO: Record the agent implementation/version, prompts, tool versions,
+% token/iteration/time budgets, and repeated-run outcomes for reproducibility.
+
+
+\textbf{Comparison with published HSCO-Bench results.}
+The original HSCO-Bench study provides additional context for two workloads that overlap with our evaluation. Among the five frontier models evaluated in that study, \texttt{NightVision} was successfully accelerated only by Claude Opus 4.6, achieving a reported 1.08$\times$ speedup, whereas \texttt{WAMI} was a consistent-failure case for which none of the evaluated models produced a valid accelerated design~\cite{hscobench2026}. In our evaluation, SoCPilot successfully generates and validates CPU--accelerator implementations for both workloads, achieving 3.50$\times$ end-to-end speedup for \texttt{NightVision} and 2.41$\times$ for \texttt{WAMI}, as reported in Table~\ref{tab:e2e_performance}. Thus, for \texttt{NightVision}, SoCPilot obtains a numerically higher application-level speedup than the 1.08$\times$ result reported by HSCO-Bench, while for \texttt{WAMI}, SoCPilot produces a valid accelerated implementation where all models in the original study failed. Because the two studies use different hardware platforms and experimental configurations, the speedup values are presented as contextual results rather than as a controlled cross-platform performance comparison.
+
+\subsection{End-to-End Performance}
+\label{subsec:e2e_evaluation}
+We evaluate whether SoCPilot can produce a functionally correct CPU--accelerator SoC and whether the generated SoC reduces complete-application latency relative to its paired CPU-only implementation. FPGA board execution serves as the final validation step.
+
+Table~\ref{tab:e2e_performance} reports one primary design point for each application, selected under the predefined application-specific area budget used in this evaluation. Alternative area budgets and the corresponding architectural choices are considered separately in Section~\ref{subsec:area_aware}.
 
 % Missing-result table: fill with measured board-level latency and validation outcomes.
 \begin{table*}[t]
@@ -235,108 +295,51 @@ Table~\ref{tab:e2e_performance} reports one primary design point for each applic
   \end{tabular}}
   \end{table*}
 
-Reported speedup is computed from complete-application latency rather than isolated accelerator latency. To complement the aggregate values in Table~\ref{tab:e2e_performance}, the RQ1 latency-breakdown figure should separate CPU-resident execution, accelerator execution, and accelerator-invocation/cache-flush/synchronization overhead. This breakdown explains where the end-to-end latency reduction originates without duplicating the tabulated performance results.
+Reported speedup is computed from complete-application latency rather than isolated accelerator latency. Across the four applications with completed FPGA validation, SoCPilot achieves speedups of 1.44$\times$--4.15$\times$, with a geometric mean of 2.66$\times$. The geometric mean excludes \texttt{recognition}, whose latency and board-validation results remain pending. The observed gains therefore describe the four validated applications rather than the entire five-application suite.
 
-% Recommended figure (data still required):
-% Fig. X. End-to-end latency breakdown for the paired CPU-only and primary SoCPilot designs.
-% Components for SoCPilot: remaining CPU execution / accelerator execution /
-% accelerator invocation + cache flush + synchronization.
+% TODO: Add recognition latency, correctness, and board-validation results.
+% TODO: Confirm the selected CPU for each application before final submission.
+% Optional supporting data: break down complete latency into CPU execution,
+% accelerator execution, and invocation/communication/synchronization overhead.
 
-Because the abstract reports the wall-clock completion time of the automated flow, the final evaluation should also document automation cost. The manually written embedded runtime is excluded from this timing and should be stated explicitly.
-%这部分篇幅是否过长
-\subsection{Specialized Workflow vs.\ General-Purpose Agent (RQ2)}
-\label{subsec:general_agent}
-
-To answer RQ2, we compare SoCPilot's structured workflow with a general-purpose LLM agent following the HSCO-Bench~\cite{hscobench2026} evaluation protocol. The comparison focuses on the agent's ability to progress through the automated accelerator-design and SoC-integration workflow, including acceleration-target identification, accelerator implementation, functional verification, HLS synthesis, and ESP integration.
-
-\textbf{General-agent execution protocol.}
-We instantiate the general-purpose-agent baseline using DeepSeek-v4-pro as the underlying LLM. DeepSeek-v4-pro is not among the five frontier models evaluated in the original HSCO-Bench study; therefore, our experiment represents an independent execution of the HSCO-Bench protocol rather than a reproduction of one of its reported model configurations. For each application, the agent is provided with the migrated benchmark workspace, including the application source code, the HSCO-Bench template structure, and access to the local hardware/software co-design toolchain. The target platform is configured as Xilinx ZCU102 (\texttt{xilinx-zcu102-xczu9eg}) within the ESP infrastructure, and all applications use a consistent tool environment comprising Catapult HLS, SystemC, MatchLib, ESP, and Vivado.
-
-The general-purpose agent receives no SoCPilot-derived profiling results, hardware/software partitioning decisions, or pre-generated accelerator implementations. It must independently identify an acceleration target, construct the corresponding accelerator within the HSCO-Bench template structure, integrate the required software-driver and ESP configuration entries, and produce a workspace accepted by the benchmark flow. Each run terminates when the agent completes the evaluated workflow, exhausts the configured agent budget, or encounters a failure at a required tool-flow stage.
-
-FPGA synthesis and board-level execution are disabled using \texttt{--skip-fpga}. Accordingly, the evaluated baseline flow includes workspace validation, device-ID checking, behavioral SystemC simulation (\texttt{bev-sim}), and Catapult HLS, but excludes Vivado bitstream generation and FPGA board execution. Table~\ref{tab:hscobench_results} reports the furthest stage reached by the general-purpose agent and the corresponding failure mode for each application.
-
-\begin{table*}[t]
-\centering
-\caption{Execution results of DeepSeek-v4-pro as a general-purpose agent following the HSCO-Bench protocol on our application set.}
-\label{tab:hscobench_results}
-\renewcommand{\arraystretch}{1.18}
-\setlength{\tabcolsep}{4.5pt}
-\resizebox{\textwidth}{!}{
-\begin{tabular}{l l r l l p{6.0cm}}
-\toprule
-\textbf{Application} &
-\textbf{Generated Accelerator Scope} &
-\textbf{\begin{tabular}[c]{@{}c@{}}Agent Time\\(s)\end{tabular}} &
-\textbf{Furthest Passed Stage} &
-\textbf{Failure Stage} &
-\textbf{Failure Cause} \\
-\midrule
-
-\texttt{nightvision} &
-Laplacian fusion (\texttt{lapfusion}) &
-3974 &
-Device-ID check &
-BEV-Sim compilation &
-Invalid C++ type operation: \texttt{to\_uint()} is applied to variables of type \texttt{uint32\_t}. \\
-
-\texttt{scan} &
-Scan post-processing (\texttt{scanpp}) &
-2563 &
-BEV-Sim compilation/execution &
-BEV-Sim verification &
-Functional mismatch with the software golden output; 17 output pixels differ from the reference results. \\
-
-\texttt{plate\_recognition} &
-Plate-localization pipeline (\texttt{plateaccel}) &
-2325 &
-Device-ID check &
-BEV-Sim compilation &
-Invalid C++ type operation: \texttt{to\_int()} is applied to configuration fields of type \texttt{int32\_t}. \\
-
-\texttt{recognition} &
-HSV mask and dilation pipeline (\texttt{recog}) &
-1910 &
-BEV-Sim &
-Catapult HLS &
-Variable-division operators cannot be scheduled under the available Catapult resource and multicycle constraints. \\
-
-\texttt{wami} &
-WAMI frame pipeline (\texttt{wami}) &
-4024 &
-BEV-Sim &
-Catapult HLS &
-Catapult reports no definition for \texttt{floorf()} during HLS compilation. \\
-
-\bottomrule
-\end{tabular}}
-\end{table*}
-
-As shown in Table~\ref{tab:hscobench_results}, the general-purpose agent fails at different stages across all five applications. The observed failures span source-level type correctness, functional equivalence, and HLS compatibility. For \texttt{nightvision} and \texttt{plate\_recognition}, the generated implementations fail during BEV-Sim compilation because of invalid C++ type operations. The \texttt{scan} implementation proceeds further but fails functional verification because its output differs from the software reference. The \texttt{recognition} and \texttt{wami} implementations both pass behavioral simulation but fail during Catapult HLS because of synthesis-related language or scheduling constraints. These results indicate that successfully generating an accelerator candidate does not by itself guarantee progression through the subsequent verification and synthesis stages.
-
-In contrast, the SoCPilot designs reported in RQ1 complete accelerator generation, functional verification, HLS synthesis, and ESP integration before proceeding to FPGA-board validation.
-
-
-\textbf{Comparison with published HSCO-Bench results.}
-The original HSCO-Bench study provides additional context for two workloads that overlap with our evaluation. Among the five frontier models evaluated in that study, \texttt{NightVision} was successfully accelerated only by Claude Opus 4.6, achieving a reported 1.08$\times$ speedup, whereas \texttt{WAMI} was a consistent-failure case for which none of the evaluated models produced a valid accelerated design~\cite{hscobench2026}. In our evaluation, SoCPilot successfully generates and validates CPU--accelerator implementations for both workloads, achieving 3.50$\times$ end-to-end speedup for \texttt{NightVision} and 2.41$\times$ for \texttt{WAMI}, as reported in Table~\ref{tab:e2e_performance}. Thus, for \texttt{NightVision}, SoCPilot obtains a numerically higher application-level speedup than the 1.08$\times$ result reported by HSCO-Bench, while for \texttt{WAMI}, SoCPilot produces a valid accelerated implementation where all models in the original study failed. Because the two studies use different hardware platforms and experimental configurations, the speedup values are presented as contextual results rather than as a controlled cross-platform performance comparison.
-
-
-
-
-
-
-\subsection{Area-Aware Design Selection (RQ3)}
+\subsection{Area-Constrained Pareto Design Exploration}
 \label{subsec:area_aware}
 
-Finally, we evaluate whether SoCPilot changes its architectural choices as the application-specific area budget changes. Area and latency play different roles from FPGA validation: the analytical area model is used to evaluate and constrain candidate designs, while the FPGA board is used to validate the selected hardware configurations and measure end-to-end latency.
+This experiment examines how SoCPilot trades complete-application latency against SoC area and selects designs under different area budgets. For each application, the comparison will use a common candidate space, technology assumptions, area model, and exploration budget. Each candidate comprises a processor, cache configuration, and accelerator set. A design is nondominated if no other evaluated design has both no greater area and no greater latency, with at least one strict improvement. The resulting frontier is a Pareto frontier over the evaluated candidates, rather than a claim of global optimality over all possible SoCs.
 
-Rather than repeating the primary performance results reported in Table~\ref{tab:e2e_performance}, RQ3 examines the design-space behavior across multiple area budgets. The principal visualization plots end-to-end latency against estimated area, where each point represents a complete candidate CPU--accelerator configuration. Feasible designs selected under different area budgets are highlighted and annotated with their processor and accelerator choices. The primary design point reported for each application in Table~\ref{tab:e2e_performance} is also identified in this design space. This visualization shows whether relaxing or tightening the area budget changes the selected architecture and how those changes affect application latency.
+For each area budget, we will report the lowest-latency feasible design found, its estimated area, CPU and cache configuration, accelerator set, and speedup over its matched CPU-only baseline. A latency--area plot will distinguish explored candidates, nondominated candidates, and designs selected under each budget. Estimated latency used during exploration and measured FPGA latency will be identified separately. FPGA resource utilization will not be substituted for ASIC area.
 
-% Recommended figure (DSE samples required):
-% Fig. Z. Latency--area design space and selected SoCPilot configurations.
-% x-axis: estimated area; y-axis: end-to-end latency.
-% One panel per application, or a clearly distinguishable marker set if combined.
-% Show all evaluated points, feasible/Pareto points, and selected points under each area budget.
-% Annotate selected points with compact architecture labels, e.g., CPU + accelerator set.
-% Highlight the primary RQ1 design point so that RQ1 and RQ3 are directly connected without duplicating a result table.
+The current results in Table~\ref{tab:e2e_performance} provide a primary design point per application but do not yet establish a Pareto frontier. Multi-budget candidate records and validation results remain to be added before drawing conclusions about area-constrained optimization.
 
+% TODO: Add per-application latency--area plots with the evaluated Pareto frontier.
+% Required records: area budget, candidate ID, CPU/cache/accelerators, estimated
+% area, estimated latency, measured latency where available, correctness, and
+% exploration budget. Highlight the primary end-to-end design points.
+
+\subsection{Hardware/Software Partitioning Comparison}
+\label{subsec:partitioning_evaluation}
+
+This experiment compares direct LLM-based hardware/software partitioning with SoCPilot's profiling- and cost-guided partitioning. The direct baseline will ask the same LLM to select kernels for hardware acceleration from the application source, requirements, available accelerator-generation interfaces, and area budget. SoCPilot will additionally use its profiling and hardware/software cost evaluation. The application inputs, candidate kernel set, LLM configuration, and downstream accelerator-generation and integration flow will be held consistent. Prompt and tool-call budgets will be recorded for both methods.
+
+The comparison will report the kernels selected by each method, their CPU execution-time coverage, accelerator feasibility, estimated area, communication and invocation overhead, and resulting complete-application latency. Per-application analysis will examine whether differing selections arise from hotspot coverage, hardware suitability, data movement, or the area constraint. Selection overlap alone is not a quality metric: different kernel sets must be assessed through correctness, feasibility, and system-level performance. Failed synthesis or integration attempts will be retained as outcomes rather than omitted from the comparison.
+
+Table~\ref{tab:e2e_applications} records SoCPilot's current kernel selections. Direct-LLM selections and paired downstream measurements are not yet available, so the present results do not establish a performance advantage for the proposed partitioning method in isolation.
+
+% TODO: Add a paired table: application, method, selected kernels, CPU-time
+% coverage, synthesis/correctness outcome, area, total latency, and speedup.
+% Add kernel-level explanations for agreements and disagreements, supported by
+% measured profiling, hardware-cost, and data-movement evidence.
+
+\subsection{IP Selection Comparison}
+\label{subsec:ip_selection_evaluation}
+
+This experiment compares LLM-based IP selection with expert selection under identical application requirements, IP-library contents, interface constraints, and area budgets. Experts will select IPs independently of the LLM recommendations. Both approaches will produce a processor and peripheral configuration together with a rationale linking each choice to the requirements. Subsequent partitioning, exploration, and validation settings will be held consistent to make the effect of the initial IP selection interpretable.
+
+The comparison will assess requirement coverage, interface compatibility, integration feasibility, estimated area, and resulting application latency. It will also report selection agreement and the engineering effort required to reach a valid configuration. Disagreements will be analyzed at the level of the corresponding requirement and IP capability; expert agreement is a reference point rather than proof of optimality. If multiple configurations satisfy the requirements, their cost and performance will determine whether the alternatives are practically equivalent or involve a meaningful tradeoff.
+
+Expert selections and paired validation results remain to be collected. Consequently, no conclusion about expert-level IP selection is drawn from the current end-to-end results.
+
+% TODO: Record expert background, selection protocol, number of independent
+% selections, common library snapshot, and selection time/tool-call budgets.
+% Add a table: application, requirement, LLM-selected IP, expert-selected IP,
+% compatibility/coverage, area, latency, and explanation of differences.
