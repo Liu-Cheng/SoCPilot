@@ -1,8 +1,22 @@
 \section{SoCPilot Framework}
-As illustrated in Figure~\ref{fig: overview}, SoCPilot translates natural-language design requirements and a C/C++ application into a customized SoC design. The framework contains four stages. First, it decomposes the requirements into a structured specification and selects reusable system IPs. Second, it profiles the application, evaluates candidate hardware implementations, and determines the hardware/software partition. Third, it generates and integrates the selected accelerators and refines the resulting SoC through system-level design space exploration (DSE) using latency and estimated area. Finally, it invokes the ESP implementation flow for FPGA synthesis, bitstream generation, and board-level validation. The LLM acts as the orchestration layer across these hardware and system-design stages, while profiling, HLS, simulation, and synthesis tools provide quantitative evidence for its decisions. The benchmark-specific embedded runtime code is manually implemented and treated as fixed infrastructure rather than an LLM-generated artifact.
+Application-driven SoC customization requires coordinated decisions across application analysis, hardware/software partitioning, accelerator implementation, and system integration. These decisions are coupled: accelerating a compute-intensive function may provide little application-level benefit once communication overhead and hardware cost are considered. To coordinate these decisions with quantitative tool feedback, we develop SoCPilot, an agentic framework that transforms application requirements and C/C++ code into a customized CPU--accelerator SoC and supports its optimization and FPGA validation.
+
+\subsection{SoCPilot Overview}
+\label{sec:socpilot-overview}
+Figure~\ref{fig: overview} presents the overall architecture of SoCPilot. The framework combines LLM-based orchestration, reusable case and IP libraries, and a toolchain for profiling, hardware generation, simulation, and synthesis. The LLM interprets requirements and coordinates the design stages, while the libraries supply reusable system components and the tools provide implementation artifacts, correctness checks, and quantitative cost estimates.
+
+The design flow consists of four stages. First, requirement interpretation and IP selection convert user requirements into a structured specification and an initial manifest of reusable system IPs. Second, application profiling and hardware/software partitioning identify candidate functions, evaluate their hardware implementations, and select an accelerator set using latency, communication, and area estimates. Third, SoC generation and design space exploration (DSE) package and integrate the selected accelerators and refine processor, memory-system, and accelerator configurations under latency and area objectives. Finally, FPGA prototyping and board validation invoke the ESP implementation flow to generate a bitstream and validate the resulting system. Structured specifications, task graphs, and SoC configurations connect these stages, with tool feedback guiding design refinement. The following subsections describe the four components in detail.
 
 \subsection{Requirement Interpretation and IP Selection}
 The first stage determines the reusable system components required by the target application. Directly mapping natural-language descriptions to concrete IP instances is unreliable because user terminology, IP metadata, and hardware interfaces are expressed at different abstraction levels. SoCPilot therefore separates requirement interpretation from IP retrieval. As shown in Figure \ref{fig:soc-spec}, the LLM first converts the user description into a structured SoC specification and then uses this specification to query a hierarchical library of verified IPs.
+
+\begin{figure*}[htp]
+    \centering
+    \includegraphics[width=0.95\textwidth,trim=0bp 84bp 0bp 78bp,clip]{pic/soc-spec.pdf} 
+    \caption{Structured SoC specification generation. The LLM translates natural-language requirements into system functions, quantitative constraints, and integration attributes, while resolving missing or ambiguous fields through interactive clarification. The example illustrates the resulting machine-readable specification used for subsequent case and IP retrieval.}
+\label{fig:soc-spec}
+    \vspace{-1em}
+\end{figure*}
 
 
 
@@ -49,13 +63,7 @@ The structured specification records three types of information: (1) the require
 Table~\ref{tab:req_taxonomy} summarizes the taxonomy used to organize both requirements and IP metadata. Each library entry contains a functional description, supported configurations, interface protocols, resource and performance characterization, verification status, and known dependencies. SoCPilot first retrieves semantically similar verified designs from a case library. If no case provides a compatible configuration, the LLM decomposes the structured specification into IP queries, retrieves candidates from the hierarchical IP library, and filters them using hard constraints such as protocol compatibility, capacity, and resource limits. The remaining candidates are ranked by their match to the requested performance targets.
 
 The output of this stage is a machine-readable SoC manifest that records the selected processor, memory hierarchy, interconnect, I/O components, and their initial configurations. Application-specific compute kernels are not assumed to exist in the reusable IP library; instead, their accelerator implementations are determined by the profiling and hardware/software partitioning stage described next. This separation prevents the requirement interpreter from prematurely deciding which application functions should be implemented in hardware.
-\begin{figure*}[htp]
-    \centering
-    \includegraphics[width=0.95\textwidth]{pic/soc-spec.pdf} 
-    \caption{Structured SoC specification generation. The LLM translates natural-language requirements into system functions, quantitative constraints, and integration attributes, while resolving missing or ambiguous fields through interactive clarification. The example illustrates the resulting machine-readable specification used for subsequent case and IP retrieval.}
-\label{fig:soc-spec}
-    \vspace{-1em}
-\end{figure*}
+
 \subsection{Application Profiling and Hardware/Software Partitioning}
 The second stage determines which application functions should remain on the CPU and which should be implemented as custom accelerators. Hotspot detection alone cannot make this decision: a frequently executed function may provide little net benefit after accelerator latency, hardware cost, invocation overhead, and data movement are considered. SoCPilot therefore treats profiling as candidate extraction and defers the mapping decision to an explicit hardware/software partitioning model.
 
