@@ -1,0 +1,71 @@
+{
+  "board_source": "D:/download/3.experiment/0.result/wami_ibex.DAT",
+  "board_source_sha256": "01194d34d625554e102999856428418d894825adb52fa3cbcc744b41698263df",
+  "cpu": "ibex",
+  "frequency_khz": 75000,
+  "image": 1,
+  "frames": 3,
+  "rows": 32,
+  "cols": 32,
+  "geometry_source": "WAMI baremetal configuration; dimensions are not printed in the board log.",
+  "iterations": 20,
+  "arena_bytes": 228864,
+  "calls_cpu_and_hw": {"warp_image": 183, "steepest_descent": 60, "hessian": 60},
+  "board": {
+    "cpu": {
+      "total": {"ms": 30225.590, "cycles": 2266919254},
+      "warp_image": {"ms": 11747.725, "cycles": 881079404},
+      "steepest_descent": {"ms": 3018.276, "cycles": 226370724},
+      "hessian": {"ms": 11727.214, "cycles": 879541082}
+    },
+    "hw": {
+      "total": {"ms": 17112.106, "cycles": 1283408002},
+      "warp_image": {"ms": 3670.326, "cycles": 275274467},
+      "steepest_descent": {"ms": 3700.943, "cycles": 277570780},
+      "hessian": {"ms": 6017.927, "cycles": 451344598}
+    },
+    "speedups": {
+      "total": 1.7663278850656956,
+      "warp_image": 3.200730670790551,
+      "steepest_descent": 0.8155424171623286,
+      "hessian": 1.9487132363021353
+    },
+    "steepest_descent_latency_increase_pct": 22.617779156048034,
+    "steepest_descent_extra_ms": 682.667,
+    "verification": "unchecked",
+    "mismatches": -1,
+    "original_float_exact": -1,
+    "foreground_raw_cpu_and_hw": "0x0",
+    "model_raw_cpu": "0x465ddfc0",
+    "model_raw_hw": "0x465de02f",
+    "signature_note": "Model signatures differ; zero foreground in both modes does not establish reference-output equivalence."
+  },
+  "selected_dse": {
+    "best_dse": "soc_script/5.benchmark/wami/report/best_dse_vivado.json",
+    "best_dse_sha256": "4dec1efc5fdc6c9311bd9fb87eeddf62a540144ff5a32e106cd6c19cce36f998",
+    "run": "b632a988181540b0a598f3bf3f6a888a",
+    "area_limit_mm2": 3,
+    "estimated_area_mm2": 2.951608462,
+    "cpu_total_ms": 30876.5678,
+    "hw_total_ms": 8427.125307221256,
+    "total_speedup": 3.6639502409607787,
+    "cpu_report": "report/calibrated_cpu_ppa/main/wami/points/10024e539d03000b0b6f/summary.json",
+    "cpu_report_sha256": "74aa013947bcc3db37528e7d79d0df45d1867f1b0409434ce0624a170a956749",
+    "l2_sets": 128,
+    "l2_ways": 2,
+    "llc_sets": 128,
+    "llc_ways": 8,
+    "cache_line_bits": 512,
+    "dma_width_bits": 32,
+    "comparison_note": "Board log does not identify RTL/cache configuration by build hash. Post-DSE accelerator rewrites have not been re-evaluated against this point; not a controlled prediction-error or deployed-area validation."
+  },
+  "timing_analysis": {
+    "source": "esp/accelerators/third-party/hessian/sw/baremetal/wami_common/wami_baremetal_common.h",
+    "hw_stage_scope": "Input conversion/packing, register setup, cache maintenance, polling, accelerator execution/transfers, guard checking, and output conversion.",
+    "cpu_stage_scope": "Corresponding CPU function call.",
+    "steepest_descent_payload_bytes_per_call": 32768,
+    "payload_assumptions": "32x32 pixels, two input and six output components, one 32-bit value per word; excludes cache and control traffic.",
+    "cause_status": "Conversion/communication/synchronization costs and phase-separated access are plausible contributors, not measured dominant causes."
+  },
+  "paper_geometric_mean_speedup": 2.474796640470742
+}

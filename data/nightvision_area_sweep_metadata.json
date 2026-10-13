@@ -1,0 +1,103 @@
+{
+  "source": "soc_script/5.benchmark/nightvision/report/area_tradeoff_avg_run1/summary.csv",
+  "source_sha256": "5b08817f169e54896d76a5ff9c8e3944bcf87b7dffaf983bcea6cafdf256790e",
+  "plotted_caps_mm2": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "available_caps_mm2": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "evaluations_per_cap": 120,
+  "mapping": "conv2d only; fixed across runs",
+  "implementation": "pre-correction int16 convolution; not the later Q16.16 board variant",
+  "quantity": "model-estimated complete-application latency; not FPGA measured",
+  "selection": "fastest valid sample in each independent run; no smoothing or cross-run best envelope",
+  "cache_analysis": {
+    "file": "data/nightvision_cache_analysis.csv",
+    "capacity_formula": "sets * ways * line_bytes / 1024",
+    "l1_policy": "CPU profile capacities and associativities retained; common line size changes at all cache levels",
+    "time_model": "residual = CPU-only simulated time * (1 - recorded hotspot fraction); accelerator workload = selected total time - residual",
+    "hotspot_profile_source": "source_code/hotspot_profile.json",
+    "hotspot_profile_sha256": "8890c414dfa1b1e710990ea7e6a04eeaaf7f03a17241ec0720c38fc6cae5fdef",
+    "hotspot_fraction": 0.8140987364929824,
+    "call_count": 24,
+    "note": "The time split uses the DSE profiling-weight model, not a separate simulation of the residual software or measured cache miss rates.",
+    "selected_cpu_reports": [
+      {
+        "area_limit_mm2": 3,
+        "cpu_report": "report/calibrated_cpu_ppa/main/nightvision/points/a56b1c70824702150e04/summary.json",
+        "cpu_report_sha256": "1d5ad11129e87359d76c796e8b0adb3c8ddbe618ab1b40874cb8a9863dc1f7f8",
+        "profile_sha256": "f94ddc6a36693888f716d00972bb91ef7a8e0325c5972b9f48ae17eae4c14957"
+      },
+      {
+        "area_limit_mm2": 4,
+        "cpu_report": "report/calibrated_cpu_ppa/main/nightvision/points/de8371c7e5fdda8d9ec6/summary.json",
+        "cpu_report_sha256": "60f454a215b717bd3d304e3b5d6d7de00a57d8e54dddb30265b86b7b34b052d4",
+        "profile_sha256": "08346d3355a56e411e98a752bf8dcd12b4eceda09fb7511b306f9f64997cf3c3"
+      },
+      {
+        "area_limit_mm2": 5,
+        "cpu_report": "report/calibrated_cpu_ppa/main/nightvision/points/3508e1f8fa54653f05fa/summary.json",
+        "cpu_report_sha256": "64ebfeb191d5ca1b74095201215a44e2294f8261d539e672f4c5ff285a4dc85a",
+        "profile_sha256": "08346d3355a56e411e98a752bf8dcd12b4eceda09fb7511b306f9f64997cf3c3"
+      },
+      {
+        "area_limit_mm2": 6,
+        "cpu_report": "report/calibrated_cpu_ppa/main/nightvision/points/0790873afd8b69d185cd/summary.json",
+        "cpu_report_sha256": "53c78c42ccac41e887a63ab38bd2f07736ab20d0ee4a5a0dc1eefaec115e535a",
+        "profile_sha256": "31fd951772b19169c6924f58905bed909e3ed204def5eaf1b06e9bc1b036d18d"
+      },
+      {
+        "area_limit_mm2": 7,
+        "cpu_report": "report/calibrated_cpu_ppa/main/nightvision/points/e463464e8a9daf867666/summary.json",
+        "cpu_report_sha256": "cc73bf7a13da5eb172968857946b88fa6c53a2a7840ff379e262065f6efa149b",
+        "profile_sha256": "31fd951772b19169c6924f58905bed909e3ed204def5eaf1b06e9bc1b036d18d"
+      },
+      {
+        "area_limit_mm2": 8,
+        "cpu_report": "report/calibrated_cpu_ppa/main/nightvision/points/0c7bba91a250dc93a725/summary.json",
+        "cpu_report_sha256": "1df20ed67dbd64d9dee99b71ea55cc57225d7c2fa3f77e128b0c429a5f9cb183",
+        "profile_sha256": "31fd951772b19169c6924f58905bed909e3ed204def5eaf1b06e9bc1b036d18d"
+      },
+      {
+        "area_limit_mm2": 9,
+        "cpu_report": "report/calibrated_cpu_ppa/main/nightvision/points/b60a830a03f28bd66a6d/summary.json",
+        "cpu_report_sha256": "92c52cbf9f1e49a1916def96c5b1ed2cf7d2453209fc447fe9b9e88124a87edf",
+        "profile_sha256": "31fd951772b19169c6924f58905bed909e3ed204def5eaf1b06e9bc1b036d18d"
+      },
+      {
+        "area_limit_mm2": 10,
+        "cpu_report": "report/calibrated_cpu_ppa/main/nightvision/points/b99128b935e72204aa79/summary.json",
+        "cpu_report_sha256": "571d39b3ab67e6136e62d830a9c502f98a979dc680a52d74faf079b4e1464a64",
+        "profile_sha256": "31fd951772b19169c6924f58905bed909e3ed204def5eaf1b06e9bc1b036d18d"
+      },
+      {
+        "area_limit_mm2": 11,
+        "cpu_report": "report/calibrated_cpu_ppa/main/nightvision/points/d8f4ea81b5fbad896fb3/summary.json",
+        "cpu_report_sha256": "4a5aa28edbadd6538873dbf67b0884779773602607d23f0e97f72a3a6145c1a1",
+        "profile_sha256": "31fd951772b19169c6924f58905bed909e3ed204def5eaf1b06e9bc1b036d18d"
+      }
+    ]
+  }
+}

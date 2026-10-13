@@ -1,13 +1,14 @@
 \section{Experiments}
 \label{sec:evaluation}
 
-We evaluate SoCPilot at both the system and component levels. The experiments cover comparison with general-purpose agents, end-to-end acceleration over matched CPU-only implementations, Pareto design exploration under area constraints, hardware/software partitioning, and IP selection. The available results support the first two comparisons; the remaining subsections define the evaluation protocols and identify the measurements still required.
+We evaluate SoCPilot as an application-driven CPU--accelerator SoC design system rather than as a collection of isolated code-generation tasks. The evaluation follows the design flow: we first examine requirement-to-IP matching, then measure five area-constrained CPU--accelerator designs against paired CPU-only executions. Within this system evaluation, we separately compare hotspot-selection strategies and examine the latency--area trade-off for \texttt{nightvision}. Finally, we migrate the applications to HSCO-Bench to test how far a general-purpose LLM agent progresses through the same class of hardware/SoC tasks. These experiments distinguish reusable-IP recommendations, estimated design choices, and FPGA-validated application performance.
 
-\subsection{Experimental Setup}
+\subsection{Experiment Setups}
 \subsubsection{Platforms and toolchain}
 
 SoCPilot uses DeepSeek~\cite{DeepSeek} as the default LLM, Vivado HLS for accelerator synthesis, Sniper~\cite{sniper} for CPU performance estimation, HyperMapper~\cite{9124618} for design space exploration, and ESP~\cite{mantovani2020agile} for SoC integration and FPGA prototyping. Table~\ref{tab:experimental_setup} summarizes the common experimental environment and reproducibility settings used throughout the evaluation.
 
+%这个地方嵌入式代码手动实现需要强调吗以及这个地方工具链展现
 \begin{table}[t]
 \centering
 \caption{Experimental platforms and common evaluation settings.}
@@ -45,7 +46,8 @@ evaluation. \\
 \rowcolor{gray!10}
 \multicolumn{2}{l}{Accelerator generation and estimation} \\
 HLS &
-Vitis/Vivado HLS 2021.2 with a 10-ns target clock. \\
+Vitis/Vivado HLS 2021.2; all five primary DSE runs use a 13.333-ns
+target clock (75~MHz). \\
 
 CPU estimation &
 Sniper-based CPU performance estimation. \\
@@ -71,21 +73,22 @@ ESP runtime clock of 75~MHz. \\
 \bottomrule
 \end{tabularx}
 \end{table}
+%这部分是否过于啰嗦和后面重复了
 \subsubsection{Baselines and measurement protocol}
 
 \textbf{Paired CPU-only baseline.}
-Each generated SoC is compared against an application-specific paired CPU-only baseline. After SoCPilot selects the CPU type and memory-system parameters, the matched CPU-only configuration retains the same CPU, cache configuration, clock target, compiler, input data, and application algorithm, but executes the selected hot functions on the CPU rather than invoking accelerators. This paired comparison isolates the end-to-end latency benefit of accelerator integration from differences in CPU choice, cache configuration, compiler settings, or application inputs.
+Each generated SoC is compared against an application-specific paired CPU-only baseline. After SoCPilot selects the CPU type and memory-system parameters, the matched CPU-only configuration retains the same CPU, cache configuration, clock target, compiler, input data, and application algorithm, but executes the selected hot functions on the CPU rather than invoking accelerators. The benchmark-specific embedded code for the accelerated system is manually prepared and is not part of the LLM-generated output. This paired comparison isolates the end-to-end latency benefit of accelerator integration from differences in CPU choice, cache configuration, compiler settings, or application inputs.
 
 Reported total latency covers the complete baremetal application execution, including CPU computation, accelerator invocation, cache flushing and synchronization, and all functions that remain on the CPU. Per-accelerator latency is measured only over the accelerated kernel region, from accelerator configuration and launch to completion detection. A result is considered functionally correct only when the hardware output matches the corresponding CPU or golden reference.
 
 \textbf{Area-constrained design evaluation.}
-We vary the application-specific area constraint and examine how SoCPilot adapts the generated architecture. For each constraint, we record the selected CPU, accelerator set, relevant system parameters, estimated area, and resulting end-to-end latency. The FPGA board is used to validate the selected configurations, whereas area is obtained from the common analytical area model rather than from FPGA resource utilization.
+We evaluate one primary design per application under its specified area constraint. For the \texttt{nightvision} trade-off, we additionally run independent searches over 3--16-mm$^2$ area budgets and record the selected CPU, accelerator configuration, estimated area, and estimated latency. FPGA execution validates the primary configurations; the trade-off points use the analytical area and performance models rather than FPGA resource utilization or board time.
 
-A generated SoCPilot design is counted as an \emph{end-to-end validated design} when it produces a valid SoC configuration, synthesizable accelerators, a successfully generated FPGA bitstream, correct accelerator invocation through the embedded runtime, and application outputs that pass the predefined correctness checks against the CPU reference.
+A generated SoCPilot design is counted as an \emph{end-to-end validated design} when it produces a valid SoC configuration, synthesizable accelerators, a successfully generated FPGA bitstream, correct accelerator invocation through the manually prepared embedded runtime, and application outputs that pass the predefined correctness checks against the CPU reference.
 
 \subsubsection{Application Benchmark}
 \label{subsec:application_suite}
-Table~\ref{tab:e2e_applications} summarizes five end-to-end edge benchmarks used in our evaluation: license-plate processing (\texttt{plate\_recognition}), color-based image recognition (\texttt{recognition}), aerial video analytics (\texttt{wami}\cite{wami}), document image processing (\texttt{scan}), and low-light vision enhancement (\texttt{nightvision}\cite{wami}). Each benchmark is implemented as a complete C/C++ application rather than an isolated kernel, preserving application-level control flow and multiple dependent processing stages.
+Table~\ref{tab:e2e_applications} summarizes five end-to-end edge benchmarks used in our evaluation: license-plate processing (\texttt{plate\_new}, named \texttt{plate\_recognition} in the HSCO-Bench comparison), color-based image recognition (\texttt{recognition}), aerial video analytics (\texttt{wami}\cite{wami}), document image processing (\texttt{scan}), and low-light vision enhancement (\texttt{nightvision}\cite{wami}). Each benchmark is implemented as a complete C/C++ application rather than an isolated kernel, preserving application-level control flow and multiple dependent processing stages.
 
 \begin{table*}[t]
 \centering
@@ -101,7 +104,7 @@ Table~\ref{tab:e2e_applications} summarizes five end-to-end edge benchmarks used
 \textbf{Application-level quality metric} &
 \textbf{Selected hotspot(s)} \\
 \midrule
-License-plate recognition (\texttt{plate\_recognition}) &
+License-plate localization (\texttt{plate\_new}) &
 Roadside or parking camera &
 Image loading, grayscale conversion, morphological enhancement, edge/region extraction, candidate filtering, and plate localization &
 Detection success / bounding-box consistency &
@@ -134,10 +137,220 @@ Enhanced-image quality / contrast preservation &
 \end{tabular}}
 \end{table*}
 
-\subsection{Comparison with General-Purpose Agents}
+\subsection{Requirement-to-IP Selection}
+\label{subsec:requirement_ip_matching}
+We evaluate reusable-IP matching on five application-specific SoC descriptions using the current library with case reuse disabled. Table~\ref{tab:ip_matching_results} reports the number of selected recommendations and unmatched functional requirements in each generated manifest. A successful script run alone is not counted as a feasible match.
+
+\begin{table}[!b]
+\centering
+\caption{Requirement-to-IP matching coverage (case reuse disabled).}
+\label{tab:ip_matching_results}
+\renewcommand{\arraystretch}{1.10}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+\textbf{Application} & \textbf{Selected IPs} & \textbf{Unmatched} & \textbf{Status} \\
+\midrule
+\texttt{plate\_new}   & 8 & 0 & Candidate \\
+\texttt{nightvision} & 6 & 3 & Blocked \\
+\texttt{wami}        & 8 & 2 & Blocked \\
+\texttt{scan}        & 3 & 3 & Blocked \\
+\texttt{recognition} & 3 & 3 & Blocked \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The selected IPs reflect the scenarios: \texttt{plate\_new} receives camera ingress and network I/O; \texttt{nightvision} receives display output; \texttt{wami} receives DDR-backed frame storage; \texttt{scan} receives local memory and control; and \texttt{recognition} receives UART output. Only \texttt{plate\_new} has no unmatched requirement. The other manifests flag specific gaps, including dual-camera reception (\texttt{nightvision}), ordered streaming DMA (\texttt{wami}), USB device I/O and page buffering (\texttt{scan}), and SPI-slave input and scratchpad access (\texttt{recognition}). These are matching outcomes, not proof that every such IP is absent from the library; some generic entries exist but do not document the requested role, capacity, or multiplicity, or were not selected by the semantic matcher. None of the four blocked manifests exceeds its reported reusable-IP area or power budget.
+
+This is a recommendation-stage diagnostic, not an end-to-end IP deployment result. All selected entries are marked \texttt{recommendation\_only}; no deployment adapter is registered, and this stage does not invoke ESP or DSE. The reported IP area and power exclude the CPU, caches, and accelerators. The end-to-end designs below are evaluated separately and do not imply deployment of these recommendations.
+
+\subsection{Area-Constrained SoC Evaluation}
+\label{subsec:e2e_evaluation}
+\subsubsection{Five-Application End-to-End Results}
+We evaluate whether the selected CPU--accelerator configurations reduce complete-application latency relative to their paired CPU-only implementations. FPGA board execution provides the latency measurements and available output checks. The benchmark-specific embedded runtime is manually prepared; its generation is outside the scope of this evaluation.
+
+Table~\ref{tab:selected_soc_configs} reports the primary design point for each application under its specified area budget. Figure~\ref{fig:e2e_speedup_comparison} summarizes the estimated and measured complete-application speedups relative to the paired CPU-only baselines. The \texttt{nightvision} budget sweep is examined separately below.
+
+% Board timings: D:/download/3.experiment/0.result/{plate_new_ibex,recognition_ariane,scan_ibex}.DAT;
+% Nightvision: D:/download/3.experiment/0.result/nightvision_leon3.txt.
+% DSE sources: D:/work/soc_script/5.benchmark/<application>/report/best_dse_vivado.json;
+% Nightvision DSE: report/area_tradeoff_avg_run1/area_04_mm2/best_dse_vivado.json.
+% Nightvision source record: data/nightvision_leon3_area04_results.json.
+% WAMI: D:/download/3.experiment/0.result/wami_ibex.DAT (2026-10-10).
+% WAMI provenance: data/wami_ibex_results.json; DSE run b632a988181540b0a598f3bf3f6a888a.
+All five configurations in Table~\ref{tab:selected_soc_configs} are taken from their best feasible DSE records. The configurations for \texttt{plate\_new}, \texttt{recognition}, and \texttt{scan} agree with the records packaged with their FPGA builds. Area is converted from $\mu$m$^2$ to mm$^2$, estimated latency from ns to ms, and cache-line size from bytes to bits. Their HLS data widths are 32 bits for Ibex and Leon3 and 64 bits for Ariane. All five modeled points satisfy their respective area limits. Under the 4-mm$^2$ budget, the selected \texttt{nightvision} DSE point uses Leon3 and predicts 3.970~mm$^2$ and 138.208~ms. The WAMI DSE selects Ibex with an estimated area of 2.952~mm$^2$ and latency of 8427.125~ms under the 3-mm$^2$ budget. Tables~\ref{tab:dse_fpga_latency_comparison} and~\ref{tab:hotspot_acceleration} distinguish board latency measurements from these model estimates.
+
+
+   \begin{table*}[t]
+    \centering
+    \caption{Best feasible DSE configurations selected by SoCPilot. Estimated area and latency are model outputs; estimated and measured speedups are compared in Fig.~\ref{fig:e2e_speedup_comparison}.}
+    \label{tab:selected_soc_configs}
+    \renewcommand{\arraystretch}{1.12}
+    \setlength{\tabcolsep}{3pt}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{lrrrlccrp{4.2cm}}
+      \toprule
+      \textbf{Application} &
+      \shortstack{\textbf{Budget}\\\textbf{(mm$^2$)}} &
+      \shortstack{\textbf{Est. area}\\\textbf{(mm$^2$)}} &
+      \shortstack{\textbf{Est. latency}\\\textbf{(ms)}} &
+      \textbf{CPU} &
+      \shortstack{\textbf{L2}\\\textbf{(sets$\times$ways)}} &
+      \shortstack{\textbf{LLC}\\\textbf{(sets$\times$ways)}} &
+      \shortstack{\textbf{Line size}\\\textbf{(bits)}} &
+      \textbf{Accelerator(s)} \\
+      \midrule
+      \texttt{plate\_new}   & 5 & 3.894 & 18224.635 & Ibex & $512\times4$ & $512\times4$ & 512 &
+        \texttt{morphology\_tophat}, \texttt{morphology\_blackhat} \\
+      \texttt{recognition}  & 9 & 7.232 & 73.550 & Ariane & $128\times8$ & $32\times16$ & 256 &
+        \texttt{bgr\_to\_hsv}, \texttt{dilate\_mask} \\
+      \texttt{scan}         & 3 & 2.813 & 1392.981 & Ibex & $128\times8$ & $32\times8$ & 512 &
+        \texttt{scan\_adaptive\_threshold} \\
+      \texttt{wami}         & 3 & 2.952 & 8427.125 & Ibex & $128\times2$ & $128\times8$ & 512 &
+        \texttt{warp\_image}, \texttt{steepest\_descent},
+        \texttt{hessian} \\
+      \texttt{nightvision}  & 4 & 3.970 & 138.208 & Leon3 & $256\times4$ & $128\times8$ & 128 &
+        \texttt{conv2d} \\
+      \bottomrule
+    \end{tabular}}
+  \end{table*}
+% The DSE CPU-only values below use the selected CPU/cache point for each application.
+\begin{table*}[t]
+    \centering
+    \caption{Predicted and measured complete-application latency for paired CPU-only and CPU--accelerator executions.}
+    \label{tab:dse_fpga_latency_comparison}
+    \renewcommand{\arraystretch}{1.12}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{lrrrrrr}
+      \toprule
+      \textbf{Application} &
+      \shortstack{\textbf{DSE CPU-only}\\\textbf{(ms)}} &
+      \shortstack{\textbf{DSE with accelerator}\\\textbf{(ms)}} &
+      \shortstack{\textbf{DSE speedup}} &
+      \shortstack{\textbf{FPGA CPU-only}\\\textbf{(ms)}} &
+      \shortstack{\textbf{FPGA with accelerator}\\\textbf{(ms)}} &
+      \shortstack{\textbf{FPGA speedup}} \\
+      \midrule
+      \texttt{plate\_new} & 27188.303 & 18224.635 & 1.49$\times$ & 17097.581 & 12213.643 & 1.40$\times$ \\
+      \texttt{recognition} & 670.518 & 73.550 & 9.12$\times$ & 513.233 & 117.444 & 4.37$\times$ \\
+      \texttt{scan} & 6050.391 & 1392.981 & 4.34$\times$ & 5490.773 & 1294.406 & 4.24$\times$ \\
+      \texttt{wami} & 30876.568 & 8427.125 & 3.66$\times$ & 30225.590 & 17112.106 & 1.77$\times$ \\
+      \texttt{nightvision} & 662.787 & 138.208 & 4.80$\times$ & 548.438 & 270.793 & 2.03$\times$ \\
+      \bottomrule
+    \end{tabular}}
+  \end{table*}
+\begin{table*}[t]
+    \centering
+    \caption{Mapped hotspot latencies and speedups. CPU time share is relative to the CPU-only application latency; a speedup below one denotes a slowdown.}
+    \label{tab:hotspot_acceleration}
+    \renewcommand{\arraystretch}{1.12}
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{llrrrr}
+      \toprule
+      \textbf{Application} &
+      \textbf{Measured stage} &
+      \textbf{CPU time share (\%)} &
+      \textbf{CPU latency (ms)} &
+      \textbf{SoCPilot stage latency (ms)} &
+      \textbf{Hotspot speedup} \\
+      \midrule
+      \texttt{plate\_new} & \texttt{morphology\_tophat}
+        & 13.85 & 2368.069 & 249.693 & 9.48$\times$ \\
+                         & \texttt{morphology\_blackhat}
+        & 16.83 & 2877.592 & 95.787 & 30.04$\times$ \\
+
+      \texttt{recognition} & \texttt{bgr\_to\_hsv}
+        & 17.84 & 91.576 & 5.354 & 17.10$\times$ \\
+                          & \texttt{dilate\_mask}
+        & 61.68 & 316.560 & 7.354 & 43.05$\times$ \\
+
+      \texttt{scan} & \texttt{scan\_adaptive\_threshold}
+        & 76.35 & 4192.370 & 2.962 & 1415.38$\times$ \\
+
+      \texttt{wami} & \texttt{warp\_image}
+        & 38.87 & 11747.725 & 3670.326 & 3.20$\times$ \\
+                   & \texttt{steepest\_descent}
+        & 9.99 & 3018.276 & 3700.943 & 0.82$\times$ \\
+                   & \texttt{hessian}
+        & 38.80 & 11727.214 & 6017.927 & 1.95$\times$ \\
+
+      \texttt{nightvision} & \texttt{conv2d}
+        & 65.34 & 358.357 & 80.127 & 4.47$\times$ \\
+      \bottomrule
+    \end{tabular}}
+  \end{table*}
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{pic/e2e-speedup-comparison.pdf}
+\caption{Estimated and measured complete-application speedups, each normalized to its corresponding CPU-only execution. The dashed line denotes no speedup. Board reference verification remains unchecked.}
+\label{fig:e2e_speedup_comparison}
+\end{figure}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{pic/hotspot-stage-speedups.pdf}
+\caption{Measured speedups of the nine accelerator-mapped stages, grouped by application. Each ratio is the CPU-stage latency divided by its hardware replacement-stage latency from Table~\ref{tab:hotspot_acceleration}. Bars extend from the dashed 1$\times$ reference on a logarithmic axis; blue indicates speedup and orange slowdown. These stage measurements include invocation overhead and do not represent isolated RTL compute speedups.}
+\label{fig:hotspot_stage_speedups}
+\end{figure*}
+
+Reported speedup is computed from complete-application latency, including CPU-resident execution and accelerator invocation overhead, rather than from isolated kernel latency. Figure~\ref{fig:e2e_speedup_comparison} summarizes the estimated and measured speedup ratios from Table~\ref{tab:dse_fpga_latency_comparison}. Figure~\ref{fig:hotspot_stage_speedups} visualizes the stage-level measurements in Table~\ref{tab:hotspot_acceleration}, exposing the range of accelerator benefits and the WAMI steepest-descent slowdown. These stage-level results complement, but do not replace, the paired application-level comparison.
+
+Across the five applications, the geometric mean of the unrounded end-to-end speedup ratios is 2.47$\times$. For \texttt{plate\_new}, the CPU-resident closing stage accounts for 45.91\% of baseline execution time and remains essentially unchanged, limiting the application speedup to 1.40$\times$ despite faster top-hat and black-hat operations. For \texttt{recognition}, mask generation and contour processing also remain on the CPU: their CPU-only/SoCPilot latencies are 37.180/36.771~ms and 28.886/28.886~ms, respectively. The large 1415.38$\times$ stage speedup for \texttt{scan} therefore translates to a 4.24$\times$ complete-application speedup once the remaining stages and invocation overhead are included. For the Leon3 \texttt{nightvision} board run, the convolution stage improves by 4.47$\times$, while total latency improves by 2.03$\times$. Its 4-mm$^2$ DSE point predicts 4.80$\times$ end-to-end speedup (662.787/138.208~ms). The Leon3 timing model uses a calibrated Sniper numerical surrogate rather than a SPARC execution trace.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{pic/board-application-speedups.pdf}
+\caption{Measured end-to-end speedups of all five applications relative to their paired CPU-only board runs. Latencies include CPU-resident processing and accelerator invocation overhead. The dashed line denotes 1$\times$; the gray bar shows the geometric mean of the unrounded application ratios (2.47$\times$).}
+\label{fig:board_application_speedups}
+\end{figure}
+
+Figure~\ref{fig:board_application_speedups} summarizes the measured end-to-end acceleration across the application suite, with individual speedups from 1.40$\times$ to 4.37$\times$ and a geometric mean of 2.47$\times$.
+
+\paragraph{WAMI stage slowdown}
+The updated WAMI pair processes three $32\times32$ frames with 20 Lucas--Kanade iterations and reports identical invocation counts: 183 for \texttt{warp\_image}, 60 for \texttt{steepest\_descent}, and 60 for \texttt{hessian}. Warp and Hessian stages improve by 3.20$\times$ and 1.95$\times$, respectively, but \texttt{steepest\_descent} increases from 3018.276 to 3700.943~ms: a 0.82$\times$ speedup, or 22.62\% longer execution. Its aggregate penalty is 682.667~ms, approximately 11.378~ms per invocation. The gains elsewhere still reduce total latency from 30225.590 to 17112.106~ms (1.77$\times$). Thus, application-level improvement does not imply that every hardware-mapped stage benefits.
+
+The WAMI wrapper times each hardware stage from input conversion and packing through register setup, cache maintenance, completion polling, and output conversion; the CPU interval covers the corresponding CPU function. These are replacement-stage costs, not isolated accelerator compute latencies. For \texttt{steepest\_descent}, two gradient inputs produce six output components per pixel. At $32\times32$ with one 32-bit value per word, this entails 32~KiB of input/output payload per call, in addition to CPU-side format conversion and synchronization. For this relatively lightweight kernel, these costs can outweigh the compute benefit. Phase-separated memory access used to avoid bridge deadlock can also limit read/compute/write overlap. These are plausible explanations, not measured bottleneck attributions: the log does not separate conversion, cache maintenance, DMA, and RTL compute time. Component-level timing is needed before assigning a dominant cause or changing the mapping. The selected DSE model predicts 3.66$\times$ application speedup, whereas the board measures 1.77$\times$; hardware-mode latency is 2.03$\times$ the modeled value.
+
+All five updated timing logs report image~1 at 75~MHz with \texttt{verification=unchecked} and \texttt{mismatches=-1}. The CPU and hardware runs have matching reported output signatures for \texttt{plate\_new}, \texttt{recognition}, and \texttt{scan}; \texttt{plate\_new} and \texttt{recognition} both report no detected target for this input. The updated Leon3 \texttt{nightvision} runs each execute 24 convolution calls and report identical signatures: \texttt{0x4a6baff8}, \texttt{0x4a6a83b9}, and \texttt{0x4a711a54}. WAMI reports zero foreground in both modes, but its model signatures differ (CPU: \texttt{0x465ddfc0}; hardware: \texttt{0x465de02f}), and \texttt{original\_float\_exact=-1} does not establish equivalence to the floating-point reference. These records establish board execution and timing, but do not establish full reference-output equivalence or application quality over a dataset.
+
+\subsubsection{Hotspot Selection Comparison}
+\label{subsec:hotspot_comparison}
+To isolate the effect of hotspot selection, we compare SoCPilot's profiling and HLS/cost-based candidates with a source-only LLM baseline. The LLM receives the application source and design constraints but no SoCPilot profiling or PPA results, and nominates up to three functions. Its nominated functions are re-evaluated in a separate workspace using the same CPU/cache configuration as the corresponding SoCPilot map. Both candidate sets then pass through the same communication-aware mapping algorithm, performance estimator, and area limit. We compare the nominated functions, functions ultimately mapped to hardware, validity under the area constraint, and estimated application latency. This comparison stops after the initial map and PPA evaluation; it does not repeat system-level DSE or FPGA deployment.
+
+% Insert the measured hotspot-selection comparison after all five baseline runs finish.
+% Report selection overlap, valid mapping rate, and estimated latency under paired CPU/area settings.
+
+\subsubsection{Nightvision Area--Latency Trade-off}
+\label{subsec:area_aware}
+We examine sensitivity to the area budget while keeping the accelerator mapping fixed to \texttt{conv2d}. Each budget uses an independent HyperMapper search with 90 initial samples and 30 optimization iterations. The search varies CPU type, cache parameters, and HLS pipeline settings; loop-unroll factors remain one in this sweep. The objective is model-estimated complete-application latency under the total-area constraint, using average-case HLS latency for the accelerator.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{pic/nightvision-area-latency.pdf}
+\caption{Nightvision area-budget sensitivity estimated by DSE: (a) application latency, with the 4--11-mm$^2$ range enlarged in the inset; (b) estimated total area of the same selected configurations, with the dashed line indicating area equal to the budget. Each marker represents the fastest valid sample from an independent 120-evaluation search; color and shape identify the CPU. Labels give every selected latency (ms) and area (mm$^2$). Solid lines connect sampled results, not a guaranteed Pareto frontier.}
+\label{fig:nightvision_area_latency}
+\end{figure}
+
+Figure~\ref{fig:nightvision_area_latency} shows the latency and estimated total area of the selected configurations for budgets from 3 to 11~mm$^2$. At 3~mm$^2$, the selected Ibex configuration occupies an estimated 1.656~mm$^2$ and takes 1161.38~ms. Raising the budget to 4~mm$^2$ selects Leon3 at 3.970~mm$^2$ and 138.21~ms, an 88.1\% reduction in predicted latency. Leon3 remains selected at 5~mm$^2$, while Ariane is selected from 6~mm$^2$ onward. Panel (b) distinguishes the budget from the estimated area used: for example, the design selected under the 8-mm$^2$ budget occupies 6.932~mm$^2$. Beyond the architectural transitions, larger designs yield diminishing returns: from the 7- to the 11-mm$^2$ budget, selected area grows from 6.925 to 10.264~mm$^2$ (48.2\%), while latency falls from 132.22 to 132.00~ms (0.17\%). The full sweep extends to 16~mm$^2$; its best result above 11~mm$^2$ is 131.98~ms, improving on the 11-mm$^2$ result by less than 0.02\%. We therefore focus the figure on the range containing the main architectural transitions.
+
+The cache configurations account for the later area growth. Across the Ariane points, the calibrated L1 instruction and data caches retain capacities of 16 and 32~KiB and associativities of four and eight, respectively; only their common line size follows the DSE setting. At the 7-mm$^2$ budget, L2 has 256 sets and four ways (32~KiB), and LLC has 512 sets and eight ways (128~KiB), both with 32-byte lines. At 11~mm$^2$, L2 has 512 sets and four ways (128~KiB), and LLC has 1024 sets and four ways (256~KiB), both with 64-byte lines. Their combined McPAT area rises from 1.625 to 4.964~mm$^2$, while the fixed CPU area (5.224~mm$^2$) and selected accelerator area (0.077~mm$^2$) are unchanged. Thus, the larger cache configurations account for the 3.339-mm$^2$ area increase between these two points. Capacity alone does not determine the estimate: the 9- and 11-mm$^2$ points have the same L2/LLC capacities, but different line sizes and LLC associativities.
+
+The timing model also explains the limited benefit. Between the 7- and 11-mm$^2$ points, simulated CPU-only time decreases only from 535.674 to 534.474~ms. After subtracting the mapped hotspot using the recorded profiling weight, the model's residual CPU contribution falls from 99.582 to 99.359~ms; the aggregate HLS contribution remains 32.639~ms. These terms account for the 0.223-ms end-to-end reduction. The fixed \texttt{conv2d} mapping and unit unroll factors limit the explored changes to the existing architecture rather than additional hotspot offloading. This decomposition describes model sensitivity; it does not establish a measured cache-miss or memory-bandwidth bottleneck, and jointly varied cache and HLS settings do not isolate individual parameter effects.
+
+% Declare the double-column baseline figure early so it stays with the experiment.
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{pic/hscobench-stage-outcomes.pdf}
+\caption{Stage outcomes of the general-purpose agent in the evaluated HSCO-Bench protocol. Blue denotes a passed stage, orange the observed failure, and gray a subsequent stage not reached. FPGA synthesis and board execution are not evaluated (N/E), because the protocol uses \texttt{--skip-fpga}; they are not counted as failures. The plate-localization workload is labeled \texttt{plate\_new} here and \texttt{plate\_recognition} in Table~\ref{tab:hscobench_results}.}
+\label{fig:hscobench_stage_outcomes}
+\end{figure*}
+
+The DSE objective minimizes latency subject to a hard area ceiling, with smaller area breaking exact latency ties. Consequently, even a small predicted latency gain can select a substantially larger design. The small reversals at 8 and 10~mm$^2$ reflect independent 120-evaluation searches; earlier feasible designs are not carried forward as incumbents. These are best sampled results rather than global optima, and a larger budget does not guarantee that an independent search discovers a better point. All reported latencies and areas in this sweep are model estimates rather than FPGA measurements.
+
+\subsection{Comparison with a General-Purpose Agent}
 \label{subsec:general_agent}
 
-We compare SoCPilot's structured workflow with a general-purpose LLM agent following the HSCO-Bench~\cite{hscobench2026} evaluation protocol. The comparison focuses on the agent's ability to progress through the automated accelerator-design and SoC-integration workflow, including acceleration-target identification, accelerator implementation, functional verification, HLS synthesis, and ESP integration.
+Finally, we compare SoCPilot's structured workflow with a general-purpose LLM agent following the HSCO-Bench~\cite{hscobench2026} evaluation protocol. This comparison asks whether an open-ended agent can progress through acceleration-target identification, implementation, functional verification, HLS synthesis, and ESP integration for the same application workloads.
 
 \textbf{General-agent execution protocol.}
 We instantiate the general-purpose-agent baseline using DeepSeek-v4-pro as the underlying LLM. DeepSeek-v4-pro is not among the five frontier models evaluated in the original HSCO-Bench study; therefore, our experiment represents an independent execution of the HSCO-Bench protocol rather than a reproduction of one of its reported model configurations. For each application, the agent is provided with the migrated benchmark workspace, including the application source code, the HSCO-Bench template structure, and access to the local hardware/software co-design toolchain. The target platform is configured as Xilinx ZCU102 (\texttt{xilinx-zcu102-xczu9eg}) within the ESP infrastructure, and all applications use a consistent tool environment comprising Catapult HLS, SystemC, MatchLib, ESP, and Vivado.
@@ -202,144 +415,11 @@ Catapult reports no definition for \texttt{floorf()} during HLS compilation. \\
 \end{tabular}}
 \end{table*}
 
-As shown in Table~\ref{tab:hscobench_results}, the general-purpose agent fails at different stages across all five applications. The observed failures span source-level type correctness, functional equivalence, and HLS compatibility. For \texttt{nightvision} and \texttt{plate\_recognition}, the generated implementations fail during BEV-Sim compilation because of invalid C++ type operations. The \texttt{scan} implementation proceeds further but fails functional verification because its output differs from the software reference. The \texttt{recognition} and \texttt{wami} implementations both pass behavioral simulation but fail during Catapult HLS because of synthesis-related language or scheduling constraints. These results indicate that successfully generating an accelerator candidate does not by itself guarantee progression through the subsequent verification and synthesis stages.
+As shown in Table~\ref{tab:hscobench_results} and Figure~\ref{fig:hscobench_stage_outcomes}, the general-purpose agent fails at different stages across all five applications. The observed failures span source-level type correctness, functional equivalence, and HLS compatibility. For \texttt{nightvision} and \texttt{plate\_recognition}, the generated implementations fail during BEV-Sim compilation because of invalid C++ type operations. The \texttt{scan} implementation proceeds further but fails functional verification because its output differs from the software reference. The \texttt{recognition} and \texttt{wami} implementations both pass behavioral simulation but fail during Catapult HLS because of synthesis-related language or scheduling constraints. These results indicate that successfully generating an accelerator candidate does not by itself guarantee progression through the subsequent verification and synthesis stages.
 
-The four FPGA-validated SoCPilot designs in Table~\ref{tab:e2e_performance} complete accelerator generation, functional verification, HLS synthesis, and ESP integration. None of the five recorded general-agent runs completes the evaluated pre-FPGA flow. These observations characterize the available runs; they do not establish a repeated-run success rate. Moreover, the two workflows use different HLS toolchains, and the general-agent runs omit FPGA execution, so this comparison evaluates the configured workflows rather than isolating the effect of the orchestration method alone.
-
-% TODO: Record the agent implementation/version, prompts, tool versions,
-% token/iteration/time budgets, and repeated-run outcomes for reproducibility.
+The SoCPilot designs with completed board measurements in Table~\ref{tab:dse_fpga_latency_comparison} reach accelerator generation, HLS synthesis, ESP integration, and application execution on the FPGA. Full reference-output verification is not established by these timing logs, as discussed above. This comparison concerns the stages reached in each tool flow; it is not a controlled latency comparison between the two toolchains.
 
 
 \textbf{Comparison with published HSCO-Bench results.}
-The original HSCO-Bench study provides additional context for two workloads that overlap with our evaluation. Among the five frontier models evaluated in that study, \texttt{NightVision} was successfully accelerated only by Claude Opus 4.6, achieving a reported 1.08$\times$ speedup, whereas \texttt{WAMI} was a consistent-failure case for which none of the evaluated models produced a valid accelerated design~\cite{hscobench2026}. In our evaluation, SoCPilot successfully generates and validates CPU--accelerator implementations for both workloads, achieving 3.50$\times$ end-to-end speedup for \texttt{NightVision} and 2.41$\times$ for \texttt{WAMI}, as reported in Table~\ref{tab:e2e_performance}. Thus, for \texttt{NightVision}, SoCPilot obtains a numerically higher application-level speedup than the 1.08$\times$ result reported by HSCO-Bench, while for \texttt{WAMI}, SoCPilot produces a valid accelerated implementation where all models in the original study failed. Because the two studies use different hardware platforms and experimental configurations, the speedup values are presented as contextual results rather than as a controlled cross-platform performance comparison.
+The original HSCO-Bench study provides additional context for two workloads that overlap with our evaluation. Among the five frontier models evaluated in that study, \texttt{NightVision} was successfully accelerated only by Claude Opus 4.6, achieving a reported 1.08$\times$ speedup, whereas \texttt{WAMI} was a consistent-failure case for which none of the evaluated models produced a valid accelerated design~\cite{hscobench2026}. Our separately configured board evaluation reports 2.03$\times$ end-to-end speedup for \texttt{nightvision} and 1.77$\times$ for \texttt{wami} in Figure~\ref{fig:e2e_speedup_comparison}. These values provide context, not a controlled cross-platform speedup comparison, because the hardware platforms and experimental configurations differ. The stronger conclusion from this experiment is that the general-purpose agent did not complete the required HSCO-Bench tool flow on these five migrated workloads, while SoCPilot reached FPGA execution for all five applications, with the verification limits stated above.
 
-\subsection{End-to-End Performance}
-\label{subsec:e2e_evaluation}
-We evaluate whether SoCPilot can produce a functionally correct CPU--accelerator SoC and whether the generated SoC reduces complete-application latency relative to its paired CPU-only implementation. FPGA board execution serves as the final validation step.
-
-Table~\ref{tab:e2e_performance} reports one primary design point for each application, selected under the predefined application-specific area budget used in this evaluation. Alternative area budgets and the corresponding architectural choices are considered separately in Section~\ref{subsec:area_aware}.
-
-% Missing-result table: fill with measured board-level latency and validation outcomes.
-\begin{table*}[t]
-  \centering
-  \caption{End-to-end effectiveness and FPGA-board validation of the SoCPilot-generated SoC for each application.}  \label{tab:e2e_performance}
-  \renewcommand{\arraystretch}{1.12}
-  \resizebox{\textwidth}{!}{
-  \begin{tabular}{llllrrrcc}
-  \toprule
-  \textbf{Application} &
-  \textbf{Area budget} &
-  \textbf{Selected CPU} &
-  \textbf{Selected accelerator(s)} &
-  \textbf{CPU-only latency (ms)} &
-  \textbf{SoCPilot latency (ms)} &
-  \textbf{Speedup} &
-  \textbf{Correct} &
-  \textbf{Board validated} \\
-  \midrule
-  \texttt{plate\_new} &
-  13 mm$^2$ &
-  Ibex &
-  \texttt{morphology\_tophat}, \texttt{morphology\_blackhat} &
-  16596.851 &
-  11523.645 &
-  1.44$\times$ &
-  Yes &
-  Yes \\
-
-  \texttt{recognition} &
-  13 mm$^2$ &
-  Ibex &
-  \texttt{bgr\_to\_hsv}, \texttt{dilate\_mask} &
-  -- &
-  -- &
-  -- &
-  -- &
-  -- \\
-
-  \texttt{scan} &
-  13 mm$^2$ &
-  Ibex &
-  \texttt{scan\_adaptive\_threshold} &
-  7316.525 &
-  1764.099 &
-  4.15$\times$ &
-  Yes &
-  Yes \\
-
-  \texttt{wami} &
-  13 mm$^2$ &
-  Ibex &
-  \texttt{warp\_image}, \texttt{steepest\_descent}, \texttt{hessian} &
-  36013.701 &
-  14973.689 &
-  2.41$\times$ &
-  Yes &
-  Yes \\
-
-  \texttt{nightvision} &
-  13 mm$^2$ &
-  Ibex &
-  \texttt{conv2d} &
-  6909.474 &
-  1975.018 &
-  3.50$\times$ &
-  Yes &
-  Yes \\
-  \midrule
-  \multicolumn{6}{r}{\textbf{Geometric mean speedup}} &
-  2.66$\times$ &
-  Yes &
-  4/5 \\
-  \bottomrule
-  \end{tabular}}
-  \end{table*}
-
-Reported speedup is computed from complete-application latency rather than isolated accelerator latency. Across the four applications with completed FPGA validation, SoCPilot achieves speedups of 1.44$\times$--4.15$\times$, with a geometric mean of 2.66$\times$. The geometric mean excludes \texttt{recognition}, whose latency and board-validation results remain pending. The observed gains therefore describe the four validated applications rather than the entire five-application suite.
-
-% TODO: Add recognition latency, correctness, and board-validation results.
-% TODO: Confirm the selected CPU for each application before final submission.
-% Optional supporting data: break down complete latency into CPU execution,
-% accelerator execution, and invocation/communication/synchronization overhead.
-
-\subsection{Area-Constrained Pareto Design Exploration}
-\label{subsec:area_aware}
-
-This experiment examines how SoCPilot trades complete-application latency against SoC area and selects designs under different area budgets. For each application, the comparison will use a common candidate space, technology assumptions, area model, and exploration budget. Each candidate comprises a processor, cache configuration, and accelerator set. A design is nondominated if no other evaluated design has both no greater area and no greater latency, with at least one strict improvement. The resulting frontier is a Pareto frontier over the evaluated candidates, rather than a claim of global optimality over all possible SoCs.
-
-For each area budget, we will report the lowest-latency feasible design found, its estimated area, CPU and cache configuration, accelerator set, and speedup over its matched CPU-only baseline. A latency--area plot will distinguish explored candidates, nondominated candidates, and designs selected under each budget. Estimated latency used during exploration and measured FPGA latency will be identified separately. FPGA resource utilization will not be substituted for ASIC area.
-
-The current results in Table~\ref{tab:e2e_performance} provide a primary design point per application but do not yet establish a Pareto frontier. Multi-budget candidate records and validation results remain to be added before drawing conclusions about area-constrained optimization.
-
-% TODO: Add per-application latency--area plots with the evaluated Pareto frontier.
-% Required records: area budget, candidate ID, CPU/cache/accelerators, estimated
-% area, estimated latency, measured latency where available, correctness, and
-% exploration budget. Highlight the primary end-to-end design points.
-
-\subsection{Hardware/Software Partitioning Comparison}
-\label{subsec:partitioning_evaluation}
-
-This experiment compares direct LLM-based hardware/software partitioning with SoCPilot's profiling- and cost-guided partitioning. The direct baseline will ask the same LLM to select kernels for hardware acceleration from the application source, requirements, available accelerator-generation interfaces, and area budget. SoCPilot will additionally use its profiling and hardware/software cost evaluation. The application inputs, candidate kernel set, LLM configuration, and downstream accelerator-generation and integration flow will be held consistent. Prompt and tool-call budgets will be recorded for both methods.
-
-The comparison will report the kernels selected by each method, their CPU execution-time coverage, accelerator feasibility, estimated area, communication and invocation overhead, and resulting complete-application latency. Per-application analysis will examine whether differing selections arise from hotspot coverage, hardware suitability, data movement, or the area constraint. Selection overlap alone is not a quality metric: different kernel sets must be assessed through correctness, feasibility, and system-level performance. Failed synthesis or integration attempts will be retained as outcomes rather than omitted from the comparison.
-
-Table~\ref{tab:e2e_applications} records SoCPilot's current kernel selections. Direct-LLM selections and paired downstream measurements are not yet available, so the present results do not establish a performance advantage for the proposed partitioning method in isolation.
-
-% TODO: Add a paired table: application, method, selected kernels, CPU-time
-% coverage, synthesis/correctness outcome, area, total latency, and speedup.
-% Add kernel-level explanations for agreements and disagreements, supported by
-% measured profiling, hardware-cost, and data-movement evidence.
-
-\subsection{IP Selection Comparison}
-\label{subsec:ip_selection_evaluation}
-
-This experiment compares LLM-based IP selection with expert selection under identical application requirements, IP-library contents, interface constraints, and area budgets. Experts will select IPs independently of the LLM recommendations. Both approaches will produce a processor and peripheral configuration together with a rationale linking each choice to the requirements. Subsequent partitioning, exploration, and validation settings will be held consistent to make the effect of the initial IP selection interpretable.
-
-The comparison will assess requirement coverage, interface compatibility, integration feasibility, estimated area, and resulting application latency. It will also report selection agreement and the engineering effort required to reach a valid configuration. Disagreements will be analyzed at the level of the corresponding requirement and IP capability; expert agreement is a reference point rather than proof of optimality. If multiple configurations satisfy the requirements, their cost and performance will determine whether the alternatives are practically equivalent or involve a meaningful tradeoff.
-
-Expert selections and paired validation results remain to be collected. Consequently, no conclusion about expert-level IP selection is drawn from the current end-to-end results.
-
-% TODO: Record expert background, selection protocol, number of independent
-% selections, common library snapshot, and selection time/tool-call budgets.
-% Add a table: application, requirement, LLM-selected IP, expert-selected IP,
-% compatibility/coverage, area, latency, and explanation of differences.

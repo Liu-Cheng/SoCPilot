@@ -3,9 +3,13 @@ Application-driven SoC customization requires coordinated decisions across appli
 
 \subsection{SoCPilot Overview}
 \label{sec:socpilot-overview}
-Figure~\ref{fig: overview} presents the overall architecture of SoCPilot. The framework combines LLM-based orchestration, reusable case and IP libraries, and a toolchain for profiling, hardware generation, simulation, and synthesis. The LLM interprets requirements and coordinates the design stages, while the libraries supply reusable system components and the tools provide implementation artifacts, correctness checks, and quantitative cost estimates.
+Figure~\ref{fig: overview} presents the overall architecture of SoCPilot. The framework combines an LLM-assisted orchestration layer, reusable case and IP libraries, and a toolchain for profiling, hardware generation, simulation, and synthesis. The orchestration layer provides shared reasoning and artifact-generation support across the four design components, rather than acting as a separate implementation stage. The libraries supply reusable system components, while the tools provide implementation artifacts, correctness checks, and quantitative cost estimates.
 
-The design flow consists of four stages. First, requirement interpretation and IP selection convert user requirements into a structured specification and an initial manifest of reusable system IPs. Second, application profiling and hardware/software partitioning identify candidate functions, evaluate their hardware implementations, and select an accelerator set using latency, communication, and area estimates. Third, SoC generation and design space exploration (DSE) package and integrate the selected accelerators and refine processor, memory-system, and accelerator configurations under latency and area objectives. Finally, FPGA prototyping and board validation invoke the ESP implementation flow to generate a bitstream and validate the resulting system. Structured specifications, task graphs, and SoC configurations connect these stages, with tool feedback guiding design refinement. The following subsections describe the four components in detail.
+The design flow consists of four components. First, requirement interpretation and IP selection convert user requirements into a structured specification and an initial manifest of reusable system IPs. Second, application profiling and hardware/software partitioning identify candidate functions, evaluate their hardware implementations, and select an accelerator set using latency, communication, and area estimates. Third, system-level design space exploration (DSE) refines processor, cache, and accelerator parameters for the selected hardware/software map under area constraints. Fourth, SoC generation and implementation validation finalize and package the accelerators for ESP integration, followed by FPGA implementation and board-level evaluation. Structured specifications, task graphs, and configuration records provide explicit interfaces between the components.
+
+\textbf{LLM-assisted orchestration.} A shared orchestration layer supports the four design components through task reasoning, structured guidance, and feedback-driven revision. At each LLM-assisted step, the scripts assemble the relevant requirements, source code, constraints, and available diagnostics into a stage-specific context. The LLM interprets this context and proposes structured specifications, IP recommendations, task-dependency graphs, or code transformations, which are parsed and checked before use. For supported preparation and validation failures, tool diagnostics guide candidate revision within bounded retry loops; optional kernel refactoring provides further code-level refinement. Overall execution is managed by the script-backed orchestrator, including artifact handoff, tool invocation, validation, and retry control, while the LLM provides semantic reasoning and candidate generation. Quantitative mapping and DSE algorithms determine hardware allocation and configuration selection. This separation allows LLM assistance to span the design flow while keeping execution and acceptance grounded in explicit tool results. Application-level embedded runtime integration remains outside the LLM-assisted automation boundary.
+
+The following subsections describe the design components in detail.
 
 \subsection{Requirement Interpretation and IP Selection}
 The first stage determines the reusable system components required by the target application. Directly mapping natural-language descriptions to concrete IP instances is unreliable because user terminology, IP metadata, and hardware interfaces are expressed at different abstraction levels. SoCPilot therefore separates requirement interpretation from IP retrieval. As shown in Figure \ref{fig:soc-spec}, the LLM first converts the user description into a structured SoC specification and then uses this specification to query a hierarchical library of verified IPs.
@@ -146,29 +150,38 @@ Subsequently, SoCPilot constructs the target SoC by instantiating the chosen pro
 %目前是先dse生成soc之后没有进行dse
 \textbf{System-level design space exploration.}
 The initial partition reduces the search space by fixing which functions are implemented as accelerators. SoCPilot then explores a parameter vector $\boldsymbol{\theta}$ that covers the available processor configuration, cache hierarchy, interconnect settings, and candidate accelerator implementations produced by the HLS stage. Accelerator choices include pragma configurations and interface parameters; system choices include cache capacity and associativity, cache-line size, and NoC buffering. Table~\ref{table:node parameter-all} lists the principal dimensions used in the current implementation.
-%%这个地方最终soc支持这么多但是在实际dse是仿真的dse并不支持这么多
-\begin{table}[h]
-     \vspace{-1em}
-    \caption{Principal parameters for system-level DSE}
-    \label{table:node parameter-all}
-    \vspace{-0.5em}
-    \resizebox{0.5\textwidth}{!}{
-    \renewcommand\arraystretch{1.3}
-        \begin{tabular}{cc}
-        \hline
-          \textbf{Design variable} & \textbf{Candidate values or source} \\ \hline
-          Processor configuration & ESP-supported configurations \\
-          Accelerator implementation & Pareto candidates from HLS \\
-          HLS pragmas & Pipeline, unroll, and array partition \\
-          Interface data width & ESP-compatible configurations \\
-          Cache line size & 128, 256, 512 \\
-          L2 sets & 32, 64 \\ 
+ \begin{table}[h]
+      \vspace{-1em}
+      \caption{Principal parameters for system-level DSE}
+      \label{table:node parameter-all}
+      \vspace{-0.5em}
+      \resizebox{0.5\textwidth}{!}{
+      \renewcommand\arraystretch{1.3}
+      \begin{tabular}{cc}
+          \hline
+          \textbf{Design parameter} &
+          \textbf{Candidate values or rule} \\ \hline
+          Processor type & Ariane, Ibex, LEON3 \\
+          Accelerator mapping & Fixed by the initial mapping stage \\
+          Loop pipeline & Disabled, enabled \\
+          Loop unroll factor & Source-dependent candidates, up to 16 \\
+          Array partition type & None, cyclic, block, complete$^{*}$ \\
+          Array partition factor & Source-dependent candidates, up to 16 \\
+          Interface data width (bits) &
+          64 for Ariane; 32 for Ibex and LEON3 \\
+          Cache line size (bits) & 128, 256, 512 \\
+          L2 sets & $2^{5}, 2^{6}, \ldots, 2^{13}$ \\
           L2 ways & 2, 4, 8 \\
-          LLC sets & 128, 256, 512 \\
-          LLC ways & 4, 8, 16 \\
-          NoC FIFO depth & 2, 4, 6 \\ \hline
-        \end{tabular}} 
-\end{table}
+          LLC sets & $2^{5}, 2^{6}, \ldots, 2^{13}$ \\
+          LLC ways & 4, 8, 16 \\ \hline
+      \end{tabular}}
+
+      \vspace{0.3em}
+      \parbox{0.5\textwidth}{\footnotesize
+      $^{*}$Partition types depend on array size.
+      Candidate configurations are further filtered by ESP
+      feasibility constraints and the specified area budget.}
+  \end{table}
 
 For every sampled configuration, SoCPilot regenerates the relevant ESP configuration and evaluates end-to-end latency together with the estimated area provided by the common area model. HyperMapper \cite{9124618} explores this latency--area design space: its surrogate model proposes new configurations, tool feedback updates the model, and points that violate the application-specific area constraint are discarded. The final design is selected from the feasible configurations according to the latency objective under the specified area budget. In contrast to hardware/software partitioning, this search performs fine-grained optimization around the current accelerator set. If no feasible design is found, SoCPilot returns to the previous stage and revises the hardware/software partition.
 
