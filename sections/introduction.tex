@@ -23,11 +23,11 @@ Motivated by both the technical and economic potentials, we propose SoCPilot, an
 
 This work makes the following key contributions.
 \begin{itemize}
-\item We propose \textbf{SoCPilot}, an application-driven LLM-powered framework that automates application analysis, hardware/software partitioning, accelerator generation, and heterogeneous SoC configuration and integration.
+\item We propose \textbf{SoCPilot}, an end-to-end agentic framework for application-driven SoC customization. By combining LLM-based task reasoning and code understanding with orchestrated tool invocation and feedback-driven refinement, SoCPilot automates the complex workflow from application requirements to customized CPU--accelerator SoC designs.
 
-\item SoCPilot combines runtime profiling, communication-aware partitioning, accelerator generation, and system-level design space exploration to select CPU--accelerator configurations under latency and area objectives.
+\item We combine LLM-based reasoning with static analysis and dynamic profiling to extract computational hotspots and rewrite them into self-contained, synthesizable kernels. Through iterative collaboration with HLS tools, the LLM generates and optimizes dedicated accelerators for application bottlenecks.
 
-\item Experimental results on representative applications demonstrate that SoCPilot-generated SoCs can be validated on an FPGA board and provide significant end-to-end performance improvements over matched CPU-only execution.
+\item Prototype-based measurements on five representative applications show a geometric mean end-to-end speedup of 2.47$\times$ over matched CPU-only execution. Using DeepSeek, SoCPilot generates SoC designs that reach FPGA execution for all five applications, whereas a general-purpose agent using the same model completes the evaluated HSCO-Bench generation flow for none, highlighting the effectiveness of structured agentic orchestration.
 \end{itemize}
 
 
