@@ -14,7 +14,8 @@ The first stage determines the reusable system components required by the target
 
 \begin{figure*}[htp]
     \centering
-    \includegraphics[width=0.95\textwidth,trim=0bp 84bp 0bp 78bp,clip]{pic/soc-spec.pdf} 
+    \includegraphics[width=0.95\textwidth,trim=0bp 140bp 0bp 78bp,clip]{pic/soc-spec.pdf}
+    \setlength{\abovecaptionskip}{2pt}
     \caption{Structured SoC specification generation. The LLM translates natural-language requirements into system functions, quantitative constraints, and integration attributes, while resolving missing or ambiguous fields through interactive clarification. The example illustrates the resulting machine-readable specification used for subsequent case and IP retrieval.}
 \label{fig:soc-spec}
     \vspace{-1em}
@@ -133,7 +134,8 @@ As shown in Figure \ref{fig:soc-generation}, the third stage transforms the IP m
 
 \begin{figure*}[htp]
     \centering
-    \includegraphics[width=0.92\textwidth]{pic/soc-generation.pdf}
+    \includegraphics[width=0.92\textwidth,trim=0bp 60bp 0bp 0bp,clip]{pic/soc-generation.pdf}
+    \setlength{\abovecaptionskip}{2pt}
     \caption{LLM-guided accelerator generation and system-level DSE. SoCPilot converts hardware-mapped functions into verified ESP-compatible accelerator tiles, integrates them with the selected system IPs and software, and refines the resulting SoC through system-level design space exploration. Infeasible designs trigger a revision of the hardware/software partition.}
     \label{fig:soc-generation}
 \end{figure*} 
