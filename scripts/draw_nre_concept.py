@@ -45,7 +45,7 @@ for q,col,lab in [(qnew,green,'Q* LLM'),(qold,blue,'Q* conventional')]:
  line(X(q),y0,X(q),Y(base),col,1,[2,2]);c.setFillColor(col);c.circle(X(q),Y(base),3,stroke=0,fill=1)
  c.setFont('Helvetica',9);c.drawCentredString(X(q),y0-13,lab)
 text(231,Y(base)+7,'Off-the-shelf alternative',9)
-text(242,118,'Conventional ASIC',10,blue)
+text(260,120,'Conventional ASIC',10,blue)
 text(242,65,'LLM-assisted ASIC',10,green)
 # Leftward arrow connects break-even volumes in the newly viable region.
 ay=Y(base)-22
