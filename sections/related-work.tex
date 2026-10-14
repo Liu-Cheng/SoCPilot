@@ -124,7 +124,8 @@ Application benchmarks provide the workloads needed to evaluate customized archi
 System-level benchmarks for LLM-assisted SoC design have recently begun to address this gap. SoCDevBench evaluates LLM-generated TCL workflows for Vivado using design pass rate, FPGA resource utilization, and tool feedback \cite{socdev2025}. SLDB targets heterogeneous SoC integration and configuration with ESP-compatible designs, extending evaluation beyond isolated RTL generation \cite{sldb2025}. HSCO-Bench broadens the scope to end-to-end hardware/software co-design, covering kernel identification, HLS accelerator generation, ESP-based integration, and FPGA deployment \cite{hscobench2026}.
 \begin{figure*}[htp]
     \centering
-    \includegraphics[width=0.98\textwidth]{pic/socpilot-framework.pdf} 
+    \includegraphics[width=0.98\textwidth]{pic/socpilot-framework.pdf}
+    \setlength{\abovecaptionskip}{3pt}
     \caption{Overview of the SoCPilot framework. SoCPilot uses LLM-based orchestration and quantitative tool feedback to translate natural-language requirements and a C/C++ application into a customized SoC, covering requirement interpretation, HW/SW partitioning, accelerator and SoC generation, latency--area design space exploration, and FPGA prototyping and board validation.}
 \label{fig: overview}
     \vspace{-1em}
