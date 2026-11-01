@@ -1,0 +1,1254 @@
+{
+  "source": {
+    "host": "10.156.112.71",
+    "repository": "/home/huwanshan/copy/soc_srcipt2",
+    "revision": "338d67f5adf790f06b8a14b23a0aceffd5cf0da7",
+    "note": "Five manifests recovered from the same historical source revision; counts checked against the original manuscript data."
+  },
+  "provenance": [
+    {
+      "application": "plate_recognition",
+      "source_path": "5.benchmark/plate_new/report/requirements_analysis/soc_manifest.json",
+      "source_sha256": "c1a5ba334fb13e2d166e41c38f634274566219405641494c7be04c5fd01a4677"
+    },
+    {
+      "application": "recognition",
+      "source_path": "5.benchmark/recognition/report/requirements_analysis/soc_manifest.json",
+      "source_sha256": "0e9e59842a55205946fac85a1babf584d641370d6f1a39eb094f80b0928fa9eb"
+    },
+    {
+      "application": "scan",
+      "source_path": "5.benchmark/scan/report/requirements_analysis/soc_manifest.json",
+      "source_sha256": "e87c74cd72cf5752228f316b5a089c6d8ff1ef6939c695859eb360a0751b5097"
+    },
+    {
+      "application": "wami",
+      "source_path": "5.benchmark/wami/report/requirements_analysis/soc_manifest.json",
+      "source_sha256": "bfce2effce84b1c71708c1c075cb4360dc16f128c45c0d77c80140dfc6e5ab71"
+    },
+    {
+      "application": "nightvision",
+      "source_path": "5.benchmark/nightvision/report/requirements_analysis/soc_manifest.json",
+      "source_sha256": "3d9fd22ff86203c57bd39aceaa604fa6b10cdd226fe0a0563d492aef9bee350f"
+    }
+  ],
+  "manifests": {
+    "plate_recognition": {
+      "schema_version": "socpilot.requirements_manifest.v1",
+      "stage": "requirements_analysis",
+      "source_requirement_path": "/home/hws/workspace/soc_script/1.requirements_analysis/example_input/benchmarks/plate_new_requirements.json",
+      "structured_requirement": {
+        "description": "A single-camera parking-entrance plate-localization appliance. A MIPI CSI-2 camera supplies frames and is configured through I2C/SCCB; Ethernet connects the appliance to a parking-management host. The application converts the image to grayscale and uses top-hat/black-hat morphology, Sobel filtering, smoothing, thresholding and feature combination to extract likely plate regions. The host receives candidate-mask or region data for downstream handling. Character segmentation, OCR, authorization decisions and barrier actuation are outside the current benchmark.",
+        "performance": [
+          {
+            "clock_frequency": "75 MHz target",
+            "power": "under 1.5W",
+            "area": "under 13 mm^2"
+          }
+        ],
+        "technology": "28nm",
+        "benchmark_context": {
+          "source": "5.benchmark/plate_new/source_code/plate_new.c",
+          "workload": "Current source macros define 128x128 input with four channels, despite an older main comment mentioning 256x256. The main test initializes a black frame and returns a candidate image; richer deployment images require separate validation.",
+          "scenario_status": "Proposed single-camera parking deployment; MIPI reception, Ethernet transport and sensor-control drivers are integration requirements, not implemented benchmark features.",
+          "validation_target": "Compare the candidate mask with the CPU reference for the same frames. Plate-reading accuracy is not an available correctness metric for this localization-only program.",
+          "resource_note": "Use the 13 mm^2 small-CPU budget for Ibex-oriented mapping, together with the existing 75 MHz and 28nm experiment settings; candidate IP suggestions do not fix the CPU or choose application hotspots."
+        },
+        "functional_requirements": [
+          {
+            "communication": [
+              {
+                "demand": "Single camera pixel ingress",
+                "requirements": "Require one MIPI CSI-2 digital camera receiver with frame markers and pixel-stream input. UART, SPI and an I2C controller alone do not satisfy camera pixel acquisition."
+              },
+              {
+                "demand": "Camera exposure configuration",
+                "requirements": "Require an I2C/SCCB sensor-register controller for exposure, gain and capture-mode configuration of the single parking camera."
+              },
+              {
+                "demand": "Parking host network connection",
+                "requirements": "Require Ethernet communication to send plate-candidate masks or region records and receive capture/configuration requests from a parking-management host. Do not replace Ethernet with UART or SPI."
+              }
+            ],
+            "debug": [
+              {
+                "demand": "Capture-to-candidate timing counters",
+                "requirements": "Require hardware cycle and transaction counters for measuring capture, buffer transfer and plate-localization latency."
+              }
+            ],
+            "analog": [
+              {
+                "demand": "Not needed",
+                "requirements": "Use a digital camera module with sensor-side conversion; no analog pixel ADC is required."
+              }
+            ],
+            "audio": [
+              {
+                "demand": "Not needed",
+                "requirements": "Parking plate localization has no audio function."
+              }
+            ],
+            "video": [
+              {
+                "demand": "Single-camera ping-pong buffering",
+                "requirements": "Require frame buffering with double buffering and row stride, so capture and plate-region processing can use separate image buffers. No display controller or reusable OCR engine is required."
+              }
+            ],
+            "bus": [
+              {
+                "demand": "Morphology line and mask memory",
+                "requirements": "Require on-chip SRAM scratchpad storage for grayscale, morphology intermediates and candidate masks; determine capacity from the compiled image dimensions and buffer lifetimes."
+              },
+              {
+                "demand": "CPU and camera-buffer interconnect",
+                "requirements": "Require an AXI shared-memory interconnect supporting burst transfers between camera buffers, CPU and application accelerators."
+              },
+              {
+                "demand": "Plate-processing register control",
+                "requirements": "Require AXI-Lite start, completion and parameter registers for CPU-controlled processing."
+              }
+            ]
+          }
+        ]
+      },
+      "constraints": {
+        "area_limit_mm2": 13.0,
+        "power_limit_mw": 1500.0,
+        "cpu_candidates": [
+          "ariane",
+          "ibex",
+          "leon3"
+        ],
+        "fixed_cpu": null,
+        "parameter_priority": [
+          "CLI arguments",
+          "structured requirement performance fields",
+          "unknown/null when unspecified"
+        ],
+        "supported_downstream_constraints": [
+          "area_limit_mm2",
+          "cpu_candidates",
+          "fixed_cpu"
+        ]
+      },
+      "cpu_selection": {
+        "policy": "candidate_set_for_later_dse",
+        "fixed_cpu": null,
+        "candidates": [
+          "ariane",
+          "ibex",
+          "leon3"
+        ],
+        "final_cpu": null,
+        "note": "This stage keeps CPU candidates when the user does not fix a CPU. Final CPU selection is expected from a later DSE stage, but this script does not invoke that stage."
+      },
+      "selected_reusable_ips": [
+        {
+          "id": "mipi_csi2",
+          "description": "MIPI CSI-2 camera receiver for digital image sensors. It receives pixel streams, frame markers, and sensor metadata from camera modules.",
+          "function": "communication",
+          "technology": "28 nm",
+          "features": "camera sensor interface, MIPI CSI-2, pixel stream input, frame synchronization, image sensor",
+          "area": "0.18 mm^2",
+          "power": "7mw",
+          "typical_application_scenarios": "Smart cameras, license-plate recognition, document scanning, UAV imaging, low-light vision",
+          "category": "communication",
+          "area_mm2": 0.18,
+          "power_mw": 7.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "i2c",
+          "description": "The I2C IP is designed for two - wire serial communication. It allows multiple devices to be connected on the same bus in a multi - master, multi - slave configuration. Communication is based on addressing and data transfer packets.",
+          "function": "communication",
+          "technology": "28 nm",
+          "features": "two - wire, multi - master, multi - slave, low - speed, low - power",
+          "area": "0.06 mm^2",
+          "power": "1.5mw",
+          "typical_application_scenarios": "Connecting EEPROMs, sensors like temperature and humidity sensors, LCD drivers",
+          "category": "communication",
+          "area_mm2": 0.06,
+          "power_mw": 1.5,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "ethernet",
+          "description": "This Ethernet IP provides network connectivity according to Ethernet standards. It supports data transfer over wired networks, handling packet encapsulation, decapsulation, and media access control.",
+          "function": "communication",
+          "technology": "28 nm",
+          "features": "high - speed, network - based, supports various Ethernet standards (e.g., 10/100/1000BASE - T)",
+          "area": "0.2 mm^2",
+          "power": "10mw",
+          "typical_application_scenarios": "Connecting devices to local area networks (LANs), internet - connected devices, network - attached storage (NAS)",
+          "category": "communication",
+          "area_mm2": 0.2,
+          "power_mw": 10.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "performance_counter",
+          "description": "Hardware performance-counter block for counting cycles, memory transactions, accelerator invocations, and stalls.",
+          "function": "debug",
+          "technology": "28 nm",
+          "features": "cycle counter, transaction counter, accelerator profiling, runtime measurement",
+          "area": "0.04 mm^2",
+          "power": "1mw",
+          "typical_application_scenarios": "Benchmark measurement and hardware/software partitioning validation",
+          "category": "debug",
+          "area_mm2": 0.04,
+          "power_mw": 1.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "frame_buffer",
+          "description": "Frame-buffer controller for storing, reading, and double-buffering image frames in on-chip SRAM or external memory.",
+          "function": "video",
+          "technology": "28 nm",
+          "features": "frame buffer, double buffering, image memory, line stride, pixel storage",
+          "area": "0.22 mm^2",
+          "power": "8mw",
+          "typical_application_scenarios": "Camera pipelines, document scanning, license-plate recognition, WAMI, night-vision enhancement",
+          "category": "video",
+          "area_mm2": 0.22,
+          "power_mw": 8.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "sram_scratchpad",
+          "description": "On-chip SRAM scratchpad for tiles, line buffers, masks, temporary images, and accelerator working sets.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "SRAM, scratchpad, local memory, line buffer, tile buffer, mask buffer",
+          "area": "0.45 mm^2",
+          "power": "10mw",
+          "typical_application_scenarios": "Morphology, filtering, adaptive thresholding, histogram equalization, and WAMI frame processing",
+          "category": "bus",
+          "area_mm2": 0.45,
+          "power_mw": 10.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "axi_dma_interconnect",
+          "description": "AXI interconnect with DMA-friendly memory paths for CPU, accelerators, frame buffers, and external memory.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "AXI interconnect, DMA path, shared memory, accelerator memory access, high bandwidth",
+          "area": "0.28 mm^2",
+          "power": "9mw",
+          "typical_application_scenarios": "Image-processing SoCs with multiple memory-mapped accelerators",
+          "category": "bus",
+          "area_mm2": 0.28,
+          "power_mw": 9.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "axi_lite_ctrl",
+          "description": "AXI-Lite control interface for memory-mapped accelerator configuration, start, done, and status registers.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "AXI-Lite, memory-mapped control, accelerator registers, start done status",
+          "area": "0.06 mm^2",
+          "power": "1.5mw",
+          "typical_application_scenarios": "CPU-controlled HLS accelerators in ESP-style SoC integration",
+          "category": "bus",
+          "area_mm2": 0.06,
+          "power_mw": 1.5,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        }
+      ],
+      "unmatched_requirements": [],
+      "deployment": {
+        "auto_deployable_ip_ids": [],
+        "recommendation_only_ip_ids": [
+          "mipi_csi2",
+          "i2c",
+          "ethernet",
+          "performance_counter",
+          "frame_buffer",
+          "sram_scratchpad",
+          "axi_dma_interconnect",
+          "axi_lite_ctrl"
+        ],
+        "note": "Only IPs with actual registered adapter code may enter automatic deployment."
+      },
+      "area_accounting": {
+        "unit": "mm^2",
+        "reusable_ip_area_mm2": 1.49,
+        "cpu_cache_interconnect_area_mm2": null,
+        "accelerator_area_mm2": null,
+        "total_soc_area_mm2": null,
+        "note": "This manifest accounts only reusable IP recommendations. CPU, cache, interconnect, and accelerator areas are left null to avoid double counting with later PPA/DSE results."
+      },
+      "power_accounting": {
+        "unit": "mW",
+        "reusable_ip_power_mw": 48.0,
+        "cpu_cache_interconnect_power_mw": null,
+        "accelerator_power_mw": null,
+        "total_soc_power_mw": null
+      },
+      "export_contract": {
+        "downstream_flow_integrated": false,
+        "current_script_invokes_downstream_flow": false,
+        "exported_constraint_fields": [
+          "area_limit_mm2",
+          "cpu_candidates",
+          "fixed_cpu"
+        ],
+        "unsupported_hard_constraints": [],
+        "note": "This file records constraints and CPU candidates for possible later use, but this requirements-analysis script does not call or modify map/dse/finalize."
+      },
+      "feasibility": {
+        "status": "candidate_manifest",
+        "hard_errors": [],
+        "warnings": []
+      }
+    },
+    "recognition": {
+      "schema_version": "socpilot.requirements_manifest.v1",
+      "stage": "requirements_analysis",
+      "source_requirement_path": "/home/hws/workspace/soc_script/1.requirements_analysis/example_input/benchmarks/recognition_requirements.json",
+      "structured_requirement": {
+        "description": "An industrial green-marker localization node attached to a conveyor or positioning fixture. An external smart-camera module delivers already formatted BGR frames through SPI. The node converts BGR to HSV, thresholds the configured green range, dilates the mask, and filters connected regions by geometry to report target presence and center coordinates over UART. It is a color/region detector, not a neural-network classifier or license-plate OCR engine. The production interface carries compact coordinates, without a local video display.",
+        "performance": [
+          {
+            "clock_frequency": "75 MHz target",
+            "power": "under 1.5W",
+            "area": "under 25 mm^2"
+          }
+        ],
+        "technology": "28nm",
+        "benchmark_context": {
+          "source": "5.benchmark/recognition/source_code/recognition.c",
+          "workload": "Current source defaults: 320x240 BGR input with three 8-bit channels. The built-in test constructs a green rectangle and prints detection status and center coordinates.",
+          "scenario_status": "Proposed SPI/UART deployment; the benchmark currently constructs its input in memory and does not implement the physical camera link.",
+          "validation_target": "Compare target presence and integer center coordinates against the CPU reference; compare intermediate masks when validating an accelerator.",
+          "resource_note": "Retain the existing experimental resource limits. Green-marker localization does not imply a measured conveyor speed or a guaranteed real-time deadline."
+        },
+        "functional_requirements": [
+          {
+            "communication": [
+              {
+                "demand": "SPI formatted-frame ingress",
+                "requirements": "Require an SPI slave interface for receiving fixed-length 320x240 BGR frames from an external camera processor. The external processor owns the sensor, exposure and pixel formatting. Do not substitute I2C sensor control or a MIPI raw-camera receiver for SPI frame input."
+              },
+              {
+                "demand": "UART coordinate reporting",
+                "requirements": "Require a UART interface for target-present flags, integer X/Y coordinates and threshold configuration. No continuous frame transmission or Ethernet network stack is required."
+              }
+            ],
+            "debug": [
+              {
+                "demand": "Manufacturing debug port",
+                "requirements": "Require JTAG debug access for CPU bring-up, firmware inspection and detector validation. A bus trace recorder is not a required production component."
+              }
+            ],
+            "analog": [
+              {
+                "demand": "Not needed",
+                "requirements": "The external camera module digitizes the image; no on-chip ADC is needed."
+              }
+            ],
+            "audio": [
+              {
+                "demand": "Not needed",
+                "requirements": "The node reports coordinates and has no audio function."
+              }
+            ],
+            "video": [
+              {
+                "demand": "BGR frame staging",
+                "requirements": "Require a frame buffer for a single 320x240 BGR image with deterministic row stride. Color conversion and mask morphology remain application processing functions; do not require a reusable ISP or display IP to perform them."
+              }
+            ],
+            "bus": [
+              {
+                "demand": "Detection scratchpad",
+                "requirements": "Require local SRAM scratchpad access for HSV data, the binary mask and dilation temporary storage; preserve byte-addressed arrays."
+              },
+              {
+                "demand": "Detector control interface",
+                "requirements": "Require AXI-Lite control and status registers for CPU-invoked processing, with completion visible before reading coordinates."
+              }
+            ]
+          }
+        ]
+      },
+      "constraints": {
+        "area_limit_mm2": 25.0,
+        "power_limit_mw": 1500.0,
+        "cpu_candidates": [
+          "ariane",
+          "ibex",
+          "leon3"
+        ],
+        "fixed_cpu": null,
+        "parameter_priority": [
+          "CLI arguments",
+          "structured requirement performance fields",
+          "unknown/null when unspecified"
+        ],
+        "supported_downstream_constraints": [
+          "area_limit_mm2",
+          "cpu_candidates",
+          "fixed_cpu"
+        ]
+      },
+      "cpu_selection": {
+        "policy": "candidate_set_for_later_dse",
+        "fixed_cpu": null,
+        "candidates": [
+          "ariane",
+          "ibex",
+          "leon3"
+        ],
+        "final_cpu": null,
+        "note": "This stage keeps CPU candidates when the user does not fix a CPU. Final CPU selection is expected from a later DSE stage, but this script does not invoke that stage."
+      },
+      "selected_reusable_ips": [
+        {
+          "id": "uart",
+          "description": "This UART is able to Transmit/Receive bytes in the configuration: 1 start bit - no parity - 1 stop bit.",
+          "function": "communication",
+          "technology": "28 nm",
+          "features": "serial,Short-distance transmission, low real-time requirements,simple",
+          "area": "0.05 mm^2",
+          "power": "2mw",
+          "typical_application_scenarios": "GPS_module ,serial communication",
+          "category": "communication",
+          "area_mm2": 0.05,
+          "power_mw": 2.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "frame_buffer",
+          "description": "Frame-buffer controller for storing, reading, and double-buffering image frames in on-chip SRAM or external memory.",
+          "function": "video",
+          "technology": "28 nm",
+          "features": "frame buffer, double buffering, image memory, line stride, pixel storage",
+          "area": "0.22 mm^2",
+          "power": "8mw",
+          "typical_application_scenarios": "Camera pipelines, document scanning, license-plate recognition, WAMI, night-vision enhancement",
+          "category": "video",
+          "area_mm2": 0.22,
+          "power_mw": 8.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "axi_lite_ctrl",
+          "description": "AXI-Lite control interface for memory-mapped accelerator configuration, start, done, and status registers.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "AXI-Lite, memory-mapped control, accelerator registers, start done status",
+          "area": "0.06 mm^2",
+          "power": "1.5mw",
+          "typical_application_scenarios": "CPU-controlled HLS accelerators in ESP-style SoC integration",
+          "category": "bus",
+          "area_mm2": 0.06,
+          "power_mw": 1.5,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        }
+      ],
+      "unmatched_requirements": [
+        "Require an SPI slave interface for receiving fixed-length 320x240 BGR frames from an external camera processor. The external processor owns the sensor, exposure and pixel formatting. Do not substitute I2C sensor control or a MIPI raw-camera receiver for SPI frame input.",
+        "Require JTAG debug access for CPU bring-up, firmware inspection and detector validation. A bus trace recorder is not a required production component.",
+        "Require local SRAM scratchpad access for HSV data, the binary mask and dilation temporary storage; preserve byte-addressed arrays."
+      ],
+      "deployment": {
+        "auto_deployable_ip_ids": [],
+        "recommendation_only_ip_ids": [
+          "uart",
+          "frame_buffer",
+          "axi_lite_ctrl"
+        ],
+        "note": "Only IPs with actual registered adapter code may enter automatic deployment."
+      },
+      "area_accounting": {
+        "unit": "mm^2",
+        "reusable_ip_area_mm2": 0.33,
+        "cpu_cache_interconnect_area_mm2": null,
+        "accelerator_area_mm2": null,
+        "total_soc_area_mm2": null,
+        "note": "This manifest accounts only reusable IP recommendations. CPU, cache, interconnect, and accelerator areas are left null to avoid double counting with later PPA/DSE results."
+      },
+      "power_accounting": {
+        "unit": "mW",
+        "reusable_ip_power_mw": 11.5,
+        "cpu_cache_interconnect_power_mw": null,
+        "accelerator_power_mw": null,
+        "total_soc_power_mw": null
+      },
+      "export_contract": {
+        "downstream_flow_integrated": false,
+        "current_script_invokes_downstream_flow": false,
+        "exported_constraint_fields": [
+          "area_limit_mm2",
+          "cpu_candidates",
+          "fixed_cpu"
+        ],
+        "unsupported_hard_constraints": [],
+        "note": "This file records constraints and CPU candidates for possible later use, but this requirements-analysis script does not call or modify map/dse/finalize."
+      },
+      "feasibility": {
+        "status": "blocked",
+        "hard_errors": [
+          "Some functional requirements have no matching reusable IP recommendation."
+        ],
+        "warnings": []
+      }
+    },
+    "scan": {
+      "schema_version": "socpilot.requirements_manifest.v1",
+      "stage": "requirements_analysis",
+      "source_requirement_path": "/home/hws/workspace/soc_script/1.requirements_analysis/example_input/benchmarks/scan_requirements.json",
+      "structured_requirement": {
+        "description": "A USB-connected desktop document-cleanup appliance for digitizing receipts and forms. A host scanner supplies digital RGB page images over USB; the appliance returns a cleaned binary mask and document bounding box over the same connection. The scan application performs grayscale conversion, histogram equalization, Sobel edge detection, adaptive thresholding, morphological closing, feature merging, and document-region extraction. Operation is page-triggered, with no continuous video capture or local display. OCR and text recognition are outside this application's scope.",
+        "performance": [
+          {
+            "clock_frequency": "75 MHz target",
+            "power": "under 1.5W",
+            "area": "under 25 mm^2"
+          }
+        ],
+        "technology": "28nm",
+        "benchmark_context": {
+          "source": "5.benchmark/scan/source_code/scan.c",
+          "workload": "Current source defaults: 256x256 RGB input, 8-bit channels; binary mask and four-coordinate bounding box outputs. The host test reads PPM/PGM or uses a built-in image.",
+          "scenario_status": "Proposed deployment requirements derived from the application; the benchmark does not implement USB transport.",
+          "validation_target": "Compare the output mask, bounding box, active-pixel count and checksum against the CPU reference using the same input.",
+          "resource_note": "Preserve the existing 75 MHz, 28nm and 25 mm^2 experimental settings; no new measured throughput or page-rate claim."
+        },
+        "functional_requirements": [
+          {
+            "communication": [
+              {
+                "demand": "USB page input and result output",
+                "requirements": "Require a USB device controller for host-to-device RGB page transfer and device-to-host binary masks and bounding boxes. The host owns scanner acquisition. SPI, I2C, UART and Ethernet are not substitutes for this USB data connection."
+              },
+              {
+                "demand": "Page-buffer DMA",
+                "requirements": "Require memory-to-stream and stream-to-memory DMA with explicit transfer lengths for page input and mask output; notify the CPU at page-transfer completion."
+              }
+            ],
+            "debug": [
+              {
+                "demand": "Page-processing latency measurement",
+                "requirements": "Require hardware cycle and transaction counters to measure page transfer and processing time; continuous instruction trace is not required."
+              }
+            ],
+            "analog": [
+              {
+                "demand": "Not needed",
+                "requirements": "Input is already digitized by the external scanner; no scanner ADC or analog image frontend is required."
+              }
+            ],
+            "audio": [
+              {
+                "demand": "Not needed",
+                "requirements": "Document cleanup has no audio input or output."
+              }
+            ],
+            "video": [
+              {
+                "demand": "Page image storage",
+                "requirements": "Require frame-buffer storage with line-stride handling for one RGB page and its grayscale and binary processing buffers. The current benchmark uses 256x256 pixels. No MIPI sensor receiver, display controller, video codec or OCR IP is required."
+              }
+            ],
+            "bus": [
+              {
+                "demand": "Local document working memory",
+                "requirements": "Require SRAM scratchpad storage for grayscale images, binary masks and neighborhood-processing temporary buffers. Size it from the application arrays; do not infer capacity from a generic IP name."
+              },
+              {
+                "demand": "Page-engine control registers",
+                "requirements": "Require AXI-Lite memory-mapped start, completion and status registers for CPU-controlled page processing."
+              }
+            ]
+          }
+        ]
+      },
+      "constraints": {
+        "area_limit_mm2": 25.0,
+        "power_limit_mw": 1500.0,
+        "cpu_candidates": [
+          "ariane",
+          "ibex",
+          "leon3"
+        ],
+        "fixed_cpu": null,
+        "parameter_priority": [
+          "CLI arguments",
+          "structured requirement performance fields",
+          "unknown/null when unspecified"
+        ],
+        "supported_downstream_constraints": [
+          "area_limit_mm2",
+          "cpu_candidates",
+          "fixed_cpu"
+        ]
+      },
+      "cpu_selection": {
+        "policy": "candidate_set_for_later_dse",
+        "fixed_cpu": null,
+        "candidates": [
+          "ariane",
+          "ibex",
+          "leon3"
+        ],
+        "final_cpu": null,
+        "note": "This stage keeps CPU candidates when the user does not fix a CPU. Final CPU selection is expected from a later DSE stage, but this script does not invoke that stage."
+      },
+      "selected_reusable_ips": [
+        {
+          "id": "performance_counter",
+          "description": "Hardware performance-counter block for counting cycles, memory transactions, accelerator invocations, and stalls.",
+          "function": "debug",
+          "technology": "28 nm",
+          "features": "cycle counter, transaction counter, accelerator profiling, runtime measurement",
+          "area": "0.04 mm^2",
+          "power": "1mw",
+          "typical_application_scenarios": "Benchmark measurement and hardware/software partitioning validation",
+          "category": "debug",
+          "area_mm2": 0.04,
+          "power_mw": 1.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "sram_scratchpad",
+          "description": "On-chip SRAM scratchpad for tiles, line buffers, masks, temporary images, and accelerator working sets.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "SRAM, scratchpad, local memory, line buffer, tile buffer, mask buffer",
+          "area": "0.45 mm^2",
+          "power": "10mw",
+          "typical_application_scenarios": "Morphology, filtering, adaptive thresholding, histogram equalization, and WAMI frame processing",
+          "category": "bus",
+          "area_mm2": 0.45,
+          "power_mw": 10.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "axi_lite_ctrl",
+          "description": "AXI-Lite control interface for memory-mapped accelerator configuration, start, done, and status registers.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "AXI-Lite, memory-mapped control, accelerator registers, start done status",
+          "area": "0.06 mm^2",
+          "power": "1.5mw",
+          "typical_application_scenarios": "CPU-controlled HLS accelerators in ESP-style SoC integration",
+          "category": "bus",
+          "area_mm2": 0.06,
+          "power_mw": 1.5,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        }
+      ],
+      "unmatched_requirements": [
+        "Require a USB device controller for host-to-device RGB page transfer and device-to-host binary masks and bounding boxes. The host owns scanner acquisition. SPI, I2C, UART and Ethernet are not substitutes for this USB data connection.",
+        "Require memory-to-stream and stream-to-memory DMA with explicit transfer lengths for page input and mask output; notify the CPU at page-transfer completion.",
+        "Require frame-buffer storage with line-stride handling for one RGB page and its grayscale and binary processing buffers. The current benchmark uses 256x256 pixels. No MIPI sensor receiver, display controller, video codec or OCR IP is required."
+      ],
+      "deployment": {
+        "auto_deployable_ip_ids": [],
+        "recommendation_only_ip_ids": [
+          "performance_counter",
+          "sram_scratchpad",
+          "axi_lite_ctrl"
+        ],
+        "note": "Only IPs with actual registered adapter code may enter automatic deployment."
+      },
+      "area_accounting": {
+        "unit": "mm^2",
+        "reusable_ip_area_mm2": 0.55,
+        "cpu_cache_interconnect_area_mm2": null,
+        "accelerator_area_mm2": null,
+        "total_soc_area_mm2": null,
+        "note": "This manifest accounts only reusable IP recommendations. CPU, cache, interconnect, and accelerator areas are left null to avoid double counting with later PPA/DSE results."
+      },
+      "power_accounting": {
+        "unit": "mW",
+        "reusable_ip_power_mw": 12.5,
+        "cpu_cache_interconnect_power_mw": null,
+        "accelerator_power_mw": null,
+        "total_soc_power_mw": null
+      },
+      "export_contract": {
+        "downstream_flow_integrated": false,
+        "current_script_invokes_downstream_flow": false,
+        "exported_constraint_fields": [
+          "area_limit_mm2",
+          "cpu_candidates",
+          "fixed_cpu"
+        ],
+        "unsupported_hard_constraints": [],
+        "note": "This file records constraints and CPU candidates for possible later use, but this requirements-analysis script does not call or modify map/dse/finalize."
+      },
+      "feasibility": {
+        "status": "blocked",
+        "hard_errors": [
+          "Some functional requirements have no matching reusable IP recommendation."
+        ],
+        "warnings": []
+      }
+    },
+    "wami": {
+      "schema_version": "socpilot.requirements_manifest.v1",
+      "stage": "requirements_analysis",
+      "source_requirement_path": "/home/hws/workspace/soc_script/1.requirements_analysis/example_input/benchmarks/wami_requirements.json",
+      "structured_requirement": {
+        "description": "An airborne wide-area imagery processing payload for on-board foreground detection from consecutive camera frames. The application debayers raw pixels, forms grayscale images, registers each frame against a template with iterative Lucas-Kanade processing, warps images, and updates persistent Gaussian-mixture background models to identify foreground pixels. A MIPI CSI-2 camera and I2C sensor control feed the payload; Ethernet carries foreground masks and registration/status records to an on-board mission computer. Temporal model state and multi-pass image access distinguish this workload from a single-frame detector. Video compression and object tracking are outside the implemented pipeline.",
+        "performance": [
+          {
+            "clock_frequency": "75 MHz target",
+            "power": "under 1.5W",
+            "area": "under 25 mm^2"
+          }
+        ],
+        "technology": "28nm",
+        "benchmark_context": {
+          "source": "5.benchmark/wami/source_code/wami.c and wami.h",
+          "workload": "Current synthetic test: three 36x36 Bayer source frames, a 32x32 processing region, five GMM models per pixel and 20 Lucas-Kanade iterations. Image and model processing use floating-point data.",
+          "scenario_status": "Airborne payload interfaces and external memory are proposed deployment requirements. The small synthetic benchmark does not demonstrate full-resolution wide-area throughput.",
+          "validation_target": "Compare foreground masks/counts, registration results and persistent model outputs with the CPU reference over the full frame sequence. Define floating-point tolerances before hardware acceptance.",
+          "resource_note": "DDR is a deployment capacity requirement for temporal frame/model state, not a claim that the current small test needs off-chip capacity. Retain the existing 25 mm^2 and 75 MHz targets."
+        },
+        "functional_requirements": [
+          {
+            "communication": [
+              {
+                "demand": "Raw airborne camera ingress",
+                "requirements": "Require a MIPI CSI-2 receiver for raw Bayer pixel streams with frame synchronization. Preserve raw samples for application-level debayering; a host command interface alone is insufficient."
+              },
+              {
+                "demand": "Payload sensor control",
+                "requirements": "Require I2C/SCCB sensor-register access for exposure, gain and frame timing on the airborne camera."
+              },
+              {
+                "demand": "Mission-computer data link",
+                "requirements": "Require Ethernet communication for foreground-mask blocks, registration records and configuration messages to an on-board mission computer. SPI or UART metadata links alone do not meet this network-interface requirement."
+              },
+              {
+                "demand": "Temporal-state DMA",
+                "requirements": "Require burst-capable streaming DMA to transfer current/reference frames and persistent GMM state between shared memory and processing units; preserve frame ordering."
+              }
+            ],
+            "debug": [
+              {
+                "demand": "Multi-stage execution tracing",
+                "requirements": "Require a timestamped trace monitor for CPU, DMA and processing events to diagnose iterative-registration stalls and frame-sequence processing. A plain serial console alone is insufficient."
+              }
+            ],
+            "analog": [
+              {
+                "demand": "Not needed",
+                "requirements": "The payload receives digitized Bayer samples; no analog acquisition frontend is required."
+              }
+            ],
+            "audio": [
+              {
+                "demand": "Not needed",
+                "requirements": "Airborne imagery analysis has no microphone, codec or audio output."
+              }
+            ],
+            "video": [
+              {
+                "demand": "Temporal frame-buffer management",
+                "requirements": "Require strided frame-buffer access to current and reference frames, with independent buffers retained across frames. Keep application debayering, registration and GMM processing in the software/accelerator flow; no video encoder or display controller is required."
+              }
+            ],
+            "bus": [
+              {
+                "demand": "External temporal-state memory",
+                "requirements": "Require a DDR memory controller for deployment-scale current/reference images and persistent per-pixel multi-model state. Capacity must be derived from deployment resolution and model count, not from an assumed fixed IP capacity."
+              },
+              {
+                "demand": "Multi-pass shared-memory fabric",
+                "requirements": "Require a burst-capable AXI interconnect for CPU, DMA, DDR and multiple processing masters accessing frame and model buffers."
+              },
+              {
+                "demand": "Registration tile scratchpad",
+                "requirements": "Require local SRAM scratchpad for gradient tiles, warped-image tiles and small registration matrices, separate from persistent external frame/model storage."
+              },
+              {
+                "demand": "Frame-stage register interface",
+                "requirements": "Require AXI-Lite configuration and completion registers for sequencing frame-processing stages."
+              }
+            ]
+          }
+        ]
+      },
+      "constraints": {
+        "area_limit_mm2": 25.0,
+        "power_limit_mw": 1500.0,
+        "cpu_candidates": [
+          "ariane",
+          "ibex",
+          "leon3"
+        ],
+        "fixed_cpu": null,
+        "parameter_priority": [
+          "CLI arguments",
+          "structured requirement performance fields",
+          "unknown/null when unspecified"
+        ],
+        "supported_downstream_constraints": [
+          "area_limit_mm2",
+          "cpu_candidates",
+          "fixed_cpu"
+        ]
+      },
+      "cpu_selection": {
+        "policy": "candidate_set_for_later_dse",
+        "fixed_cpu": null,
+        "candidates": [
+          "ariane",
+          "ibex",
+          "leon3"
+        ],
+        "final_cpu": null,
+        "note": "This stage keeps CPU candidates when the user does not fix a CPU. Final CPU selection is expected from a later DSE stage, but this script does not invoke that stage."
+      },
+      "selected_reusable_ips": [
+        {
+          "id": "camera_i2c_ctrl",
+          "description": "I2C/SCCB camera-control interface for configuring image sensors, exposure, gain, frame timing, and capture modes.",
+          "function": "communication",
+          "technology": "28 nm",
+          "features": "camera control, I2C, SCCB, exposure control, sensor register configuration",
+          "area": "0.04 mm^2",
+          "power": "1mw",
+          "typical_application_scenarios": "Camera sensor bring-up and runtime control in edge-vision SoCs",
+          "category": "communication",
+          "area_mm2": 0.04,
+          "power_mw": 1.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "ethernet",
+          "description": "This Ethernet IP provides network connectivity according to Ethernet standards. It supports data transfer over wired networks, handling packet encapsulation, decapsulation, and media access control.",
+          "function": "communication",
+          "technology": "28 nm",
+          "features": "high - speed, network - based, supports various Ethernet standards (e.g., 10/100/1000BASE - T)",
+          "area": "0.2 mm^2",
+          "power": "10mw",
+          "typical_application_scenarios": "Connecting devices to local area networks (LANs), internet - connected devices, network - attached storage (NAS)",
+          "category": "communication",
+          "area_mm2": 0.2,
+          "power_mw": 10.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "trace_monitor",
+          "description": "Lightweight trace monitor for profiling CPU, bus, DMA, and accelerator execution events.",
+          "function": "debug",
+          "technology": "28 nm",
+          "features": "trace, profiling, event counter, timestamp, debug visibility",
+          "area": "0.08 mm^2",
+          "power": "2mw",
+          "typical_application_scenarios": "Performance validation and field diagnostics for generated CPU-accelerator SoCs",
+          "category": "debug",
+          "area_mm2": 0.08,
+          "power_mw": 2.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "frame_buffer",
+          "description": "Frame-buffer controller for storing, reading, and double-buffering image frames in on-chip SRAM or external memory.",
+          "function": "video",
+          "technology": "28 nm",
+          "features": "frame buffer, double buffering, image memory, line stride, pixel storage",
+          "area": "0.22 mm^2",
+          "power": "8mw",
+          "typical_application_scenarios": "Camera pipelines, document scanning, license-plate recognition, WAMI, night-vision enhancement",
+          "category": "video",
+          "area_mm2": 0.22,
+          "power_mw": 8.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "ddr_memory_controller",
+          "description": "External DDR memory controller for large image frames, video buffers, and multi-stage image-processing pipelines.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "DDR, external memory, large frame buffer, high capacity, burst access",
+          "area": "0.55 mm^2",
+          "power": "18mw",
+          "typical_application_scenarios": "WAMI, nightvision, scan, recognition, and other frame-oriented edge applications",
+          "category": "video",
+          "area_mm2": 0.55,
+          "power_mw": 18.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "axi_dma_interconnect",
+          "description": "AXI interconnect with DMA-friendly memory paths for CPU, accelerators, frame buffers, and external memory.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "AXI interconnect, DMA path, shared memory, accelerator memory access, high bandwidth",
+          "area": "0.28 mm^2",
+          "power": "9mw",
+          "typical_application_scenarios": "Image-processing SoCs with multiple memory-mapped accelerators",
+          "category": "bus",
+          "area_mm2": 0.28,
+          "power_mw": 9.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "sram_scratchpad",
+          "description": "On-chip SRAM scratchpad for tiles, line buffers, masks, temporary images, and accelerator working sets.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "SRAM, scratchpad, local memory, line buffer, tile buffer, mask buffer",
+          "area": "0.45 mm^2",
+          "power": "10mw",
+          "typical_application_scenarios": "Morphology, filtering, adaptive thresholding, histogram equalization, and WAMI frame processing",
+          "category": "bus",
+          "area_mm2": 0.45,
+          "power_mw": 10.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "axi_lite_ctrl",
+          "description": "AXI-Lite control interface for memory-mapped accelerator configuration, start, done, and status registers.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "AXI-Lite, memory-mapped control, accelerator registers, start done status",
+          "area": "0.06 mm^2",
+          "power": "1.5mw",
+          "typical_application_scenarios": "CPU-controlled HLS accelerators in ESP-style SoC integration",
+          "category": "bus",
+          "area_mm2": 0.06,
+          "power_mw": 1.5,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        }
+      ],
+      "unmatched_requirements": [
+        "Require a MIPI CSI-2 receiver for raw Bayer pixel streams with frame synchronization. Preserve raw samples for application-level debayering; a host command interface alone is insufficient.",
+        "Require burst-capable streaming DMA to transfer current/reference frames and persistent GMM state between shared memory and processing units; preserve frame ordering."
+      ],
+      "deployment": {
+        "auto_deployable_ip_ids": [],
+        "recommendation_only_ip_ids": [
+          "camera_i2c_ctrl",
+          "ethernet",
+          "trace_monitor",
+          "frame_buffer",
+          "ddr_memory_controller",
+          "axi_dma_interconnect",
+          "sram_scratchpad",
+          "axi_lite_ctrl"
+        ],
+        "note": "Only IPs with actual registered adapter code may enter automatic deployment."
+      },
+      "area_accounting": {
+        "unit": "mm^2",
+        "reusable_ip_area_mm2": 1.8800000000000001,
+        "cpu_cache_interconnect_area_mm2": null,
+        "accelerator_area_mm2": null,
+        "total_soc_area_mm2": null,
+        "note": "This manifest accounts only reusable IP recommendations. CPU, cache, interconnect, and accelerator areas are left null to avoid double counting with later PPA/DSE results."
+      },
+      "power_accounting": {
+        "unit": "mW",
+        "reusable_ip_power_mw": 59.5,
+        "cpu_cache_interconnect_power_mw": null,
+        "accelerator_power_mw": null,
+        "total_soc_power_mw": null
+      },
+      "export_contract": {
+        "downstream_flow_integrated": false,
+        "current_script_invokes_downstream_flow": false,
+        "exported_constraint_fields": [
+          "area_limit_mm2",
+          "cpu_candidates",
+          "fixed_cpu"
+        ],
+        "unsupported_hard_constraints": [],
+        "note": "This file records constraints and CPU candidates for possible later use, but this requirements-analysis script does not call or modify map/dse/finalize."
+      },
+      "feasibility": {
+        "status": "blocked",
+        "hard_errors": [
+          "Some functional requirements have no matching reusable IP recommendation."
+        ],
+        "warnings": []
+      }
+    },
+    "nightvision": {
+      "schema_version": "socpilot.requirements_manifest.v1",
+      "stage": "requirements_analysis",
+      "source_requirement_path": "/home/hws/workspace/soc_script/1.requirements_analysis/example_input/benchmarks/nightvision_requirements.json",
+      "structured_requirement": {
+        "description": "A local dual-sensor night-viewing terminal for low-light inspection. A low-light visible camera and a co-registered infrared module provide synchronized digital intensity frames; the application applies median filtering, histogram equalization, convolution, wavelet processing and Laplacian/wavelet fusion, then displays the enhanced or fused image locally. The proposed terminal uses two MIPI CSI-2 inputs, I2C/SCCB sensor configuration and SPI commands from a local user-control panel. It requires paired-frame buffering and display output rather than a network imagery service. Sensor calibration and geometric registration are upstream responsibilities.",
+        "performance": [
+          {
+            "clock_frequency": "75 MHz target",
+            "power": "under 1.5W",
+            "area": "under 13 mm^2"
+          }
+        ],
+        "technology": "28nm",
+        "benchmark_context": {
+          "source": "5.benchmark/nightvision/source_code/nightvision.c and nightvision.h",
+          "workload": "Current main uses two synthetic 40x30 intensity images represented as float arrays, with default 10-bit input/output intensity ranges. It exercises single-image enhancement and two-image fusion ensembles.",
+          "scenario_status": "The visible/infrared pairing is a proposed use of the two-input fusion code, not evidence of real sensor capture or calibrated multispectral validation.",
+          "validation_target": "Compare enhancement and fusion image outputs with the CPU reference on identical input pairs; check ensemble checksums and define floating-point tolerances before acceptance. Real low-light image quality requires separate data.",
+          "resource_note": "Local display and dual acquisition are proposed integration requirements. Use the 13 mm^2 small-CPU budget for Ibex-oriented mapping, together with the 75 MHz and 28nm experiment settings, without claiming an achieved video frame rate."
+        },
+        "functional_requirements": [
+          {
+            "communication": [
+              {
+                "demand": "Paired digital sensor acquisition",
+                "requirements": "Require two MIPI CSI-2 camera receive channels, either as two instances or a documented dual-channel receiver, with frame markers suitable for pairing visible and infrared intensity images. A single unspecified receiver does not establish dual-input support."
+              },
+              {
+                "demand": "Two-sensor exposure and gain control",
+                "requirements": "Require I2C/SCCB sensor-register access to both independently addressed camera modules for exposure, gain and capture-mode configuration."
+              },
+              {
+                "demand": "Local viewing-panel control",
+                "requirements": "Require an SPI interface for user-panel commands selecting enhancement/fusion mode and output settings. The panel carries commands, not full-rate image pixels; Ethernet and USB are not required."
+              }
+            ],
+            "debug": [
+              {
+                "demand": "Fusion and display latency counters",
+                "requirements": "Require hardware cycle and transaction counters to measure enhancement/fusion processing and display-buffer turnover."
+              }
+            ],
+            "analog": [
+              {
+                "demand": "Not needed",
+                "requirements": "Both sensor modules deliver digital intensity samples; no on-chip analog image-sensor frontend is required."
+              }
+            ],
+            "audio": [
+              {
+                "demand": "Not needed",
+                "requirements": "This viewing terminal has no audio acquisition or playback requirement."
+              }
+            ],
+            "video": [
+              {
+                "demand": "Paired-frame buffering",
+                "requirements": "Require independent strided frame buffers for the two input streams and an output ping-pong buffer. Preserve frame pairing while filtering and fusion use intermediate images."
+              },
+              {
+                "demand": "Local enhanced-image display",
+                "requirements": "Require a video-output/display controller that reads the enhanced or fused frame buffer and emits a pixel stream to a local display. A frame-buffer storage controller alone does not satisfy display output."
+              }
+            ],
+            "bus": [
+              {
+                "demand": "Fusion working-set storage",
+                "requirements": "Require SRAM scratchpad space for floating-point image intermediates, histogram/CDF/LUT arrays, convolution windows and transform workspace; derive capacity from the chosen resolution."
+              },
+              {
+                "demand": "Capture-processing-display memory path",
+                "requirements": "Require AXI shared-memory burst access between paired-frame storage, processing units and the display output controller."
+              },
+              {
+                "demand": "Enhancement-mode control registers",
+                "requirements": "Require AXI-Lite configuration, start, done and status registers for CPU sequencing of enhancement and fusion."
+              }
+            ]
+          }
+        ]
+      },
+      "constraints": {
+        "area_limit_mm2": 13.0,
+        "power_limit_mw": 1500.0,
+        "cpu_candidates": [
+          "ariane",
+          "ibex",
+          "leon3"
+        ],
+        "fixed_cpu": null,
+        "parameter_priority": [
+          "CLI arguments",
+          "structured requirement performance fields",
+          "unknown/null when unspecified"
+        ],
+        "supported_downstream_constraints": [
+          "area_limit_mm2",
+          "cpu_candidates",
+          "fixed_cpu"
+        ]
+      },
+      "cpu_selection": {
+        "policy": "candidate_set_for_later_dse",
+        "fixed_cpu": null,
+        "candidates": [
+          "ariane",
+          "ibex",
+          "leon3"
+        ],
+        "final_cpu": null,
+        "note": "This stage keeps CPU candidates when the user does not fix a CPU. Final CPU selection is expected from a later DSE stage, but this script does not invoke that stage."
+      },
+      "selected_reusable_ips": [
+        {
+          "id": "i2c",
+          "description": "The I2C IP is designed for two - wire serial communication. It allows multiple devices to be connected on the same bus in a multi - master, multi - slave configuration. Communication is based on addressing and data transfer packets.",
+          "function": "communication",
+          "technology": "28 nm",
+          "features": "two - wire, multi - master, multi - slave, low - speed, low - power",
+          "area": "0.06 mm^2",
+          "power": "1.5mw",
+          "typical_application_scenarios": "Connecting EEPROMs, sensors like temperature and humidity sensors, LCD drivers",
+          "category": "communication",
+          "area_mm2": 0.06,
+          "power_mw": 1.5,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "performance_counter",
+          "description": "Hardware performance-counter block for counting cycles, memory transactions, accelerator invocations, and stalls.",
+          "function": "debug",
+          "technology": "28 nm",
+          "features": "cycle counter, transaction counter, accelerator profiling, runtime measurement",
+          "area": "0.04 mm^2",
+          "power": "1mw",
+          "typical_application_scenarios": "Benchmark measurement and hardware/software partitioning validation",
+          "category": "debug",
+          "area_mm2": 0.04,
+          "power_mw": 1.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "video_output",
+          "description": "Video output and debug-display controller for streaming processed frames to a host, display, or capture interface.",
+          "function": "video",
+          "technology": "28 nm",
+          "features": "processed-frame output, debug visualization, pixel stream output, display controller",
+          "area": "0.18 mm^2",
+          "power": "6mw",
+          "typical_application_scenarios": "Debug visualization for recognition, scan, nightvision, and plate detection",
+          "category": "debug",
+          "area_mm2": 0.18,
+          "power_mw": 6.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "sram_scratchpad",
+          "description": "On-chip SRAM scratchpad for tiles, line buffers, masks, temporary images, and accelerator working sets.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "SRAM, scratchpad, local memory, line buffer, tile buffer, mask buffer",
+          "area": "0.45 mm^2",
+          "power": "10mw",
+          "typical_application_scenarios": "Morphology, filtering, adaptive thresholding, histogram equalization, and WAMI frame processing",
+          "category": "bus",
+          "area_mm2": 0.45,
+          "power_mw": 10.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "axi_dma_interconnect",
+          "description": "AXI interconnect with DMA-friendly memory paths for CPU, accelerators, frame buffers, and external memory.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "AXI interconnect, DMA path, shared memory, accelerator memory access, high bandwidth",
+          "area": "0.28 mm^2",
+          "power": "9mw",
+          "typical_application_scenarios": "Image-processing SoCs with multiple memory-mapped accelerators",
+          "category": "bus",
+          "area_mm2": 0.28,
+          "power_mw": 9.0,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        },
+        {
+          "id": "axi_lite_ctrl",
+          "description": "AXI-Lite control interface for memory-mapped accelerator configuration, start, done, and status registers.",
+          "function": "bus",
+          "technology": "28 nm",
+          "features": "AXI-Lite, memory-mapped control, accelerator registers, start done status",
+          "area": "0.06 mm^2",
+          "power": "1.5mw",
+          "typical_application_scenarios": "CPU-controlled HLS accelerators in ESP-style SoC integration",
+          "category": "bus",
+          "area_mm2": 0.06,
+          "power_mw": 1.5,
+          "deployment_status": "recommendation_only",
+          "deployment_note": "Recommended by the IP database, but no ESP adapter is registered in this requirements-analysis stage."
+        }
+      ],
+      "unmatched_requirements": [
+        "Require two MIPI CSI-2 camera receive channels, either as two instances or a documented dual-channel receiver, with frame markers suitable for pairing visible and infrared intensity images. A single unspecified receiver does not establish dual-input support.",
+        "Require an SPI interface for user-panel commands selecting enhancement/fusion mode and output settings. The panel carries commands, not full-rate image pixels; Ethernet and USB are not required.",
+        "Require independent strided frame buffers for the two input streams and an output ping-pong buffer. Preserve frame pairing while filtering and fusion use intermediate images."
+      ],
+      "deployment": {
+        "auto_deployable_ip_ids": [],
+        "recommendation_only_ip_ids": [
+          "i2c",
+          "performance_counter",
+          "video_output",
+          "sram_scratchpad",
+          "axi_dma_interconnect",
+          "axi_lite_ctrl"
+        ],
+        "note": "Only IPs with actual registered adapter code may enter automatic deployment."
+      },
+      "area_accounting": {
+        "unit": "mm^2",
+        "reusable_ip_area_mm2": 1.07,
+        "cpu_cache_interconnect_area_mm2": null,
+        "accelerator_area_mm2": null,
+        "total_soc_area_mm2": null,
+        "note": "This manifest accounts only reusable IP recommendations. CPU, cache, interconnect, and accelerator areas are left null to avoid double counting with later PPA/DSE results."
+      },
+      "power_accounting": {
+        "unit": "mW",
+        "reusable_ip_power_mw": 29.0,
+        "cpu_cache_interconnect_power_mw": null,
+        "accelerator_power_mw": null,
+        "total_soc_power_mw": null
+      },
+      "export_contract": {
+        "downstream_flow_integrated": false,
+        "current_script_invokes_downstream_flow": false,
+        "exported_constraint_fields": [
+          "area_limit_mm2",
+          "cpu_candidates",
+          "fixed_cpu"
+        ],
+        "unsupported_hard_constraints": [],
+        "note": "This file records constraints and CPU candidates for possible later use, but this requirements-analysis script does not call or modify map/dse/finalize."
+      },
+      "feasibility": {
+        "status": "blocked",
+        "hard_errors": [
+          "Some functional requirements have no matching reusable IP recommendation."
+        ],
+        "warnings": []
+      }
+    }
+  }
+}

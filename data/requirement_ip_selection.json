@@ -1,0 +1,225 @@
+{
+  "source": {
+    "host": "10.156.112.71",
+    "repository": "/home/huwanshan/copy/soc_srcipt2",
+    "revision": "338d67f5adf790f06b8a14b23a0aceffd5cf0da7",
+    "note": "Five manifests recovered from the same historical source revision; counts checked against the original manuscript data."
+  },
+  "cases": [
+    {
+      "application": "plate_recognition",
+      "source_path": "5.benchmark/plate_new/report/requirements_analysis/soc_manifest.json",
+      "source_sha256": "c1a5ba334fb13e2d166e41c38f634274566219405641494c7be04c5fd01a4677",
+      "description": "A single-camera parking-entrance plate-localization appliance. A MIPI CSI-2 camera supplies frames and is configured through I2C/SCCB; Ethernet connects the appliance to a parking-management host. The application converts the image to grayscale and uses top-hat/black-hat morphology, Sobel filtering, smoothing, thresholding and feature combination to extract likely plate regions. The host receives candidate-mask or region data for downstream handling. Character segmentation, OCR, authorization decisions and barrier actuation are outside the current benchmark.",
+      "scenario": "Single-camera parking node\nCamera input / Ethernet",
+      "selected_ips": [
+        {
+          "id": "mipi_csi2",
+          "label": "MIPI CSI-2"
+        },
+        {
+          "id": "i2c",
+          "label": "I2C"
+        },
+        {
+          "id": "ethernet",
+          "label": "Ethernet"
+        },
+        {
+          "id": "performance_counter",
+          "label": "Performance counter"
+        },
+        {
+          "id": "frame_buffer",
+          "label": "Frame buffer"
+        },
+        {
+          "id": "sram_scratchpad",
+          "label": "SRAM scratchpad"
+        },
+        {
+          "id": "axi_dma_interconnect",
+          "label": "AXI DMA interconnect"
+        },
+        {
+          "id": "axi_lite_ctrl",
+          "label": "AXI-Lite control"
+        }
+      ],
+      "missing_capabilities": [],
+      "deployment_status": "recommendation_only"
+    },
+    {
+      "application": "recognition",
+      "source_path": "5.benchmark/recognition/report/requirements_analysis/soc_manifest.json",
+      "source_sha256": "0e9e59842a55205946fac85a1babf584d641370d6f1a39eb094f80b0928fa9eb",
+      "description": "An industrial green-marker localization node attached to a conveyor or positioning fixture. An external smart-camera module delivers already formatted BGR frames through SPI. The node converts BGR to HSV, thresholds the configured green range, dilates the mask, and filters connected regions by geometry to report target presence and center coordinates over UART. It is a color/region detector, not a neural-network classifier or license-plate OCR engine. The production interface carries compact coordinates, without a local video display.",
+      "scenario": "Green-marker detector\nSPI input / UART output",
+      "selected_ips": [
+        {
+          "id": "uart",
+          "label": "UART"
+        },
+        {
+          "id": "frame_buffer",
+          "label": "Frame buffer"
+        },
+        {
+          "id": "axi_lite_ctrl",
+          "label": "AXI-Lite control"
+        }
+      ],
+      "missing_capabilities": [
+        {
+          "label": "SPI slave frame ingress",
+          "requirement": "Require an SPI slave interface for receiving fixed-length 320x240 BGR frames from an external camera processor. The external processor owns the sensor, exposure and pixel formatting. Do not substitute I2C sensor control or a MIPI raw-camera receiver for SPI frame input."
+        },
+        {
+          "label": "JTAG debug",
+          "requirement": "Require JTAG debug access for CPU bring-up, firmware inspection and detector validation. A bus trace recorder is not a required production component."
+        },
+        {
+          "label": "SRAM scratchpad access",
+          "requirement": "Require local SRAM scratchpad access for HSV data, the binary mask and dilation temporary storage; preserve byte-addressed arrays."
+        }
+      ],
+      "deployment_status": "recommendation_only"
+    },
+    {
+      "application": "scan",
+      "source_path": "5.benchmark/scan/report/requirements_analysis/soc_manifest.json",
+      "source_sha256": "e87c74cd72cf5752228f316b5a089c6d8ff1ef6939c695859eb360a0751b5097",
+      "description": "A USB-connected desktop document-cleanup appliance for digitizing receipts and forms. A host scanner supplies digital RGB page images over USB; the appliance returns a cleaned binary mask and document bounding box over the same connection. The scan application performs grayscale conversion, histogram equalization, Sobel edge detection, adaptive thresholding, morphological closing, feature merging, and document-region extraction. Operation is page-triggered, with no continuous video capture or local display. OCR and text recognition are outside this application's scope.",
+      "scenario": "USB document scanner\nPage input / mask output",
+      "selected_ips": [
+        {
+          "id": "performance_counter",
+          "label": "Performance counter"
+        },
+        {
+          "id": "sram_scratchpad",
+          "label": "SRAM scratchpad"
+        },
+        {
+          "id": "axi_lite_ctrl",
+          "label": "AXI-Lite control"
+        }
+      ],
+      "missing_capabilities": [
+        {
+          "label": "USB device controller",
+          "requirement": "Require a USB device controller for host-to-device RGB page transfer and device-to-host binary masks and bounding boxes. The host owns scanner acquisition. SPI, I2C, UART and Ethernet are not substitutes for this USB data connection."
+        },
+        {
+          "label": "Page-transfer DMA",
+          "requirement": "Require memory-to-stream and stream-to-memory DMA with explicit transfer lengths for page input and mask output; notify the CPU at page-transfer completion."
+        },
+        {
+          "label": "Page/frame buffering",
+          "requirement": "Require frame-buffer storage with line-stride handling for one RGB page and its grayscale and binary processing buffers. The current benchmark uses 256x256 pixels. No MIPI sensor receiver, display controller, video codec or OCR IP is required."
+        }
+      ],
+      "deployment_status": "recommendation_only"
+    },
+    {
+      "application": "wami",
+      "source_path": "5.benchmark/wami/report/requirements_analysis/soc_manifest.json",
+      "source_sha256": "bfce2effce84b1c71708c1c075cb4360dc16f128c45c0d77c80140dfc6e5ab71",
+      "description": "An airborne wide-area imagery processing payload for on-board foreground detection from consecutive camera frames. The application debayers raw pixels, forms grayscale images, registers each frame against a template with iterative Lucas-Kanade processing, warps images, and updates persistent Gaussian-mixture background models to identify foreground pixels. A MIPI CSI-2 camera and I2C sensor control feed the payload; Ethernet carries foreground masks and registration/status records to an on-board mission computer. Temporal model state and multi-pass image access distinguish this workload from a single-frame detector. Video compression and object tracking are outside the implemented pipeline.",
+      "scenario": "Airborne imaging payload\nRaw camera / Ethernet",
+      "selected_ips": [
+        {
+          "id": "camera_i2c_ctrl",
+          "label": "Camera I2C control"
+        },
+        {
+          "id": "ethernet",
+          "label": "Ethernet"
+        },
+        {
+          "id": "trace_monitor",
+          "label": "Trace monitor"
+        },
+        {
+          "id": "frame_buffer",
+          "label": "Frame buffer"
+        },
+        {
+          "id": "ddr_memory_controller",
+          "label": "DDR memory controller"
+        },
+        {
+          "id": "axi_dma_interconnect",
+          "label": "AXI DMA interconnect"
+        },
+        {
+          "id": "sram_scratchpad",
+          "label": "SRAM scratchpad"
+        },
+        {
+          "id": "axi_lite_ctrl",
+          "label": "AXI-Lite control"
+        }
+      ],
+      "missing_capabilities": [
+        {
+          "label": "Raw MIPI CSI-2 receiver",
+          "requirement": "Require a MIPI CSI-2 receiver for raw Bayer pixel streams with frame synchronization. Preserve raw samples for application-level debayering; a host command interface alone is insufficient."
+        },
+        {
+          "label": "Frame-ordered streaming DMA",
+          "requirement": "Require burst-capable streaming DMA to transfer current/reference frames and persistent GMM state between shared memory and processing units; preserve frame ordering."
+        }
+      ],
+      "deployment_status": "recommendation_only"
+    },
+    {
+      "application": "nightvision",
+      "source_path": "5.benchmark/nightvision/report/requirements_analysis/soc_manifest.json",
+      "source_sha256": "3d9fd22ff86203c57bd39aceaa604fa6b10cdd226fe0a0563d492aef9bee350f",
+      "description": "A local dual-sensor night-viewing terminal for low-light inspection. A low-light visible camera and a co-registered infrared module provide synchronized digital intensity frames; the application applies median filtering, histogram equalization, convolution, wavelet processing and Laplacian/wavelet fusion, then displays the enhanced or fused image locally. The proposed terminal uses two MIPI CSI-2 inputs, I2C/SCCB sensor configuration and SPI commands from a local user-control panel. It requires paired-frame buffering and display output rather than a network imagery service. Sensor calibration and geometric registration are upstream responsibilities.",
+      "scenario": "Dual-camera night viewer\nPaired input / local display",
+      "selected_ips": [
+        {
+          "id": "i2c",
+          "label": "I2C"
+        },
+        {
+          "id": "performance_counter",
+          "label": "Performance counter"
+        },
+        {
+          "id": "video_output",
+          "label": "Video output"
+        },
+        {
+          "id": "sram_scratchpad",
+          "label": "SRAM scratchpad"
+        },
+        {
+          "id": "axi_dma_interconnect",
+          "label": "AXI DMA interconnect"
+        },
+        {
+          "id": "axi_lite_ctrl",
+          "label": "AXI-Lite control"
+        }
+      ],
+      "missing_capabilities": [
+        {
+          "label": "Dual MIPI CSI-2 reception",
+          "requirement": "Require two MIPI CSI-2 camera receive channels, either as two instances or a documented dual-channel receiver, with frame markers suitable for pairing visible and infrared intensity images. A single unspecified receiver does not establish dual-input support."
+        },
+        {
+          "label": "SPI panel control",
+          "requirement": "Require an SPI interface for user-panel commands selecting enhancement/fusion mode and output settings. The panel carries commands, not full-rate image pixels; Ethernet and USB are not required."
+        },
+        {
+          "label": "Paired-frame buffering",
+          "requirement": "Require independent strided frame buffers for the two input streams and an output ping-pong buffer. Preserve frame pairing while filtering and fusion use intermediate images."
+        }
+      ],
+      "deployment_status": "recommendation_only"
+    }
+  ]
+}

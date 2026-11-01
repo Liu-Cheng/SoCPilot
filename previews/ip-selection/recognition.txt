@@ -1,0 +1,25 @@
+# 1. SoC description (abridged)
+"Industrial green-marker localization:
+ BGR frames arrive over SPI; target
+ coordinates are reported over UART."
+technology: 28nm; clock target: 75 MHz
+
+# 2. Structured requirements (abridged)
+interfaces: SPI slave input / UART output
+storage: 320x240 BGR frame / local SRAM
+control: AXI-Lite start / done / status
+debug: JTAG access
+
+# 3. Library lookup (one example)
+need: target coordinates + configuration
+category: communication
+IP: uart
+features: serial / short-distance link
+
+# 4. Exported recommendation (abridged)
+selected: [uart, frame_buffer, axi_lite_ctrl]
+unmatched: [SPI slave frame ingress, JTAG debug,
+  SRAM scratchpad access]
+IP area: 0.33 mm2 (limit: 25 mm2)
+IP power: 11.5 mW (limit: 1500 mW)
+status: recommendation_only

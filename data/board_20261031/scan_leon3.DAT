@@ -1,0 +1,13 @@
+L3B
+SCAN_BEGIN image=1 mode=cpu dma_bits=32 width=256 height=256
+SCAN_RESULT image=1 mode=cpu status=ok verification=unchecked mismatches=-1 bbox=38,24,180,204 active=11091 sum=0x2b27ad fnv=0x5aa44c6e
+SCAN_TIME image=1 mode=cpu stage=total cycles_lo=0x1479c903 cycles_hi=0x0 ms=4580.341 freq_khz=75000
+SCAN_TIME image=1 mode=cpu stage=adaptive_threshold cycles_lo=0xfc6934e cycles_hi=0x0 ms=3528.961 freq_khz=75000
+SCAN_PASS
+L3B
+SCAN_BEGIN image=1 mode=hw dma_bits=32 width=256 height=256
+SCAN_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 bbox=38,24,180,204 active=11091 sum=0x2b27ad fnv=0x5aa44c6e
+SCAN_TIME image=1 mode=hw stage=total cycles_lo=0x4c7dbd3 cycles_hi=0x0 ms=1069.424 freq_khz=75000
+SCAN_TIME image=1 mode=hw stage=adaptive_threshold cycles_lo=0x14aa44 cycles_hi=0x0 ms=18.057 freq_khz=75000
+SCAN_PASS
+

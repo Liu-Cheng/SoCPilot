@@ -1,0 +1,17 @@
+ESP-NOSTACK
+NIGHTVISION_TIMING_SCOPE version=exclude_input_quantization_v1 excluded=input_quantization retained=dma_pack,buffer_clear,cache_sync,output_unpack
+NIGHTVISION_RESULT image=1 status=hw_only verification=unchecked mismatches=-1 calls=24 arena_bytes=378112
+NIGHTVISION_TIME image=1 mode=hw stage=total cycles_lo=0x10edb2f cycles_hi=0x0 ms=236.677 freq_khz=75000
+NIGHTVISION_TIME_RAW image=1 mode=hw stage=total cycles_lo=0x149e1e4 cycles_hi=0x0 ms=288.255 freq_khz=75000
+NIGHTVISION_TIME_QUANTIZATION image=1 mode=hw stage=total cycles_lo=0x3b06b5 cycles_hi=0x0 ms=51.577 freq_khz=75000
+NIGHTVISION_TIME image=1 mode=hw stage=conv2d cycles_lo=0x5826dc cycles_hi=0x0 ms=77.028 freq_khz=75000
+NIGHTVISION_TIME_RAW image=1 mode=hw stage=conv2d cycles_lo=0x932d91 cycles_hi=0x0 ms=128.606 freq_khz=75000
+NIGHTVISION_TIME_QUANTIZATION image=1 mode=hw stage=conv2d cycles_lo=0x3b06b5 cycles_hi=0x0 ms=51.577 freq_khz=75000
+NIGHTVISION_NUMERIC dma_bits=64 lanes=4 lane_bits=16 scaling=per_call_power2 original_float_exact=0
+NIGHTVISION_SIGNATURE image=1 e1_raw=0x4a6baff8 e2_raw=0x4a6a83bb e3_raw=0x4a70479d
+ESP-NOSTACK
+NIGHTVISION_RESULT image=1 status=cpu_only verification=unchecked mismatches=-1 calls=24 arena_bytes=378112
+NIGHTVISION_TIME image=1 mode=cpu stage=total cycles_lo=0x232d64c cycles_hi=0x0 ms=491.814 freq_khz=75000
+NIGHTVISION_TIME image=1 mode=cpu stage=conv2d cycles_lo=0x17a48e2 cycles_hi=0x0 ms=330.550 freq_khz=75000
+NIGHTVISION_SIGNATURE image=1 e1_raw=0x4a6baff8 e2_raw=0x4a6a83bb e3_raw=0x4a711a54
+

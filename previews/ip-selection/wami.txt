@@ -1,0 +1,28 @@
+# 1. SoC description (abridged)
+"Airborne foreground-detection payload:
+ raw CSI-2 camera input, I2C sensor setup,
+ Ethernet masks/status to mission host."
+technology: 28nm; clock target: 75 MHz
+
+# 2. Structured requirements (abridged)
+I/O: raw CSI-2 / I2C / Ethernet
+storage: current/reference frames / DDR
+fabric: frame-ordered DMA / AXI / SRAM
+control/debug: AXI-Lite / event tracing
+
+# 3. Library lookup (one example)
+need: camera sensor-register control
+category: communication
+IP: camera_i2c_ctrl
+features: I2C/SCCB / exposure control
+
+# 4. Exported recommendation (abridged)
+selected: [camera_i2c_ctrl, ethernet,
+  trace_monitor, frame_buffer,
+  ddr_memory_controller, axi_dma_interconnect,
+  sram_scratchpad, axi_lite_ctrl]
+unmatched: [raw MIPI CSI-2 receiver,
+  frame-ordered streaming DMA]
+IP area: 1.88 mm2 (limit: 25 mm2)
+IP power: 59.5 mW (limit: 1500 mW)
+status: recommendation_only

@@ -1,0 +1,27 @@
+# 1. SoC description (abridged)
+"Parking-entrance plate localization:
+ one MIPI CSI-2 camera; I2C sensor setup;
+ Ethernet masks/regions to parking host."
+technology: 28nm; clock target: 75 MHz
+
+# 2. Structured requirements (abridged)
+interfaces: CSI-2 pixels / I2C / Ethernet
+storage: ping-pong frames / local SRAM
+fabric: AXI burst / AXI-Lite control
+debug: cycle and transaction counters
+
+# 3. Library lookup (one example)
+need: camera pixels + frame markers
+category: communication
+IP: mipi_csi2
+features: pixel stream / frame synchronization
+
+# 4. Exported recommendation (abridged)
+selected: [mipi_csi2, i2c, ethernet,
+  performance_counter, frame_buffer,
+  sram_scratchpad, axi_dma_interconnect,
+  axi_lite_ctrl]
+unmatched: []
+IP area: 1.49 mm2 (limit: 13 mm2)
+IP power: 48 mW (limit: 1500 mW)
+status: recommendation_only

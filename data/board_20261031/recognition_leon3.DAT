@@ -1,0 +1,21 @@
+L3B
+RECOGNITION_BEGIN image=1 mode=cpu cpu=leon3 dma_bits=32 hardware=dilate_mask,bgr_to_hsv l2=64x4 llc=32x4 line_bytes=16
+RECOGNITION_TIMER version=full_delta_v2 frequency_khz=75000 primary=full_elapsed dma_pack_included=1
+RECOGNITION_RESULT image=1 mode=cpu status=ok verification=unchecked mismatches=-1 found=0 center=0,0 box=0,0,0,0 area=0
+RECOGNITION_TIME image=1 mode=cpu stage=total cycles_lo=0x28e3063 cycles_hi=0x0 ms=571.639 freq_khz=75000
+RECOGNITION_TIME image=1 mode=cpu stage=bgr_to_hsv cycles_lo=0xd4bdeb cycles_hi=0x0 ms=185.896 freq_khz=75000
+RECOGNITION_TIME image=1 mode=cpu stage=mask_cpu cycles_lo=0x28d5ce cycles_hi=0x0 ms=35.682 freq_khz=75000
+RECOGNITION_TIME image=1 mode=cpu stage=dilate_mask cycles_lo=0x120446d cycles_hi=0x0 ms=251.891 freq_khz=75000
+RECOGNITION_TIME image=1 mode=cpu stage=contour_cpu cycles_lo=0x1e7584 cycles_hi=0x0 ms=26.615 freq_khz=75000
+RECOGNITION_SIGNATURE image=1 dilated_fnv=0x6ad58dc5 output_fnv=0xe87306d8
+L3B
+RECOGNITION_BEGIN image=1 mode=hw cpu=leon3 dma_bits=32 hardware=dilate_mask,bgr_to_hsv l2=64x4 llc=32x4 line_bytes=16
+RECOGNITION_TIMER version=full_delta_v2 frequency_khz=75000 primary=full_elapsed dma_pack_included=1
+RECOGNITION_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 found=0 center=0,0 box=0,0,0,0 area=0
+RECOGNITION_TIME image=1 mode=hw stage=total cycles_lo=0x13322f1 cycles_hi=0x0 ms=268.379 freq_khz=75000
+RECOGNITION_TIME image=1 mode=hw stage=bgr_to_hsv cycles_lo=0x6f1dfa cycles_hi=0x0 ms=97.095 freq_khz=75000
+RECOGNITION_TIME image=1 mode=hw stage=mask_cpu cycles_lo=0x28d33d cycles_hi=0x0 ms=35.673 freq_khz=75000
+RECOGNITION_TIME image=1 mode=hw stage=dilate_mask cycles_lo=0x2ad8c3 cycles_hi=0x0 ms=37.440 freq_khz=75000
+RECOGNITION_TIME image=1 mode=hw stage=contour_cpu cycles_lo=0x1e7539 cycles_hi=0x0 ms=26.614 freq_khz=75000
+RECOGNITION_SIGNATURE image=1 dilated_fnv=0x6ad58dc5 output_fnv=0xe87306d8
+

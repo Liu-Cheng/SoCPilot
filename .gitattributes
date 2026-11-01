@@ -1,1 +1,5 @@
-*.pdf binary
+# Frozen evidence is checked by byte-level SHA-256; never normalize newlines.
+data/board_20261031/** -text whitespace=cr-at-eol
+# Serial logs retain their original line endings and terminal control bytes.
+data/board_20261031/*.DAT binary
+data/board_20261031/trade_off.txt binary

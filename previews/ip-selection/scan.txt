@@ -1,0 +1,26 @@
+# 1. SoC description (abridged)
+"USB document-cleanup device: receive
+ RGB pages from a host; return binary
+ masks and document bounding boxes."
+technology: 28nm; clock target: 75 MHz
+
+# 2. Structured requirements (abridged)
+interfaces: USB device / page-transfer DMA
+storage: strided page buffers / local SRAM
+control: AXI-Lite start / done / status
+debug: cycle and transaction counters
+
+# 3. Library lookup (one example)
+need: page-processing latency measurement
+category: debug
+IP: performance_counter
+features: cycle / transaction counters
+
+# 4. Exported recommendation (abridged)
+selected: [performance_counter, sram_scratchpad,
+  axi_lite_ctrl]
+unmatched: [USB device controller,
+  page-transfer DMA, page/frame buffering]
+IP area: 0.55 mm2 (limit: 25 mm2)
+IP power: 12.5 mW (limit: 1500 mW)
+status: recommendation_only

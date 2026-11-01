@@ -1,0 +1,260 @@
+
+[20:09:59.819]收←◆ESP-NOSTACK
+WAMI_BEGIN image=1 mode=cpu cpu=ibex dma_bits=32 hardware=none rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p018 cpu=ibex l2_sets=256 l2_ways=2 llc_sets=64 llc_ways=4 cache_line_size=16 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+
+[20:10:44.413]收←◆WAMI_RESULT image=1 mode=cpu status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=ibex dma_bits=32 hardware=none software=warp_image,steepest_descent,hessian hessian_frac_bits=16
+WAMI_TIME image=1 mode=cpu stage=total cycles_lo=0xc56ada12 cycles_hi=0x0 ms=44161.522 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=cpu stage=total cycles_lo=0xc56ada12 cycles_hi=0x0 ms=44161.522 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=cpu stage=total cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_TIME image=1 mode=cpu stage=warp_image cycles_lo=0x53103c4d cycles_hi=0x0 ms=18580.972 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=cpu stage=warp_image cycles_lo=0x53103c4d cycles_hi=0x0 ms=18580.972 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=cpu stage=warp_image cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_TIME image=1 mode=cpu stage=steepest_descent cycles_lo=0x11cee004 cycles_hi=0x0 ms=3983.605 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=cpu stage=steepest_descent cycles_lo=0x11cee004 cycles_hi=0x0 ms=3983.605 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=cpu stage=steepest_descent cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_TIME image=1 mode=cpu stage=hessian cycles_lo=0x44eac015 cycles_hi=0x0 ms=15416.470 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=cpu stage=hessian cycles_lo=0x44eac015 cycles_hi=0x0 ms=15416.470 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=cpu stage=hessian cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465ddfc0 total_foreground=0
+
+[20:12:06.846]收←◆ESP-NOSTACK
+WAMI_BEGIN image=1 mode=hw cpu=ibex dma_bits=32 hardware=hessian rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p020 cpu=ibex l2_sets=64 l2_ways=2 llc_sets=64 llc_ways=4 cache_line_size=16 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+
+[20:13:56.742]收←◆WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=ibex dma_bits=32 hardware=hessian software=warp_image,steepest_descent hessian_frac_bits=16
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0x5bbebf67 cycles_hi=0x1 ms=77789.263 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=total cycles_lo=0xe9447d60 cycles_hi=0x1 ms=109447.295 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=total cycles_lo=0x8d85bdf9 cycles_hi=0x0 ms=31658.031 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0xfce5dddc cycles_hi=0x0 ms=56572.306 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=warp_image cycles_lo=0xfce5dddc cycles_hi=0x0 ms=56572.306 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=warp_image cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x2a6d744b cycles_hi=0x0 ms=9490.883 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=steepest_descent cycles_lo=0x2a6d744b cycles_hi=0x0 ms=9490.883 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=steepest_descent cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x61ce8d cycles_hi=0x0 ms=85.464 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=hessian cycles_lo=0x8de78c86 cycles_hi=0x0 ms=31743.496 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=hessian cycles_lo=0x8d85bdf9 cycles_hi=0x0 ms=31658.031 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465ddfc2 total_foreground=0
+
+[20:15:01.997]收←◆ESP-NOSTACK
+WAMI_BEGIN image=1 mode=hw cpu=ibex dma_bits=32 hardware=hessian rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p022 cpu=ibex l2_sets=64 l2_ways=4 llc_sets=128 llc_ways=4 cache_line_size=16 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+
+[20:15:36.994]收←◆WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=ibex dma_bits=32 hardware=hessian software=warp_image,steepest_descent hessian_frac_bits=16
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0x7f50c2e0 cycles_hi=0x0 ms=28479.989 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=total cycles_lo=0x9a796dc7 cycles_hi=0x0 ms=34555.322 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=total cycles_lo=0x1b28aae7 cycles_hi=0x0 ms=6075.333 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x53f0190b cycles_hi=0x0 ms=18776.586 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=warp_image cycles_lo=0x53f0190b cycles_hi=0x0 ms=18776.586 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=warp_image cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x11739160 cycles_hi=0x0 ms=3903.820 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=steepest_descent cycles_lo=0x11739160 cycles_hi=0x0 ms=3903.820 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=steepest_descent cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x5edc41 cycles_hi=0x0 ms=82.890 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=hessian cycles_lo=0x1b878728 cycles_hi=0x0 ms=6158.223 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=hessian cycles_lo=0x1b28aae7 cycles_hi=0x0 ms=6075.333 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465ddfc2 total_foreground=0
+
+[20:17:06.856]收←◆ESP-NOSTACK
+WAMI_BEGIN image=1 mode=hw cpu=ibex dma_bits=32 hardware=hessian,warp_image rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p025 cpu=ibex l2_sets=32 l2_ways=2 llc_sets=32 llc_ways=4 cache_line_size=16 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+
+[20:19:16.698]收←◆WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=ibex dma_bits=32 hardware=hessian,warp_image software=steepest_descent hessian_frac_bits=16
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0xcce0529c cycles_hi=0x0 ms=45830.043 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=total cycles_lo=0x43d328af c
+[20:19:16.797]收←◆ycles_hi=0x2 ms=129704.621 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=total cycles_lo=0x76f2d613 cycles_hi=0x1 ms=83874.577 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x14c01d64 cycles_hi=0x0 ms=4641.796 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=warp_image cycles_lo=0x93c4e34c cycles_hi=0x0 ms=33055.386 freq_khz=75000
+W
+[20:19:17.025]收←◆AMI_TIME_INPUT_PACK image=1 mode=hw stage=warp_image cycles_lo=0x7f04c5e8 cycles_hi=0x0 ms=28413.589 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x5250b236 cycles_hi=0x0 ms=18413.602 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=steepest_descent cycles_lo=0x5250b236 cycles_hi=0x0 ms=18413.602 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=steepest_descent cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x90d7fb cycles_hi=0x0 ms=126.566 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=hessian cycles_lo=0xf87ee826 cycles_hi=0x0 ms=55587.553 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=hessian cycles_lo=0xf7ee102b cycles_hi=0x0 ms=55460.987 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465de03d total_foreground=0
+
+[20:20:28.368]收←◆ESP-NOSTACK
+WAMI_BEGIN image=1 mode=hw cpu=ibex dma_bits=32 hardware=hessian,warp_image rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p030 cpu=ibex l2_sets=32 l2_ways=4 llc_sets=32 llc_ways=4 cache_line_size=16 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+
+[20:21:41.531]收←◆WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=ibex dma_bits=32 hardware=hessian,warp_image software=steepest_descent hessian_frac_bits=16
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0x4f2d1bf2 cycles_hi=0x0 ms=17711.417 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=total cycles_lo=0x450bda1e cycles_hi=0x1 ms=72711.625 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=total cycles_lo=0xf5debe2c cycles_hi=0x0 ms=55000.207 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x6f52d26 cycles_hi=0x0 ms=1556.415 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=warp_image cycles_lo=0x6178c264 cycles_hi=0x0 ms=21804.053 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=warp_image cycles_lo=0x5a83953e cycles_hi=0x0 ms=20247.638 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x1c1b99f7 cycles_hi=0x0 ms=6287.612 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=steepest_descent cycles_lo=0x1c1b99f7 cycles_hi=0x0 ms=6287.612 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=steepest_descent cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x5defb0 cycles_hi=0x0 ms=82.082 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=hessian cycles_lo=0x9bb9189e cycles_hi=0x0 ms=34834.652 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=hessian cycles_lo=0x9b5b28ee cycles_hi=0x0 ms=34752.569 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465de03d total_foreground=0
+
+[20:23:05.292]收←◆L3B
+
+[20:23:05.426]收←◆WAMI_BEGIN image=1 mode=hw cpu=leon3 dma_bits=32 hardware=hessian,warp_image rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p035 cpu=leon3 l2_sets=32 l2_ways=4 llc_sets=32 llc_ways=4 cache_line_size=16 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+
+[20:23:08.261]收←◆WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=leon3 dma_bits=32 hardware=hessian,warp_image software=steepest_descent hessian_frac_bits=16
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0x6a5c7bc cycles_hi=0x0 ms=1487.038 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=total cycles_lo=0xabefd03 cycles_hi=0x0 ms=2403.850 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=total cycles_lo=0x4193547 cycles_hi=0x0 ms=916.812 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x1ef567f cycles_hi=0x0 ms=432.832 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=warp_image cycles_lo=0x355ca64 cycles_hi=0x0 ms=746.053 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=warp_image cycles_lo=0x16673e5 cycles_hi=0x0 ms=313.220 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x1406832 cycles_hi=0x0 ms=279.975 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=steepest_descent cycles_lo=0x1406832 cycles_hi=0x0 ms=279.975 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=steepest_descent cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x457c1d cycles_hi=0x0 ms=60.716 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=hessian cycles_lo=0x2f83d7f cycles_hi=0x0 ms=664.308 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=hessian cycles_lo=0x2b2c162 cycles_hi=0x0 ms=603.591 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465ddfa3 total_foreground=0
+
+[20:24:21.754]收←◆L3B
+
+[20:24:21.879]收←◆WAMI_BEGIN image=1 mode=hw cpu=leon3 dma_bits=32 hardware=hessian,warp_image rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p040 cpu=leon3 l2_sets=32 l2_ways=2 llc_sets=32 llc_ways=4 cache_line_size=32 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+
+[20:24:24.799]收←◆WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=leon3 dma_bits=32 hardware=hessian,warp_image software=steepest_descent hessian_frac_bits=16
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0x709e57c cycles_hi=0x0 ms=1574.521 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=total cycles_lo=0xb1d297b cycles_hi=0x0 ms=2486.140 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=total cycles_lo=0x41343ff cycles_hi=0x0 ms=911.619 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x1d2573b cycles_hi=0x0 ms=407.494 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=warp_image cycles_lo=0x336aa01 cycles_hi=0x0 ms=718.854 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=warp_image cycles_lo=0x16452c6 cycles_hi=0x0 ms=311.360 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x1cb6261 cycles_hi=0x0 ms=401.416 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=steepest_descent cycles_lo=0x1cb6261 cycles_hi=0x0 ms=401.416 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=steepest_descent cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x446e20 cycles_hi=0x0 ms=59.795 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=hessian cycles_lo=0x2f35f59 cycles_hi=0x0 ms=660.054 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=hessian cycles_lo=0x2aef139 cycles_hi=0x0 ms=600.259 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465ddfa3 total_foreground=0
+
+[20:32:41.514]收←◆L3B
+
+[20:32:41.624]收←◆WAMI_BEGIN image=1 mode=hw cpu=leon3 dma_bits=32 hardware=hessian,warp_image rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+
+[20:32:44.462]收←◆WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=leon3 dma_bits=32 hardware=hessian,warp_image software=steepest_descent hessian_frac_bits=16
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0x6a4ff22 cycles_hi=0x0 ms=1486.353 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=total cycles_lo=0xabfc150 cycles_hi=0x0 ms=2404.520 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=total cycles_lo=0x41ac22e cycles_hi=0x0 ms=918.166 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x1ef5d8d cycles_hi=0x0 ms=432.856 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=warp_image cycles_lo=0x3566769 cycles_hi=0x0 ms=746.589 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=warp_image cycles_lo=0x16709dc cycles_hi=0x0 ms=313.732 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x14065a7 cycles_hi=0x0 ms=279.967 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=steepest_descent cycles_lo=0x14065a7 cycles_hi=0x0 ms=279.967 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=steepest_descent cycles_lo=0x0 cycles_hi=0x0 ms=0.000 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x457d0d cycles_hi=0x0 ms=60.719 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=hessian cycles_lo=0x2f9355f cycles_hi=0x0 ms=665.154 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=hessian cycles_lo=0x2b3b852 cycles_hi=0x0 ms=604.434 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465ddfa3 total_foreground=0
+
+[20:34:06.905]收←◆ESP-NOSTACK
+WAMI_BEGIN image=1 mode=hw cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p060 cpu=ariane l2_sets=32 l2_ways=4 llc_sets=32 llc_ways=4 cache_line_size=32 frequency_khz=75000
+
+[20:34:09.747]收←◆WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image software= hessian_frac_bits=12
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0xbc38a77 cycles_hi=0x0 ms=2631.524 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x314f675 cycles_hi=0x0 ms=689.406 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x25e07f5 cycles_hi=0x0 ms=529.558 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x433ed1d cycles_hi=0x0 ms=940.158 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465dd6eb total_foreground=0
+
+[20:35:23.417]收←◆ESP-NOSTACK
+WAMI_BEGIN image=1 mode=hw cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p080 cpu=ariane l2_sets=128 l2_ways=8 llc_sets=64 llc_ways=4 cache_line_size=32 frequency_khz=75000
+
+[20:35:26.292]收←◆WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image software= hessian_frac_bits=12
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0xbe8d03c cycles_hi=0x0 ms=2664.093 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x31b4c53 cycles_hi=0x0 ms=694.942 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x25b8be7 cycles_hi=0x0 ms=527.386 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x4515c7e cycles_hi=0x0 ms=965.879 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465dd6eb total_foreground=0
+
+[20:36:48.009]收←◆ESP-NOSTACK
+WAMI_BEGIN image=1 mode=hw cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p090 cpu=ariane l2_sets=2048 l2_ways=2 llc_sets=512 llc_ways=8 cache_line_size=16 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+
+[20:36:51.008]收←◆WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image software= hessian_frac_bits=12
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0x7a01c34 cycles_hi=0x0 ms=1705.779 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=total cycles_lo=0xb6dc1bd cycles_hi=0x0 ms=2556.565 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=total cycles_lo=0x3cda589 cycles_hi=0x0 ms=850.785 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x29c86e6 cycles_hi=0x0 ms=584.167 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=warp_image cycles_lo=0x35b91c2 cycles_hi=0x0 ms=751.103 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=warp_image cycles_lo=0xbf0adc cycles_hi=0x0 ms=166.935 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x1b64c37 cycles_hi=0x0 ms=382.990 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=steepest_descent cycles_lo=0x2669199 cycles_hi=0x0 ms=537.018 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=steepest_descent cycles_lo=0xb04562 cycles_hi=0x0 ms=154.027 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x1e98e93 cycles_hi=0x0 ms=427.781 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=hessian cycles_lo=0x447e3de cycles_hi=0x0 ms=957.603 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=hessian cycles_lo=0x25e554b cycles_hi=0x0 ms=529.822 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465dd6eb total_foreground=0
+
+[20:39:11.301]收←◆ESP-NOSTACK
+WAMI_BEGIN image=1 mode=hw cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p100 cpu=ariane l2_sets=32 l2_ways=8 llc_sets=128 llc_ways=8 cache_line_size=64 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+
+[20:39:13.959]收←◆WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image software= hessian_frac_bits=12
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0x66e9843 cycles_hi=0x0 ms=1438.816 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=total cycles_lo=0x9e7f747 cycles_hi=0x0 ms=2215.960 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=total cycles_lo=0x3795f04 cycles_hi=0x0 ms=777.144 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x21244b7 cycles_hi=0x0 ms=463.355 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=warp_image cycles_lo=0x2c58782 cycles_hi=0x0 ms=619.996 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=warp_image cycles_lo=0xb342cb cycles_hi=0x0 ms=156.640 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x17cede5 cycles_hi=0x0 ms=332.861 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=steepest_descent cycles_lo=0x2234aaa cycles_hi=0x0 ms=478.230 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=steepest_descent cycles_lo=0xa65cc5 cycles_hi=0x0 ms=145.369 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x1be4f63 cycles_hi=0x0 ms=389.991 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=hessian cycles_lo=0x3de0ed7 cycles_hi=0x0 ms=865.125 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=hessian cycles_lo=0x21fbf74 cycles_hi=0x0 ms=475.134 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465dd6eb total_foreground=0
+
+[20:40:07.863]收←◆ESP-NOSTACK
+WAMI_BEGIN image=1 mode=hw cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p100 cpu=ariane l2_sets=32 l2_ways=8 llc_sets=128 llc_ways=8 cache_line_size=64 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+
+[20:40:10.522]收←◆WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image software= hessian_frac_bits=12
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0x66e9843 cycles_hi=0x0 ms=1438.816 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=total cycles_lo=0x9e7f747 cycles_hi=0x0 ms=2215.960 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=total cycles_lo=0x3795f04 cycles_hi=0x0 ms=777.144 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x21244b7 cycles_hi=0x0 ms=463.355 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=warp_image cycles_lo=0x2c58782 cycles_hi=0x0 ms=619.996 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=warp_image cycles_lo=0xb342cb cycles_hi=0x0 ms=156.640 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x17cede5 cycles_hi=0x0 ms=332.861 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=steepest_descent cycles_lo=0x2234aaa cycles_hi=0x0 ms=478.230 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=steepest_descent cycles_lo=0xa65cc5 cycles_hi=0x0 ms=145.369 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x1be4f63 cycles_hi=0x0 ms=389.991 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=hessian cycles_lo=0x3de0ed7 cycles_hi=0x0 ms=865.125 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=hessian cycles_lo=0x21fbf74 cycles_hi=0x0 ms=475.134 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465dd6eb total_foreground=0

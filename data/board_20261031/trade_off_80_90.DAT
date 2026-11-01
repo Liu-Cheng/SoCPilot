@@ -1,0 +1,39 @@
+ESP-NOSTACK
+WAMI_BEGIN image=1 mode=hw cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p060 cpu=ariane l2_sets=32 l2_ways=4 llc_sets=32 llc_ways=4 cache_line_size=32 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image software= hessian_frac_bits=12
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0x790c243 cycles_hi=0x0 ms=1692.365 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=total cycles_lo=0xb932ad6 cycles_hi=0x0 ms=2589.255 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=total cycles_lo=0x4026893 cycles_hi=0x0 ms=896.889 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x22c6a28 cycles_hi=0x0 ms=486.202 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=warp_image cycles_lo=0x2ef1a64 cycles_hi=0x0 ms=656.323 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=warp_image cycles_lo=0xc2b03c cycles_hi=0x0 ms=170.121 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x192a003 cycles_hi=0x0 ms=351.819 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=steepest_descent cycles_lo=0x25dba90 cycles_hi=0x0 ms=529.293 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=steepest_descent cycles_lo=0xcb1a8d cycles_hi=0x0 ms=177.474 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x1b5ab67 cycles_hi=0x0 ms=382.441 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=hessian cycles_lo=0x42a4931 cycles_hi=0x0 ms=931.734 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=hessian cycles_lo=0x2749dca cycles_hi=0x0 ms=549.293 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465dd6eb total_foreground=0
+ESP-NOSTACK
+WAMI_BEGIN image=1 mode=hw cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image rows=32 cols=32
+WAMI_TIMER version=full_delta_v2 point=p080 cpu=ariane l2_sets=128 l2_ways=8 llc_sets=64 llc_ways=4 cache_line_size=32 frequency_khz=75000
+WAMI_TIMING_SCOPE version=exclude_input_pack_v3 primary=exclude_input_pack raw_tag=WAMI_TIME_RAW excluded_tag=WAMI_TIME_INPUT_PACK retained=output_unpack,cache_sync,start_to_done
+WAMI_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 original_float_exact=-1 frames=3 iterations=20 calls=183,60,60 arena_bytes=228864
+WAMI_MAPPING cpu=ariane dma_bits=64 hardware=hessian,steepest_descent,warp_image software= hessian_frac_bits=12
+WAMI_TIME image=1 mode=hw stage=total cycles_lo=0x7a6f485 cycles_hi=0x0 ms=1711.761 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=total cycles_lo=0xbbb2ba5 cycles_hi=0x0 ms=2624.210 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=total cycles_lo=0x4143720 cycles_hi=0x0 ms=912.449 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=warp_image cycles_lo=0x23175f2 cycles_hi=0x0 ms=490.611 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=warp_image cycles_lo=0x2f75783 cycles_hi=0x0 ms=663.523 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=warp_image cycles_lo=0xc5e191 cycles_hi=0x0 ms=172.911 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=steepest_descent cycles_lo=0x19a97ba cycles_hi=0x0 ms=358.781 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=steepest_descent cycles_lo=0x25afc06 cycles_hi=0x0 ms=526.895 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=steepest_descent cycles_lo=0xc0644c cycles_hi=0x0 ms=168.114 freq_khz=75000
+WAMI_TIME image=1 mode=hw stage=hessian cycles_lo=0x1b9d23c cycles_hi=0x0 ms=386.069 freq_khz=75000
+WAMI_TIME_RAW image=1 mode=hw stage=hessian cycles_lo=0x447c37f cycles_hi=0x0 ms=957.492 freq_khz=75000
+WAMI_TIME_INPUT_PACK image=1 mode=hw stage=hessian cycles_lo=0x28df143 cycles_hi=0x0 ms=571.423 freq_khz=75000
+WAMI_SIGNATURE foreground_raw=0x0 model_raw=0x465dd6eb total_foreground=0
+

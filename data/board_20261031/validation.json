@@ -1,0 +1,66 @@
+{
+  "success": true,
+  "source_files_checked": 18,
+  "paired_applications_checked": 5,
+  "selected_tradeoff_points_checked": 7,
+  "full_64bit_timer_arithmetic_checked": true,
+  "preparation_excluded_geomean": 2.7945073489351357,
+  "full_elapsed_geomean": 2.0254008546045927,
+  "wami_8_vs_4_slowdown_pct": 8.716301656186221,
+  "wami_10_vs_4_improvement_pct": 8.618811689396322,
+  "wami_8_to_10_residual_improvement_ms": 223.6909999999998,
+  "limitations": {
+    "wami": "Input conversion/packing subtracted from primary time, retained in raw time; output unpack, cache synchronization, DMA and polling retained.",
+    "nightvision": "Input quantization subtracted from primary time, retained in raw time; DMA packing, buffer clearing, output unpack and cache synchronization retained.",
+    "other_applications": "Full elapsed time, including data preparation.",
+    "verification": "All supplied board records report reference verification unchecked. Fixed-point output signatures do not establish original-float equivalence."
+  },
+  "area_scope": "Synthesis-derived cell area normalized to a common 45nm-equivalent basis, including standard cells and SRAM macros once; only 1000KiB application RAM excluded. Not actual 45nm synthesis or post-route die area.",
+  "pdf_sha256": "2d4231633d4fc79d56c1275e025caf07a9a51162d405f5a0d5020afb7121c7c3",
+  "latex_no_overfull_or_undefined_references": true,
+  "selected_configuration_table_number": "VI",
+  "measured_wami_figure_number": 9,
+  "wami_table_speedup_reference_mm2": 1.8,
+  "wami_table_speedup_reference_ms": 44161.522,
+  "wami_table_normalized_perf_area_basis": "synthesis_equivalent_mm2",
+  "wami_table_relative_metrics": [
+    {
+      "budget_mm2": 1.8,
+      "speedup": 1.0,
+      "normalized_perf_area": 1.0
+    },
+    {
+      "budget_mm2": 2.2,
+      "speedup": 1.5506158376676338,
+      "normalized_perf_area": 1.1101104658620453
+    },
+    {
+      "budget_mm2": 3.0,
+      "speedup": 2.493392934060555,
+      "normalized_perf_area": 1.4166248018565941
+    },
+    {
+      "budget_mm2": 4.0,
+      "speedup": 28.047591616752015,
+      "normalized_perf_area": 10.730184549709884
+    },
+    {
+      "budget_mm2": 8.0,
+      "speedup": 25.79888313847552,
+      "normalized_perf_area": 5.84402803099886
+    },
+    {
+      "budget_mm2": 9.0,
+      "speedup": 25.88935729657828,
+      "normalized_perf_area": 5.1735996351551545
+    },
+    {
+      "budget_mm2": 10.0,
+      "speedup": 30.692960044925826,
+      "normalized_perf_area": 4.303485967078207
+    }
+  ],
+  "wami_configuration_table_number": "VII",
+  "board_speedup_figure_series": "one reported-speedup series plus geometric mean",
+  "paired_timing_table_removed": true
+}

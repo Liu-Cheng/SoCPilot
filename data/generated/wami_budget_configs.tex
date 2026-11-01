@@ -1,0 +1,23 @@
+\begin{table*}[t]
+\centering
+\caption{Selected WAMI area-budget points: architecture transitions, DSE and normalized synthesis areas (mm$^2$), board-measured application latencies (ms), relative speedups, and normalized performance per area.}
+\label{tab:wami_budget_configs}
+\footnotesize
+\renewcommand{\arraystretch}{1.14}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}rlcccrrrrrr@{}}
+\toprule
+\textbf{Budget} & \textbf{CPU} & \textbf{HW} & \shortstack{\textbf{L2}\\\textbf{sets$\times$ways}} & \shortstack{\textbf{LLC}\\\textbf{sets$\times$ways}} & \shortstack{\textbf{Line}\\\textbf{(B)}} & \shortstack{\textbf{DSE}\\\textbf{area}} & \shortstack{\textbf{Synth.}\\\textbf{area}} & \shortstack{\textbf{Latency}\\\textbf{(ms)}} & \shortstack{\textbf{Speedup}\\\textbf{vs. 1.8 mm$^2$}} & \shortstack{\textbf{Normalized}\\\textbf{perf./area}} \\
+\midrule
+1.8 & Ibex & None & $256\times2$ & $64\times4$ & 16 & 1.758 & 1.261 & 44,161.522 & 1.00$\times$ & 1.00 \\
+2.2 & Ibex & H & $64\times4$ & $128\times4$ & 16 & 2.134 & 1.761 & 28,479.989 & 1.55$\times$ & 1.11 \\
+3 & Ibex & H+W & $32\times4$ & $32\times4$ & 16 & 2.575 & 2.219 & 17,711.417 & 2.49$\times$ & 1.42 \\
+4 & LEON3 & H+W & $32\times2$ & $32\times4$ & 32 & 3.647 & 3.295 & 1,574.521 & 28.05$\times$ & 10.73 \\
+8 & Ariane & H+W+S & $128\times8$ & $64\times4$ & 32 & 6.240 & 5.565 & 1,711.761 & 25.80$\times$ & 5.84 \\
+9 & Ariane & H+W+S & $2048\times2$ & $512\times8$ & 16 & 6.962 & 6.308 & 1,705.779 & 25.89$\times$ & 5.17 \\
+10 & Ariane & H+W+S & $32\times8$ & $128\times8$ & 64 & 9.671 & 8.991 & 1,438.816 & 30.69$\times$ & 4.30 \\
+\bottomrule
+\end{tabular*}
+\par\vspace{6pt}\noindent
+\parbox{\textwidth}{\scriptsize H: \texttt{hessian}; W: \texttt{warp\_image}; S: \texttt{steepest\_descent}. Ibex/LEON3 use DMA32; Ariane uses DMA64. Speedup compares each complete configuration with the 1.8-mm$^2$ CPU-only configuration (44,161.522 ms). Normalized perf./area is $(T_0/T_i)/(A_i/A_0)$, using synthesis area; subscript 0 denotes the 1.8-mm$^2$ configuration, whose value is 1.00.}
+\end{table*}

@@ -1,0 +1,22 @@
+# 1. SoC description (excerpt)
+description: "A single-camera parking-entrance plate-localization appliance. A MIPI CSI-2 camera
+  supplies frames and is configured through I2C/SCCB; Ethernet connects the appliance to a
+  parking-management host."
+constraints: [28nm, 75 MHz target, area < 13 mm2, power < 1.5 W]
+
+# 2. Structured functional requirements (abridged)
+communication: [camera pixel ingress, sensor control, parking-host network]
+video: [ping-pong buffers, row stride]   debug: [cycle / transaction counters]
+bus: [SRAM working memory, AXI burst transfers, AXI-Lite start/done registers]
+
+# 3. Library retrieval and functional check (camera input shown)
+category: communication   technology: 28nm
+need: one CSI-2 receiver with pixel-stream input and frame markers
+selected_ip: mipi_csi2   features: [pixel stream input, frame synchronization]
+
+# 4. Resource check and exported manifest (excerpt)
+reusable_ip_area_mm2: 1.49 <= 13   reusable_ip_power_mw: 48 <= 1500
+selected_reusable_ips: [mipi_csi2, i2c, ethernet, performance_counter, frame_buffer,
+  sram_scratchpad, axi_dma_interconnect, axi_lite_ctrl]
+unmatched_requirements: []
+deployment_status: recommendation_only

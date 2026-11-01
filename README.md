@@ -33,3 +33,18 @@ tectonic SoCPilot.tex
 - 提交前编译主入口并检查 PDF，避免提交编译中间文件。
 - Overleaf 同步时应保留完整的多文件结构，避免用旧单文件版本覆盖仓库。
 - 本次拆分保留已有正文、数据及历史注释。
+
+## 2026-10-31 实验结果更新
+
+当前实验图表以 `data/experiment_results.json` 为入口。原始串口日志、每个应用的最终 DSE 参数和综合面积报告冻结在 `data/board_20261031/`，该 JSON 中记录了来源及 SHA-256。Nightvision 使用 `nightvision_ariane_new.DAT`，WAMI 应用对比使用 `wami_ibex.DAT` 的 3 mm² 点及其同配置 CPU-only 基线。
+
+```sh
+python scripts/draw_experiment_results.py
+python scripts/draw_wami_tradeoff.py
+python scripts/check_board_results.py
+latexmk -pdf SoCPilot.tex
+```
+
+第二个脚本生成 Table VI、WAMI 配置表（Table VII）和 Fig. 9。Fig. 5 仅展示主计时对应的应用加速比；原配对计时表已移除。Fig. 9 仅选取 1.8、2.2、3、4、8、9、10 mm² 点；6、8 mm² 修正版时间来自 `trade_off_80_90.DAT`（文件名中的 90 不代表其内容是 9 mm²）。历史 Nightvision 扫描文件仍保留，但不参与当前 Fig. 9。
+
+计时同时保留 preparation-excluded 和 full elapsed，不能将扣除准备时间后的结果称为完整端到端时间。表中综合面积标为 normalized synthesis area：同一 45 nm 等效口径下的单元面积，包含 SRAM 宏，排除 1000 KiB 应用 RAM，并非布线后芯片面积。完整来源报告保留原工艺与换算记录。原始日志均标记 `verification=unchecked`，不能据此宣称已完成原始浮点算法的全应用等价验证。

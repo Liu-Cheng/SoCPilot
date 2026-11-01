@@ -42,10 +42,10 @@ within a unified end-to-end flow.
     \centering
     \caption{Comparison with representative LLM-assisted hardware and SoC design frameworks.}
     \label{tab:related_frameworks}
+    \footnotesize
     \renewcommand{\arraystretch}{1.18}
-    \setlength{\tabcolsep}{7pt}
-    \resizebox{0.97\textwidth}{!}{
-    \begin{tabular}{lccccccc}
+    \setlength{\tabcolsep}{3pt}
+    \begin{tabularx}{\textwidth}{@{}l*{7}{>{\centering\arraybackslash}X}@{}}
         \toprule
         \textbf{Framework} &
         \textbf{\begin{tabular}[c]{@{}c@{}}Application\\Driven\end{tabular}} &
@@ -103,11 +103,10 @@ within a unified end-to-end flow.
         & \checkmark \\
 
         \bottomrule
-    \end{tabular}
-    }
+    \end{tabularx}
     
     \vspace{0.3em}
-    \begin{minipage}{0.97\textwidth}
+    \begin{minipage}{\textwidth}
     \footnotesize
     \textit{Notation:} 
     \checkmark~denotes explicit support; 

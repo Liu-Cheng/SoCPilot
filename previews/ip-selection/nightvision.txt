@@ -1,0 +1,27 @@
+# 1. SoC description (abridged)
+"Dual-sensor night-viewing terminal:
+ visible + IR frames over two CSI-2 inputs;
+ SPI panel commands; local fused display."
+technology: 28nm; clock target: 75 MHz
+
+# 2. Structured requirements (abridged)
+interfaces: 2x CSI-2 / I2C / SPI panel
+video: paired frames / local display
+fabric: AXI burst / SRAM / AXI-Lite
+debug: fusion/display latency counters
+
+# 3. Library lookup (one example)
+need: sensor exposure/gain configuration
+category: communication
+IP: i2c
+features: two-wire / multi-slave control
+
+# 4. Exported recommendation (abridged)
+selected: [i2c, performance_counter,
+  video_output, sram_scratchpad,
+  axi_dma_interconnect, axi_lite_ctrl]
+unmatched: [dual MIPI CSI-2 reception,
+  SPI panel control, paired-frame buffering]
+IP area: 1.07 mm2 (limit: 13 mm2)
+IP power: 29 mW (limit: 1500 mW)
+status: recommendation_only

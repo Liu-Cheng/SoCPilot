@@ -1,0 +1,80 @@
+\documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage[paperwidth=4.1in,paperheight=6.5in,textwidth=3.5in,top=0.25in,bottom=0.25in,centering]{geometry}
+\usepackage{xcolor,listings}
+\definecolor{CaseBlue}{HTML}{226A9D}
+\definecolor{CaseGray}{HTML}{69717A}
+\definecolor{CaseOrange}{HTML}{AD5C2D}
+\lstdefinestyle{ipcase}{
+  language={},
+  morecomment={[l]{\#}},
+  basicstyle=\ttfamily\fontsize{8}{9.2}\selectfont,
+  commentstyle={\color{CaseBlue}\bfseries},
+  emph={unmatched},emphstyle={\color{CaseOrange}\bfseries},
+  numbers=none,columns=fullflexible,keepspaces=true,
+  showstringspaces=false,breaklines=false,linewidth=\linewidth,
+  frame=single,framerule=0.35pt,
+  rulecolor={\color[HTML]{91AEC3}},
+  backgroundcolor={\color[HTML]{F5F7F9}},
+  xleftmargin=5pt,xrightmargin=5pt,framesep=4pt,
+  aboveskip=0pt,belowskip=0pt
+}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\begin{document}
+\noindent{\sffamily\color{CaseBlue}\bfseries\fontsize{11}{13}\selectfont 01\quad\texttt{plate\_recognition}}\par
+\vspace{3pt}
+\noindent{\small License-plate localization}\par
+\vspace{7pt}
+\lstinputlisting[style=ipcase]{previews/ip-selection/plate_recognition.txt}
+\vspace{5pt}
+\noindent{\footnotesize\textbf{Case 1.} An abridged view of the recorded SoC description, structured requirements, one selected library entry, and exported IP recommendations. Resource totals cover reusable IPs only.}\par
+\vspace{9pt}
+\noindent{\sffamily\fontsize{7}{8.5}\selectfont\color{CaseGray}Single-column preview: 3.5 in wide; code: 8 pt.}
+
+\newpage
+\noindent{\sffamily\color{CaseBlue}\bfseries\fontsize{11}{13}\selectfont 02\quad\texttt{recognition}}\par
+\vspace{3pt}
+\noindent{\small Color-based object recognition}\par
+\vspace{7pt}
+\lstinputlisting[style=ipcase]{previews/ip-selection/recognition.txt}
+\vspace{5pt}
+\noindent{\footnotesize\textbf{Case 2.} An abridged view of the recorded SoC description, structured requirements, one selected library entry, and exported IP recommendations. Resource totals cover reusable IPs only.}\par
+\vspace{9pt}
+\noindent{\sffamily\fontsize{7}{8.5}\selectfont\color{CaseGray}Single-column preview: 3.5 in wide; code: 8 pt.}
+
+\newpage
+\noindent{\sffamily\color{CaseBlue}\bfseries\fontsize{11}{13}\selectfont 03\quad\texttt{scan}}\par
+\vspace{3pt}
+\noindent{\small Document scanning}\par
+\vspace{7pt}
+\lstinputlisting[style=ipcase]{previews/ip-selection/scan.txt}
+\vspace{5pt}
+\noindent{\footnotesize\textbf{Case 3.} An abridged view of the recorded SoC description, structured requirements, one selected library entry, and exported IP recommendations. Resource totals cover reusable IPs only.}\par
+\vspace{9pt}
+\noindent{\sffamily\fontsize{7}{8.5}\selectfont\color{CaseGray}Single-column preview: 3.5 in wide; code: 8 pt.}
+
+\newpage
+\noindent{\sffamily\color{CaseBlue}\bfseries\fontsize{11}{13}\selectfont 04\quad\texttt{wami}}\par
+\vspace{3pt}
+\noindent{\small Wide-area motion imagery}\par
+\vspace{7pt}
+\lstinputlisting[style=ipcase]{previews/ip-selection/wami.txt}
+\vspace{5pt}
+\noindent{\footnotesize\textbf{Case 4.} An abridged view of the recorded SoC description, structured requirements, one selected library entry, and exported IP recommendations. Resource totals cover reusable IPs only.}\par
+\vspace{9pt}
+\noindent{\sffamily\fontsize{7}{8.5}\selectfont\color{CaseGray}Single-column preview: 3.5 in wide; code: 8 pt.}
+
+\newpage
+\noindent{\sffamily\color{CaseBlue}\bfseries\fontsize{11}{13}\selectfont 05\quad\texttt{nightvision}}\par
+\vspace{3pt}
+\noindent{\small Night-vision enhancement}\par
+\vspace{7pt}
+\lstinputlisting[style=ipcase]{previews/ip-selection/nightvision.txt}
+\vspace{5pt}
+\noindent{\footnotesize\textbf{Case 5.} An abridged view of the recorded SoC description, structured requirements, one selected library entry, and exported IP recommendations. Resource totals cover reusable IPs only.}\par
+\vspace{9pt}
+\noindent{\sffamily\fontsize{7}{8.5}\selectfont\color{CaseGray}Single-column preview: 3.5 in wide; code: 8 pt.}
+
+\end{document}

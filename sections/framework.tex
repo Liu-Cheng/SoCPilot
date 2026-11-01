@@ -30,6 +30,7 @@ The structured specification records three types of information: (1) the require
 \begin{threeparttable}
   \caption{Requirement-to-IP Taxonomy for SoC Customization}
   \label{tab:req_taxonomy}
+  \footnotesize
   \begin{tabularx}{0.8\linewidth}{cllX}
     \toprule
     \textbf{Tier\tnote{a}} & \textbf{Category} & \textbf{Tag} & \textbf{Description / Examples} \\
@@ -148,14 +149,14 @@ SoCPilot packages the HLS-generated implementations of hardware tasks $T_H$ as E
 %目前是先dse生成soc之后没有进行dse
 \textbf{System-level design space exploration.}
 The initial partition reduces the search space by fixing which functions are implemented as accelerators. SoCPilot then explores a parameter vector $\boldsymbol{\theta}$ that covers the available processor configuration, cache hierarchy, interconnect settings, and candidate accelerator implementations produced by the HLS stage. Accelerator choices include pragma configurations and interface parameters. System choices include cache capacity and associativity, cache-line size, and NoC buffering. Table~\ref{table:node parameter-all} lists the principal dimensions used in the current implementation.
- \begin{table}[h]
-      \vspace{-1em}
+ \begin{table}[t]
+      \centering
       \caption{Principal parameters for system-level DSE}
       \label{table:node parameter-all}
-      \vspace{-0.5em}
-      \resizebox{0.5\textwidth}{!}{
-      \renewcommand\arraystretch{1.3}
-      \begin{tabular}{cc}
+      \footnotesize
+      \renewcommand\arraystretch{1.12}
+      \setlength{\tabcolsep}{3pt}
+      \begin{tabularx}{\columnwidth}{@{}p{0.42\columnwidth}X@{}}
           \hline
           \textbf{Design parameter} &
           \textbf{Candidate values or rule} \\ \hline
@@ -172,10 +173,10 @@ The initial partition reduces the search space by fixing which functions are imp
           L2 ways & 2, 4, 8 \\
           LLC sets & $2^{5}, 2^{6}, \ldots, 2^{13}$ \\
           LLC ways & 4, 8, 16 \\ \hline
-      \end{tabular}}
+      \end{tabularx}
 
       \vspace{0.3em}
-      \parbox{0.5\textwidth}{\footnotesize
+      \parbox{\columnwidth}{\footnotesize
       $^{*}$Partition types depend on array size.
       Candidate configurations are further filtered by ESP
       feasibility constraints and the specified area budget.}
@@ -184,7 +185,7 @@ The initial partition reduces the search space by fixing which functions are imp
 For every sampled configuration, SoCPilot regenerates the relevant ESP configuration and evaluates end-to-end latency together with the estimated area provided by the common area model. HyperMapper \cite{9124618} explores this latency--area design space: its surrogate model proposes new configurations, tool feedback updates the model, and points that violate the application-specific area constraint are discarded. The final design is selected from the feasible configurations according to the latency objective under the specified area budget. If no feasible design is found, SoCPilot returns to the previous stage and revises the hardware/software partition.
 
 \subsection{FPGA Prototyping and Board Validation}\label{sec:soc-Prototyping}
-SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to the ESP automation scripts \cite{10.1145/3466752.3480065} for FPGA project generation, synthesis, place-and-route, and bitstream generation. Board-level evaluation checks SoC boot and accelerator invocation, compares application outputs with the CPU reference, and measures end-to-end latency, including CPU execution, accelerator invocation, communication, and synchronization overhead.
+SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to the ESP automation scripts \cite{10.1145/3466752.3480065} for FPGA project generation, synthesis, place-and-route, and bitstream generation. Board-level evaluation checks SoC boot and accelerator invocation and records output signatures and application timing, including CPU execution, accelerator invocation, communication, and synchronization overhead. The experimental setup defines the reported timing intervals and states the reference-verification status of the board runs.
 
 
 % The success of LLMs across diverse domains motivates the development of SoCPilot, an LLM-driven framework for end-to-end SoC design automation. As illustrated in Figure~\ref{fig: overview}, SoCPilot takes natural language and high-level application descriptions as input and has four tightly integrated stages to generate optimized SoC designs automatically. Leveraging the LLM's strengths in natural language understanding, tool interaction, and code generation, the framework performs expert-level decision-making across the entire design flow including requirement analysis, hardware/software partitioning, design space exploration, and FPGA implementation. This end-to-end approach bridges the gap between abstract specifications and concrete hardware, significantly reducing manual effort while maintaining high design quality. In the following sections, we illustrate each stage of the SoCPilot pipeline in detail.

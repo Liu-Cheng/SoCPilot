@@ -1,0 +1,17 @@
+ESP-NOSTACK
+PLATE_BEGIN image=1 mode=hw cpu=ariane dma_bits=64 width=256 height=256
+PLATE_RESULT image=1 mode=hw status=ok verification=unchecked mismatches=-1 input_pattern=0 calls=1,1,3 active=0 fnv=0x5e509dc5
+PLATE_TIME image=1 mode=hw stage=total cycles_lo=0x1b560457 cycles_hi=0x0 ms=6114.960 freq_khz=75000
+PLATE_TIME image=1 mode=hw stage=tophat cycles_lo=0x94064cc cycles_hi=0x0 ms=2069.534 freq_khz=75000
+PLATE_TIME image=1 mode=hw stage=blackhat cycles_lo=0x95ee2b5 cycles_hi=0x0 ms=2096.178 freq_khz=75000
+PLATE_TIME image=1 mode=hw stage=close cycles_lo=0x19d62cc cycles_hi=0x0 ms=361.222 freq_khz=75000
+PLATE_PASS
+ESP-NOSTACK
+PLATE_BEGIN image=1 mode=cpu cpu=ariane dma_bits=64 width=256 height=256
+PLATE_RESULT image=1 mode=cpu status=ok verification=unchecked mismatches=-1 input_pattern=0 calls=1,1,3 active=0 fnv=0x5e509dc5
+PLATE_TIME image=1 mode=cpu stage=total cycles_lo=0x33646b9a cycles_hi=0x0 ms=11496.255 freq_khz=75000
+PLATE_TIME image=1 mode=cpu stage=tophat cycles_lo=0x9406596 cycles_hi=0x0 ms=2069.536 freq_khz=75000
+PLATE_TIME image=1 mode=cpu stage=blackhat cycles_lo=0x95e4e21 cycles_hi=0x0 ms=2095.671 freq_khz=75000
+PLATE_TIME image=1 mode=cpu stage=close cycles_lo=0x19b2f507 cycles_hi=0x0 ms=5748.780 freq_khz=75000
+PLATE_PASS
+
