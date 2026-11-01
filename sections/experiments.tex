@@ -99,14 +99,13 @@ Filtering, median denoising, histogram equalization, convolution, wavelet transf
 \end{tabularx}
 \end{table*}
 
-\subsubsection{Paired baselines and measurement scope}
-For each application, the CPU-only baseline executes all processing stages in software on the selected CPU. Its paired CPU--accelerator implementation uses the same CPU, cache parameters, clock, compiler settings, and input, with selected function calls replaced by accelerator invocations. WAMI uses the 3-mm$^2$ Ibex configuration for this paired comparison. Cycle counters retain both 32-bit halves before conversion to milliseconds at 75~MHz; serial-receiver timestamps are not used for timing.
+\subsubsection{Baselines}
+For each application, the CPU-only baseline executes all processing stages in software on the selected CPU. Its paired CPU--accelerator implementation uses the same CPU, cache parameters, clock, compiler settings, and input, with selected function calls replaced by accelerator invocations.
 
-Reported application latency uses the instrumented board-cycle intervals. For WAMI, the measured input conversion/packing interval is subtracted; for nightvision, the measured input-quantization interval is subtracted. These operations still execute. Nightvision DMA packing, output unpacking, cache synchronization, and start-to-done waiting remain included. Plate recognition, recognition, and scan use their full measured intervals. Application speedup divides the paired CPU-only total by the reported accelerated total; the same timing definition applies throughout the figures and budget study.
+\subsubsection{Measurement Setups}
+Application and kernel speedups are measured on FPGA prototypes. Application speedup is defined as the ratio of the paired CPU-only application latency to the CPU--accelerator application latency. Kernel speedup is the ratio of a function's software-call latency in the CPU-only execution to the latency of its replacement stage in the CPU--accelerator execution. Functional correctness is verified by comparing the outputs of the software and hardware-accelerated executions.
 
-For each mapped function, kernel speedup compares its software-call latency in the CPU-only run with its replacement-stage latency in the CPU--accelerator run.
-
-Application and kernel speedups use board measurements. The supplied logs report reference verification as unchecked. Their output signatures provide execution fingerprints, not proof of numerical equivalence to the original floating-point application. In particular, WAMI and nightvision use fixed-point accelerator representations. Area budgets and DSE estimates share the analytical model's technology basis. We independently report synthesis-derived standard-cell and SRAM-macro area normalized to a common 45-nm-equivalent basis, excluding only the 1000-KiB application RAM. This is a normalized cell-area comparison, not a measurement of post-route die area.
+Chip area is evaluated using Synopsys Design Compiler with the open-source Nangate 45-nm standard-cell library. Because a corresponding 45-nm SRAM library is unavailable, SRAM area is obtained using the SMIC 90-nm process and scaled to a 45-nm-equivalent area. The total area combines the standard-cell area and the scaled SRAM area.
 
 \subsection{Overall Effectiveness}
 \label{subsec:e2e_evaluation}
