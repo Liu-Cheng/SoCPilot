@@ -1,0 +1,23 @@
+\begin{table*}[!t]
+\centering
+\caption{Complete edge applications used throughout the evaluation.}
+\label{tab:e2e_applications}
+\footnotesize
+\renewcommand{\arraystretch}{1.12}
+\begin{tabularx}{\textwidth}{p{3.25cm}p{3.0cm}X}
+\toprule
+\textbf{Application} & \textbf{Scenario} & \textbf{Major processing stages} \\
+\midrule
+License-plate localization (\texttt{plate\_recognition}) & Roadside or parking camera &
+Grayscale conversion, morphological enhancement, edge/region extraction, candidate filtering, and plate localization \\
+Color-based object recognition (\texttt{recognition}) & Embedded visual recognition &
+BGR-to-HSV conversion, color masking, dilation, contour localization, and target-center estimation \\
+Document scanning (\texttt{scan}) & Edge document scanner &
+RGB-to-gray conversion, adaptive thresholding, morphology, edge extraction, document masking, and feature merging \\
+Wide-area motion imagery (\texttt{wami}) & Aerial video analytics &
+Debayering, image warping, Lucas--Kanade tracking, Hessian construction, and foreground modeling \\
+Night-vision enhancement (\texttt{nightvision}) & Low-light camera &
+Filtering, median denoising, histogram equalization, convolution, wavelet transform, and image fusion \\
+\bottomrule
+\end{tabularx}
+\end{table*}

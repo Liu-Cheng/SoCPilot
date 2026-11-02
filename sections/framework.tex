@@ -35,7 +35,7 @@ The structured specification records three types of information: (1) the require
     \toprule
     \textbf{Tier\tnote{a}} & \textbf{Category} & \textbf{Tag} & \textbf{Description / Examples} \\
     \midrule
-    \multirow{1}{*}{T0} 
+    \multirow{1}{*}{T0}
       & Application Domain       & \texttt{domain} & AI inference, sensor hub, audio DSP, ISPs, etc. \\
     \midrule
     \multirow{4}{*}{T1}
@@ -54,13 +54,13 @@ The structured specification records three types of information: (1) the require
       & Integration Constraints  & \texttt{pkg}     & I/O count, physical interface compatibility (e.g., PHYs, pads) \\
     \bottomrule
   \end{tabularx}
-  
+
   % 表格下方的注释区域
   \begin{tablenotes}
     \footnotesize
     \item[a] T0 identifies the application domain; T1 describes primary hardware components; T2 captures cross-layer constraints; and T3 records implementation and integration constraints.
   \end{tablenotes}
-  
+
 \end{threeparttable}
 \end{table*}
 
@@ -139,7 +139,7 @@ As shown in Figure \ref{fig:soc-generation}, the third stage transforms the IP m
     \setlength{\abovecaptionskip}{2pt}
     \caption{LLM-guided accelerator generation and system-level DSE. SoCPilot converts hardware-mapped functions into verified ESP-compatible accelerator tiles, integrates them with the selected system IPs and software, and refines the resulting SoC through system-level design space exploration. Infeasible designs trigger a revision of the hardware/software partition.}
     \label{fig:soc-generation}
-\end{figure*} 
+\end{figure*}
 
 
 \textbf{Accelerator and SoC generation.}
@@ -203,7 +203,7 @@ SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to 
 % \toprule
 % \textbf{Tier\footnotemark[1]} & \textbf{Category} & \textbf{Tag} & \textbf{Description / Examples} \\
 % \midrule
-% \multirow{1}{*}{T0} 
+% \multirow{1}{*}{T0}
 %   & Application Domain       & \texttt{domain} & AI inference, sensor hub, audio DSP, ISPs, etc. \\
 
 % \midrule
@@ -247,22 +247,22 @@ SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to 
 
 % This three-tier classification establishes a principled candidate set for task-graph construction, balancing acceleration opportunity against HLS feasibility before LLM-based decomposition. SoCPilot subsequently constructs the task graph exclusively over this reduced program slice, rather than over the full application. The candidate set is both empirically derived from runtime profiles and constrained by HLS feasibility—this dual grounding gives the mapping and repair stages a principled basis for subsequent decisions.
 
-% \subsection{Hardware/Software Partitioning} 
+% \subsection{Hardware/Software Partitioning}
 % Given the task graph extracted from hotspots, SoCPilot formulates the hardware/software mapping as a constrained selection problem rather than a full-program rewriting problem. The key insight is that, once hardware cost and performance benefit are both taken into account, the partitioning problem reduces to a knapsack-like optimization: each candidate task carries an acceleration benefit, a communication cost, and a resource footprint, while the system offers a finite hardware budget. Therefore, the objective is not to accelerate every eligible function, but to select a subset of tasks whose net benefit is positive and whose total resource consumption stays within system-level constraints.
 
-% \textbf{Task and Communication Evaluation:} 
+% \textbf{Task and Communication Evaluation:}
 % To guide mapping decisions, SoCPilot conducts hybrid PPA profiling for each task and evaluates the communication overhead between dependent tasks:
 
 % \begin{itemize}
-%     \item \textbf{Hardware PPA Estimation:} Candidate accelerators are synthesized using Vivado/Vitis HLS. SoCPilot extracts latency, and resource utilization (DSP, LUT, FF, BRAM) from HLS synthesis reports. These metrics serve as early-stage PPA signals for mapping and DSE. 
-    
+%     \item \textbf{Hardware PPA Estimation:} Candidate accelerators are synthesized using Vivado/Vitis HLS. SoCPilot extracts latency, and resource utilization (DSP, LUT, FF, BRAM) from HLS synthesis reports. These metrics serve as early-stage PPA signals for mapping and DSE.
+
 %     \item \textbf{Software Runtime Estimation:} The execution time of CPU-mapped tasks is estimated using Sniper~\cite{sniper}, a parallel multicore simulator.
-    
+
 %     \item \textbf{Communication Model:} SoCPilot accounts for data movement by associating task-graph edges with data-transfer volume and platform-dependent transfer cost. When two dependent tasks are mapped to different execution domains, the mapping stage adds a communication penalty to the successor's earliest start time; when they remain in the same domain, this penalty is reduced or omitted  according to the platform policy. This lightweight penalty prevents the mapper from selecting accelerators whose compute benefit is offset by data-movement overhead.
 
 % \end{itemize}
 
-% \textbf{Partitioning algorithm.} 
+% \textbf{Partitioning algorithm.}
 % Based on the above estimates, SoCPilot formulates the initial mapping as a resource-constrained task-graph partitioning problem. Each candidate task is characterized by its estimated acceleration benefit, HLS-derived resource cost, and communication penalty incurred when data crosses the CPU/accelerator boundary. The current implementation addresses this problem using a greedy heuristic: candidates are ranked by their effective benefit under the resource budget, and a task is mapped to hardware only when its net benefit is positive and the cumulative resource usage remains within admissible limits. This stage does not pursue global optimality; rather, it yields a compact and interpretable initial hardware/software partition, which freezes the candidate accelerator set and provides the starting point for subsequent DSE over processor, cache, and HLS directive parameters.
 
 
@@ -287,7 +287,7 @@ SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to 
 
 
 % \ForEach{task $t$ in sorted $T$}{
-%     \If{$value(t) > 0$ \textbf{and} $R_{\text{used}} + resource(t) \leq 
+%     \If{$value(t) > 0$ \textbf{and} $R_{\text{used}} + resource(t) \leq
 % R_{\text{max}}$}{
 %         $T_H \leftarrow T_H \cup \{t\}$\;
 %         $R_{\text{used}} \leftarrow R_{\text{used}} + resource(t)$\;
@@ -305,25 +305,27 @@ SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to 
 % \textbf{Architecture Optimization:}
 % To refine the partition further, SoCPilot performs multi-objective architecture optimization across processor and accelerator configurations. To explore the parameter space, we apply Bayesian optimization via HyperMapper~\cite{9124618} to investigate trade-offs between power, performance, and area. The final design is selected from Pareto-optimal configurations that meet all design constraints.
 
-% \subsection{SoC Generation and Parameter Finetuning}\label{sec:soc-generation}
+\input{sections/experimental-platform-table}
+
+
 % Following the hardware-software partitioning phase, our framework generates the corresponding HLS accelerator and the SoC on the ESP platform. Subsequently, the system performs RTL-level synthesis to obtain accurate PPA metrics, which drive a final optimization stage using Bayesian optimization, as illustrated in Figure \ref{fig:soc-generation}.
 
-% The ESP platform\cite{7428012} serves as a heterogeneous integration framework that enables agile SoC development. Our framework leverages LLM capabilities to automate the ESP toolchain operation, effectively simulating a domain expert. Beginning with hardware-software partitioning results, the LLM first derives the accelerator's architectural parameters, including register configurations and interface specifications, to generate a parameterized ESP accelerator skeleton. During accelerator implementation, the LLM automatically applies ESP-compliant optimization techniques (double buffering) to the target code. 
+% The ESP platform\cite{7428012} serves as a heterogeneous integration framework that enables agile SoC development. Our framework leverages LLM capabilities to automate the ESP toolchain operation, effectively simulating a domain expert. Beginning with hardware-software partitioning results, the LLM first derives the accelerator's architectural parameters, including register configurations and interface specifications, to generate a parameterized ESP accelerator skeleton. During accelerator implementation, the LLM automatically applies ESP-compliant optimization techniques (double buffering) to the target code.
 % \lstset{
-% 		language=C++, 
-% 		linewidth=0.48\textwidth, 
-% 		columns=flexible, 
-% 		basicstyle=\ttfamily \fontsize{8pt}{9pt}\selectfont , 
+% 		language=C++,
+% 		linewidth=0.48\textwidth,
+% 		columns=flexible,
+% 		basicstyle=\ttfamily \fontsize{8pt}{9pt}\selectfont ,
 % 		breaklines=true,
-% 		frame=single, 
-% 		keywordstyle=\textcolor{Orchid}, 
-% 		commentstyle=\textcolor{Gray}, 
-% 		stringstyle=\textcolor{Orange}, 
-% 		emph={merge, merge_arrays, histogram, histogram_parallel, histogram_map, histogram_reduce, bfs_kernel, read_frontier_vertex, traverse, convolve, read_dataflow, compute_dataflow, empty, read}, 
+% 		frame=single,
+% 		keywordstyle=\textcolor{Orchid},
+% 		commentstyle=\textcolor{Gray},
+% 		stringstyle=\textcolor{Orange},
+% 		emph={merge, merge_arrays, histogram, histogram_parallel, histogram_map, histogram_reduce, bfs_kernel, read_frontier_vertex, traverse, convolve, read_dataflow, compute_dataflow, empty, read},
 %     	emphstyle=\textcolor{NavyBlue}
 %     }
 %     \begin{lstlisting}
-% // source code: 
+% // source code:
 % void feedforward(int *input, int *weights, int *output, int input_size, int output_size) {
 %     loop1: for (int i = 0; i < output_size; i++) {
 %         int sum = 0;
@@ -384,10 +386,10 @@ SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to 
 %     }
 % }
 % \end{lstlisting}
-% For verification, the SoCPilot generates comprehensive testbenches by analyzing functional requirements. 
+% For verification, the SoCPilot generates comprehensive testbenches by analyzing functional requirements.
 % \begin{lstlisting}
 % //Testbench implementation for simulation
-% // Initialize input 
+% // Initialize input
 % in = new int32_t[INPUT_SIZE * OUTPUT_SIZE + INPUT_SIZE];
 % for (int i = 0; i < INPUT_SIZE * OUTPUT_SIZE + INPUT_SIZE; i++) {
 %     in[i] = i % INPUT_SIZE;
@@ -415,7 +417,7 @@ SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to 
 %     \includegraphics[width=0.45\textwidth]{pic/SoC-generation.jpg}
 %     \caption{Automatic Optimization Strategies Learning and Application}
 %     \label{fig:soc-generation}
-% \end{figure} 
+% \end{figure}
 
 
 % \begin{table}[h]
@@ -430,17 +432,19 @@ SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to 
 %           \textbf{\begin{tabular}[c]{@{}c@{}}Architectural parameters \end{tabular}} &
 %           \textbf{\begin{tabular}[c]{@{}c@{}}Candidate values \end{tabular}} \\ \hline
 %            cache line size      &128, 256, 512              \\
-%            L2 sets              & 32, 64                \\ 
+%            L2 sets              & 32, 64                \\
 %            L2 ways              & 2, 4, 8                \\
 %            LLC sets             & 128, 256, 512                \\
 %            LLC ways             & 4, 8, 16                \\
 %            NOC fifo depth       & 2, 4, 6               \\        \hline
-%         \end{tabular}} 
- 
+%         \end{tabular}}
+
 % \end{table}
 
 
-% \subsection{FPGA Prototyping and ASIC Design }\label{sec:soc-Prototyping}
+%
+\input{sections/application-table}
+
 % Our framework implements a closed-loop verification and optimization pipeline that begins with automated FPGA prototyping. RTL designs are synthesized and implemented on target platforms while leveraging LLM-generated, ESP-compliant embedded verification code for comprehensive functional validation. During execution, the system continuously monitors runtime performance through ESP's API interfaces\cite{10.1145/3466752.3480065}, collecting critical metrics including accelerator execution times, interconnect communication latency, memory access patterns, and cache utilization statistics. The LLM re-optimizes SoC cache configurations (cache coherence modes, memory allocation policies, and NoC bandwidth allocation) based on actual workload characteristics.
 
 

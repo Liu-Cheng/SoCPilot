@@ -1,3 +1,4 @@
+
 \section{Experiments}
 \label{sec:evaluation}
 
@@ -7,97 +8,11 @@ We evaluate SoCPilot from system outcomes to the mechanisms behind them. After d
 \subsubsection{Platforms and applications}
 SoCPilot uses DeepSeek~\cite{DeepSeek} for LLM reasoning, Vivado HLS for accelerator synthesis, Sniper~\cite{sniper} for CPU performance estimation, HyperMapper~\cite{9124618} for DSE, and ESP~\cite{mantovani2020agile} for SoC integration. Table~\ref{tab:experimental_setup} lists the common environment. The benchmark-specific embedded runtime is manually implemented and held fixed during evaluation.
 %%这个地方的面积模型表达
-\begin{table}[t]
-\centering
-\caption{Experimental platforms and common evaluation settings.}
-\label{tab:experimental_setup}
-\footnotesize
-\renewcommand{\arraystretch}{1.10}
-\setlength{\tabcolsep}{4pt}
 
-\begin{tabularx}{\columnwidth}{p{0.30\columnwidth}X}
-\toprule
-\textbf{Item} & \textbf{Configuration} \\
-\midrule
-
-\rowcolor{gray!10}
-\multicolumn{2}{l}{LLM configuration} \\
-LLM &
-DeepSeek API with \texttt{deepseek-v4-pro}; temperature $=0$. \\
-
-\midrule
-\rowcolor{gray!10}
-\multicolumn{2}{l}{Processor and software environment} \\
-CPU candidates &
-Ariane/CVA6 (RV64), Ibex (RV32), and Leon3 (SPARC V8). \\
-
-Compilation &
-RISC-V GCC for Ariane/CVA6 and Ibex; \texttt{sparc-elf} GCC for Leon3.
-CPU-only and CPU--accelerator implementations use identical compiler
-settings for each application. \\
-
-Embedded runtime &
-Benchmark-specific accelerator-control and runtime code is manually
-implemented using the ESP programming model and is held fixed during
-evaluation. \\
-
-\midrule
-\rowcolor{gray!10}
-\multicolumn{2}{l}{Accelerator generation and estimation} \\
-HLS &
-Vitis/Vivado HLS 2021.2; all five primary DSE runs use a 13.333-ns
-target clock (75~MHz). \\
-
-CPU estimation &
-Sniper-based CPU performance estimation. \\
-
-Area estimation &
-A common analytical SoC-area model is used for hardware/software
-partitioning and DSE under identical technology assumptions. \\
-
-\midrule
-\rowcolor{gray!10}
-\multicolumn{2}{l}{System-level exploration and validation} \\
-SoC generation &
-ESP-based CPU--accelerator SoC configuration and integration. \\
-
-DSE &
-HyperMapper-based exploration over processor, cache, and accelerator
-configuration parameters under application-specific area constraints. \\
-
-FPGA validation &
-Xilinx Zynq UltraScale+ \texttt{xczu9eg-ffvb1156-2-e};
-ESP runtime clock of 75~MHz. \\
-
-\bottomrule
-\end{tabularx}
-\end{table}
 
 \label{subsec:application_suite}
 Table~\ref{tab:e2e_applications} summarizes five complete C/C++ applications, including WAMI and nightvision from the workload suite in~\cite{wami}. Each preserves its application control flow and dependent processing stages. 
-\begin{table*}[t]
-\centering
-\caption{Complete edge applications used throughout the evaluation.}
-\label{tab:e2e_applications}
-\footnotesize
-\renewcommand{\arraystretch}{1.12}
-\begin{tabularx}{\textwidth}{p{3.25cm}p{3.0cm}X}
-\toprule
-\textbf{Application} & \textbf{Scenario} & \textbf{Major processing stages} \\
-\midrule
-License-plate localization (\texttt{plate\_recognition}) & Roadside or parking camera &
-Grayscale conversion, morphological enhancement, edge/region extraction, candidate filtering, and plate localization \\
-Color-based object recognition (\texttt{recognition}) & Embedded visual recognition &
-BGR-to-HSV conversion, color masking, dilation, contour localization, and target-center estimation \\
-Document scanning (\texttt{scan}) & Edge document scanner &
-RGB-to-gray conversion, adaptive thresholding, morphology, edge extraction, document masking, and feature merging \\
-Wide-area motion imagery (\texttt{wami}) & Aerial video analytics &
-Debayering, image warping, Lucas--Kanade tracking, Hessian construction, and foreground modeling \\
-Night-vision enhancement (\texttt{nightvision}) & Low-light camera &
-Filtering, median denoising, histogram equalization, convolution, wavelet transform, and image fusion \\
-\bottomrule
-\end{tabularx}
-\end{table*}
+
 
 \subsubsection{Baselines}
 For each application, the CPU-only baseline executes all processing stages in software on the selected CPU. Its paired CPU--accelerator implementation uses the same CPU, cache parameters, clock, compiler settings, and input, with selected function calls replaced by accelerator invocations.
@@ -107,10 +22,10 @@ Application and kernel speedups are measured on FPGA prototypes. Application spe
 
 Chip area is evaluated using Synopsys Design Compiler with the open-source Nangate 45-nm standard-cell library. Because a corresponding 45-nm SRAM library is unavailable, SRAM area is obtained using the SMIC 90-nm process and scaled to a 45-nm-equivalent area. The total area combines the standard-cell area and the scaled SRAM area.
 
-\subsection{Overall Effectiveness}
+\subsection{SoC Generation Evaluation}
 \label{subsec:e2e_evaluation}
-\subsubsection{Application acceleration}
-Figure~\ref{fig:board_application_speedups} shows measured application speedups of 1.88--4.78$\times$ over paired CPU-only execution, with a geometric mean of 2.79$\times$. Plate recognition, recognition, scan, WAMI, and nightvision achieve 1.88$\times$, 2.13$\times$, 4.28$\times$, 4.78$\times$, and 2.08$\times$, respectively. We next examine the selected architectures and kernel measurements to explain the variation across applications.
+\subsubsection{Performance Acceleration}
+Figure~\ref{fig:board_application_speedups} shows measured application speedups of 1.88--4.78$\times$ over paired CPU-only execution, with a geometric mean of 2.79$\times$. Plate recognition, recognition, scan, WAMI, and nightvision achieve 1.88$\times$, 2.13$\times$, 4.28$\times$, 4.78$\times$, and 2.08$\times$, respectively. The application-level gains depend on the functions selected for acceleration, their individual speedups, and the work that remains on the CPU. CPU-resident processing and accelerator invocation, data transfer, and synchronization limit how much kernel-level acceleration translates into application-level speedup.
 
 \begin{figure}[t]
 \centering
@@ -119,14 +34,14 @@ Figure~\ref{fig:board_application_speedups} shows measured application speedups 
 \label{fig:board_application_speedups}
 \end{figure}
 
-\subsubsection{Selected CPU--accelerator architectures}
-Table~\ref{tab:selected_soc_configs} records the latest deployed DSE selections. Ariane is selected for plate recognition and nightvision, LEON3 for recognition and scan, and Ibex for WAMI. Plate recognition offloads only \texttt{morphology\_close}; WAMI offloads \texttt{hessian} and \texttt{warp\_image}, while \texttt{steepest\_descent} remains in software. All five selected configurations satisfy their model-area ceilings. Their normalized synthesis areas also remain within the corresponding budgets, although model estimates and synthesis results differ.
 
+Based on application profiling, SoCPilot identifies bottleneck functions and selects those suitable for acceleration. The selected functions are \texttt{morphology\_close} for plate recognition, \texttt{bgr\_to\_hsv} and \texttt{dilate\_mask} for recognition, \texttt{scan\_adaptive\_threshold} for scan, \texttt{hessian} and \texttt{warp\_image} for WAMI, and \texttt{conv2d} for nightvision. In the paired CPU-only runs, the selected functions account for 50.01\%, 76.58\%, 77.05\%, and 67.21\% of the runtime of plate recognition, recognition, scan, and nightvision, respectively, indicating substantial opportunities for hardware acceleration.
+
+The CPU executes the remaining application stages and coordinates accelerator invocation and data movement. Its performance therefore remains important even after the bottlenecks are offloaded, motivating the joint selection of processors and accelerators. Table~\ref{tab:selected_soc_configs} shows that DSE selects Ariane for plate recognition and nightvision, LEON3 for recognition and scan, and Ibex for WAMI under their respective area budgets. In plate recognition, for example, the CPU-resident top-hat and black-hat stages still take approximately 2.07 and 2.10~s, respectively. These remaining stages limit the application speedup to 1.88$\times$ despite substantial acceleration of the closing stage.
 
 \input{data/generated/selected_soc_configs}
 
-\subsubsection{Kernel acceleration and CPU-resident work}
-Figure~\ref{fig:hotspot_stage_speedups} shows the seven mapped kernels in the current configurations. All seven reduce their replacement-stage latency under the stated timing scope.
+Figure~\ref{fig:hotspot_stage_speedups} shows that all seven selected kernels reduce their replacement-stage latency. Plate recognition's closing stage accelerates by 15.91$\times$. For WAMI, \texttt{warp\_image} falls from 52,425.388 to 1,556.415~ms, while \texttt{hessian} falls from 16,500.429 to 82.082~ms. However, the CPU-resident \texttt{steepest\_descent} still takes 6,287.612~ms in the accelerated application, compared with 5,991.832~ms in the CPU-only run. This illustrates why the application-level speedup remains lower than the speedups of its accelerated kernels.
 
 \begin{figure*}[t]
 \centering
@@ -135,14 +50,7 @@ Figure~\ref{fig:hotspot_stage_speedups} shows the seven mapped kernels in the cu
 \label{fig:hotspot_stage_speedups}
 \end{figure*}
 
-For recognition, scan, and nightvision, the mapped functions account for 76.58\%, 77.05\%, and 67.21\% of CPU-only runtime, respectively. Plate recognition's closing stage accounts for 50.01\% of baseline runtime and accelerates by 15.91$\times$; top-hat and black-hat remain CPU-resident and take approximately 2.07 and 2.10~s in either execution. These remaining stages limit application speedup to 1.88$\times$ despite the faster closing stage.
-
-\paragraph{WAMI: kernel gains and CPU-resident work}
-In the paired 3-mm$^2$ Ibex configuration, the reported \texttt{warp\_image} stage falls from 52,425.388 to 1,556.415~ms and \texttt{hessian} from 16,500.429 to 82.082~ms. The software-only \texttt{steepest\_descent} takes 6,287.612~ms in the accelerated application, versus 5,991.832~ms in the CPU-only run.
-
-The large kernel gains therefore do not translate directly into the same application-level gain: CPU-resident stages and runtime work remain in the execution path. A performance model based mainly on HLS cycles and payload divided by bandwidth needs CPU-dependent estimates for invocation, output conversion, cache maintenance, synchronization, and remaining software processing to capture these costs.
-
-\subsection{Automation Comparison with a General-Purpose Agent}
+\subsubsection{Automation Evaluation}
 \label{subsec:general_agent}
 We test whether a general-purpose agent equipped with the same underlying LLM can achieve the level of design automation supported by SoCPilot. Both workflows use DeepSeek-v4-pro on the five applications. Following the HSCO-Bench~\cite{hscobench2026} protocol for the general-purpose baseline, we assess whether the agent can complete the required accelerator implementation, verification, synthesis, and SoC integration tasks, and record the stage reached in each run.
 
@@ -157,12 +65,17 @@ The general-purpose agent receives each migrated application's source, the HSCO-
 
 The general-purpose agent completes the required generation tasks for none of the five applications. Nightvision and plate recognition encounter compilation failures during behavioral simulation; scan fails output verification. Recognition and WAMI pass behavioral simulation but encounter HLS synthesis failures. SoCPilot reaches accelerator generation, HLS synthesis, ESP integration, and FPGA application execution for all five workloads, using the fixed embedded runtime described in the experimental setup. The original HSCO-Bench study reports a \texttt{NightVision} speedup of 1.08$\times$ with Claude Opus 4.6~\cite{hscobench2026}. Our current paired nightvision measurements yield 2.08$\times$. The cross-study figures use different experimental settings and do not constitute a controlled performance comparison.
 
-For these applications and experimental settings, the tested general-purpose agent does not match SoCPilot's task-completion level despite using the same LLM. The results support the value of SoCPilot's domain-specific task decomposition, explicit design representations, and tool-feedback loops in coordinating the design tasks.
+These results indicate that access to the underlying tools alone is insufficient for reliable SoC generation. The general-purpose agent must coordinate hardware/software partitioning, extract kernels and decouple them from application context, and navigate the constraints of a complex EDA toolchain to produce efficient HLS implementations. The observed compilation, verification, and synthesis failures illustrate the difficulty of carrying generated code through this workflow. Effective automation therefore requires domain-specific guidance on both design decisions and tool use. SoCPilot embeds this guidance in structured task decomposition, explicit intermediate representations, and tool-feedback loops, helping the LLM apply expert knowledge throughout the SoC generation process.
 
-\subsection{Targeted Analyses}
-\subsubsection{Case study of requirement-to-IP selection}
+\subsubsection{Chip Area and Energy Efficiency}
+% Evaluation data and tables will be added here.
+
+\subsection{Design Optimization Evaluation}
+\subsubsection{IP Selection Evaluation}
 \label{subsec:requirement_ip_matching}
-We use the parking-entrance plate-localization SoC as a concrete requirement-to-IP case study. Its description specifies a MIPI CSI-2 camera, I2C/SCCB sensor configuration, and Ethernet communication with a parking-management host. Figure~\ref{fig:ip_selection_case} follows the recorded description and structured requirements through a representative library lookup to the exported IP manifest.
+This evaluation examines how SoCPilot's staged requirement interpretation and library-based selection differ from direct IP recommendations by an LLM given the same user description. Without a unique golden IP list, the comparison focuses on requirement coverage, the rationale for inferred components, and the correspondence between recommendations and available IPs, rather than exact-match accuracy. The output is a set of necessary IP recommendations inferred from the stated requirements, not a complete product specification. Its completeness depends on the accuracy and detail of the user description.
+
+Figure~\ref{fig:ip_selection_case} illustrates the staged process for a parking-entrance plate-localization SoC. The description specifies a MIPI CSI-2 camera, I2C/SCCB sensor configuration, and Ethernet communication with a parking-management host. The figure follows these requirements through structured interpretation and library lookup to an exported IP manifest.
 
 \begin{figure}[t]
 \centering
@@ -195,30 +108,44 @@ We use the parking-entrance plate-localization SoC as a concrete requirement-to-
 \label{fig:ip_selection_case}
 \end{figure}
 
-The structured requirements distinguish camera-pixel ingress, sensor-register control, and host networking, and specify the associated buffering, working memory, and processing-control roles. For camera ingress, the selected \texttt{mipi\_csi2} entry provides pixel streaming and frame synchronization. After functional and resource checks, the exported manifest combines the interface, memory, interconnect, and control IPs shown in the figure, with no unmatched functional requirement. This case illustrates how an application-level SoC description is resolved into specific library entries.
+The structured requirements distinguish camera-pixel ingress, sensor-register control, and host networking, and specify the associated buffering, working memory, and processing-control roles. For camera ingress, the selected \texttt{mipi\_csi2} entry provides pixel streaming and frame synchronization. After functional and resource checks, the exported manifest combines the interface, memory, interconnect, and control IPs shown in the figure, with no unmatched functional requirement. The manifest covers the explicitly represented requirements, but this does not establish completeness for a deployable product. A side-by-side comparison with direct LLM recommendations will further expose differences in inferred IP needs and selection rationale; the corresponding results remain to be added. In future work, we plan to enrich the reference data with historical chip designs and comparable existing chips to provide users with additional suggestions and identify requirements omitted from their descriptions.
 
-\subsubsection{Effect of guided hotspot selection}
+\subsubsection{Hardware/Software Partitioning}
 \label{subsec:hotspot_selection_comparison}
+This evaluation focuses on hotspot function selection within hardware/software partitioning: identifying which application functions should be implemented as accelerators and which should remain on the CPU.
 \emph{[Reserved experiment: compare SoCPilot's selected kernels with those proposed by a source-only LLM without SoCPilot's selection constraints. Evaluate both sets under the same downstream CPU/cache configuration and area budget; results to be added.]}
 % Report selected functions, synthesis/mapping feasibility, and estimated application latency.
 % Existing llm_hotspot_baseline prompts contain an area limit and a maximum candidate count;
 % confirm or rerun the unconstrained selection setting before reporting its results here.
 
-\subsubsection{Measured WAMI area-budget sensitivity}
+\subsubsection{Optimization Sensitivity to Area Constraints}
 \label{subsec:area_aware}
-We examine seven deployed WAMI configurations selected at 1.8, 2.2, 3, 4, 8, 9, and 10~mm$^2$ budgets. Each independent search uses 40 initial samples and 20 optimization iterations, reusing the prepared accelerator candidates and DMA interfaces while exploring CPU, cache, and HLS parameters. Table~\ref{tab:wami_budget_configs} records the exact selections and synthesis-derived areas; Figure~\ref{fig:wami_area_budget} plots board measurements rather than predicted DSE latency. Each reported latency is one supplied board execution, not an average over repeated trials. All WAMI runs use three frames, 20 iterations, and 183/60/60 calls to warp, steepest descent, and Hessian, respectively.
+An area constraint determines how SoCPilot allocates hardware resources among the processor, caches, and accelerators. A larger budget permits both additional offloading and stronger support for CPU-resident work; the useful allocation depends on the end-to-end performance benefit obtained per unit of area. Due to space limitations, we illustrate this sensitivity using WAMI. We examine seven independently optimized configurations with budgets from 1.8 to 10~mm$^2$, using 40 initial samples and 20 optimization iterations per search. Table~\ref{tab:wami_budget_configs} lists the selected configurations, and Figure~\ref{fig:wami_area_budget} reports their FPGA-measured application latency under the same workload.
 
-\begin{figure*}[t]
+\begin{figure}[t]
 \centering
-\includegraphics[width=\textwidth]{pic/wami-area-budget-measured.pdf}
-\caption{Measured WAMI area-budget sensitivity at seven selected budgets. (a) Board application latency; labels give milliseconds. (b) DSE area, normalized post-synthesis cell area, and budget; labels give synthesis areas in mm$^2$. Color and marker shape identify the selected CPU. Budget points are discrete and equally spaced for readability. Lines connect sampled configurations, not a guaranteed Pareto frontier.}
+\includegraphics[width=\columnwidth]{pic/wami-latency-budget.pdf}
+\caption{WAMI application latency under different area budgets. Color and marker shape identify the selected CPU. Lines connect sampled configurations rather than a guaranteed Pareto frontier.}
 \label{fig:wami_area_budget}
-\end{figure*}
+\end{figure}
 
 \input{data/generated/wami_budget_configs}
 
-The selected mapping grows from CPU-only at 1.8~mm$^2$, to Hessian at 2.2~mm$^2$, and Hessian plus warp at 3 and 4~mm$^2$. The CPU changes from Ibex to LEON3 at the 4-mm$^2$ point, and to Ariane with all three kernels accelerated at 8, 9, and 10~mm$^2$. The measured latency falls from 44,161.522~ms at 1.8~mm$^2$ to 1,574.521~ms at 4~mm$^2$, but rises to 1,711.761 and 1,705.779~ms at 8 and 9~mm$^2$. Increasing the area ceiling therefore does not guarantee a faster deployed configuration.
+At tight budgets, additional area is first used to offload expensive kernels: the selection progresses from CPU-only at 1.8~mm$^2$ to Hessian at 2.2~mm$^2$ and Hessian plus warp at 3~mm$^2$. At 4~mm$^2$, SoCPilot also selects LEON3 instead of Ibex, balancing accelerator execution with the remaining CPU workload. This configuration reduces latency from 44,161.522 to 1,574.521~ms and achieves the highest normalized performance per area among the sampled designs (Table~\ref{tab:wami_budget_configs}). Thus, efficient area use depends on balancing offloading with CPU support, rather than simply maximizing the number of accelerators.
 
-The 8-mm$^2$ Ariane selection is 8.72\% slower than the 4-mm$^2$ LEON3 selection. Its Hessian and warp replacement stages take 386.069 and 490.611~ms, compared with 59.795 and 407.494~ms on LEON3. Hardware steepest descent is faster (358.781 versus 401.416~ms in software), but that gain does not offset the other stage costs. An additional measured 6-mm$^2$ Ariane selection, outside the plotted subset, takes 1,692.365~ms and is also slower than the 4-mm$^2$ selection. These are comparisons between complete selected configurations: HLS settings, DMA width (64 versus 32 bits), cache organization, and fixed-point representation also change. Replacement-stage timers retain DMA, control, synchronization, and output conversion; they do not isolate accelerator compute cycles. Aggregate timings alone cannot establish which individual mechanism causes the slower stages.
+Larger budgets allow Ariane, acceleration of all three kernels, and changes to cache resources. These additions yield diminishing and configuration-dependent returns. The 10-mm$^2$ configuration achieves the lowest measured latency, 1,438.816~ms, but improves on the 4-mm$^2$ configuration by only 8.62\%. Its lower performance per area shows that the fastest sampled design is not the most area-efficient one.
 
-The 10-mm$^2$ Ariane configuration is instead faster: 1,438.816~ms, or 8.62\% below the 4-mm$^2$ LEON3 time. Compared with the 8-mm$^2$ selection, its LLC increases from 8 to 64~KiB and its cache line from 32 to 64~B, while L2 decreases from 32 to 16~KiB. Total latency improves by 272.945~ms; 223.691~ms of this reduction lies outside the three accumulated kernel-stage intervals. This localizes much of the improvement to remaining application/runtime work, but attributing it specifically to cache misses or bandwidth would require additional counters. Normalized synthesis area increases from 5.565 to 8.991~mm$^2$ across these two selections. The searches minimize predicted latency under a model-area ceiling, not measured board latency, and run independently without preserving earlier best configurations. Model error and finite search coverage thus limit any claim of monotonicity or global optimality.
+The 8- and 9-mm$^2$ selections are slightly slower than the 4-mm$^2$ design. At 8~mm$^2$, offloading steepest descent saves approximately 43~ms, but the Hessian and warp replacement stages together take approximately 409~ms longer. The additional offloading benefit therefore does not compensate for the changed execution costs. CPU, cache, HLS, and DMA configurations change together, affecting both computation and runtime overhead. When competing configurations offer similar net benefits, errors in latency and overhead estimates can change their predicted ranking. Together with finite, independent searches, this provides a plausible explanation for the modest non-monotonicity in board performance; aggregate timings do not isolate the contribution of each mechanism. The practical implication is that a larger area budget expands the design choices, but accurate system-level cost estimates remain necessary to turn that flexibility into measured speedup.
+
+\subsubsection{Area Prediction Model Evaluation}
+\label{subsec:area_prediction}
+The area model guides DSE by estimating whether a candidate configuration satisfies the area constraint. We evaluate its accuracy on the seven selected WAMI configurations by comparing DSE predictions with synthesis-derived standard-cell and SRAM areas normalized to the same 45-nm basis, using the methodology described in the experimental setup.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{pic/wami-area-prediction.pdf}
+\caption{DSE area predictions and normalized post-synthesis areas for the selected WAMI configurations. The area budget is shown as a reference; labels indicate synthesis-derived areas in mm$^2$.}
+\label{fig:wami_area_prediction}
+\end{figure}
+
+Figure~\ref{fig:wami_area_prediction} shows the differences between the analytical estimates used during exploration and the synthesis-derived areas. This comparison evaluates the accuracy of the area estimates independently of the board-latency trends discussed above. Prediction errors affect the feasible design space: underestimation can admit configurations that exceed the area budget after synthesis, whereas overestimation can exclude feasible configurations. Synthesis-based area checks therefore complement the inexpensive model used during DSE.

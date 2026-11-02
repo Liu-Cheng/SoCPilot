@@ -1,0 +1,65 @@
+\begin{table}[!t]
+\centering
+\caption{Experimental platforms and common evaluation settings.}
+\label{tab:experimental_setup}
+\footnotesize
+\renewcommand{\arraystretch}{1.10}
+\setlength{\tabcolsep}{4pt}
+
+\begin{tabularx}{\columnwidth}{p{0.30\columnwidth}X}
+\toprule
+\textbf{Item} & \textbf{Configuration} \\
+\midrule
+
+\rowcolor{gray!10}
+\multicolumn{2}{l}{LLM configuration} \\
+LLM &
+DeepSeek API with \texttt{deepseek-v4-pro}; temperature $=0$. \\
+
+\midrule
+\rowcolor{gray!10}
+\multicolumn{2}{l}{Processor and software environment} \\
+CPU candidates &
+Ariane/CVA6 (RV64), Ibex (RV32), and Leon3 (SPARC V8). \\
+
+Compilation &
+RISC-V GCC for Ariane/CVA6 and Ibex; \texttt{sparc-elf} GCC for Leon3.
+CPU-only and CPU--accelerator implementations use identical compiler
+settings for each application. \\
+
+Embedded runtime &
+Benchmark-specific accelerator-control and runtime code is manually
+implemented using the ESP programming model and is held fixed during
+evaluation. \\
+
+\midrule
+\rowcolor{gray!10}
+\multicolumn{2}{l}{Accelerator generation and estimation} \\
+HLS &
+Vitis/Vivado HLS 2021.2; all five primary DSE runs use a 13.333-ns
+target clock (75~MHz). \\
+
+CPU estimation &
+Sniper-based CPU performance estimation. \\
+
+Area estimation &
+A common analytical SoC-area model is used for hardware/software
+partitioning and DSE under identical technology assumptions. \\
+
+\midrule
+\rowcolor{gray!10}
+\multicolumn{2}{l}{System-level exploration and validation} \\
+SoC generation &
+ESP-based CPU--accelerator SoC configuration and integration. \\
+
+DSE &
+HyperMapper-based exploration over processor, cache, and accelerator
+configuration parameters under application-specific area constraints. \\
+
+FPGA validation &
+Xilinx Zynq UltraScale+ \texttt{xczu9eg-ffvb1156-2-e};
+ESP runtime clock of 75~MHz. \\
+
+\bottomrule
+\end{tabularx}
+\end{table}
