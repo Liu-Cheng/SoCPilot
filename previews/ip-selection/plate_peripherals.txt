@@ -1,0 +1,25 @@
+# 1. Deployment description (abridged)
+"Parking-entry plate-region extraction:
+ one CSI-2 camera; I2C sensor setup;
+ Ethernet records to a parking host."
+scope: external peripherals only
+
+# 2. Structured interface requirements
+pixels: CSI-2; channels>=1; frame_sync=true
+sensor setup: I2C controller
+host link: Ethernet
+
+# 3. Library matching and capability checks
+camera_pixels  -> mipi_csi2
+  protocol: pass; channels/sync: unknown
+  result: needs_evidence
+camera_control -> camera_i2c_ctrl
+  result: catalog_match
+host_records   -> ethernet
+  result: catalog_match
+
+# 4. Exported recommendations (abridged)
+selected: [mipi_csi2, camera_i2c_ctrl,
+           ethernet]
+status: needs_review
+deployment: recommendation_only

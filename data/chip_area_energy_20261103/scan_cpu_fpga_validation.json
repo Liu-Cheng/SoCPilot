@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "application": "scan",
+  "cpu": "leon3",
+  "accelerators": [],
+  "clock_mhz": 75,
+  "fpga_application_ram_kib": 1000,
+  "bitstream_sha256": "56b47b24f9c82f84a9dfca859eb304c3a2f9b98d64208f877219f949d00cd436",
+  "power_report_sha256": "d4f8b496780fb619a1b3564c1188bf554ce7bfc730a920524e2ef9ee2f3bd8cb",
+  "estimated_power_w": 3.886,
+  "route_counts": {
+    "routable nets": 151782,
+    "fully routed nets": 151782,
+    "nets with routing errors": 0
+  },
+  "routed_timing_met": true,
+  "source_file_count": 575,
+  "snapshot": "/dev/shm/cpu_only_five_20261102/scan/snapshot",
+  "board_tested": false,
+  "frozen_at_utc": "2026-11-02T16:32:20.229377"
+}

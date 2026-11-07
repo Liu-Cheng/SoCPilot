@@ -48,3 +48,7 @@ latexmk -pdf SoCPilot.tex
 第二个脚本生成 Table VI、WAMI 配置表（Table VII）和 Fig. 9。Fig. 5 仅展示主计时对应的应用加速比；原配对计时表已移除。Fig. 9 仅选取 1.8、2.2、3、4、8、9、10 mm² 点；6、8 mm² 修正版时间来自 `trade_off_80_90.DAT`（文件名中的 90 不代表其内容是 9 mm²）。历史 Nightvision 扫描文件仍保留，但不参与当前 Fig. 9。
 
 计时同时保留 preparation-excluded 和 full elapsed，不能将扣除准备时间后的结果称为完整端到端时间。表中综合面积标为 normalized synthesis area：同一 45 nm 等效口径下的单元面积，包含 SRAM 宏，排除 1000 KiB 应用 RAM，并非布线后芯片面积。完整来源报告保留原工艺与换算记录。原始日志均标记 `verification=unchecked`，不能据此宣称已完成原始浮点算法的全应用等价验证。
+
+## Paper application display names
+
+The manuscript uses `plate_roi` for license-plate candidate-region extraction and `color_target` for color-target localization. `scripts/paper_app_names.py` maps the original `plate_recognition` and `recognition` identifiers to these display names. Frozen data keys, source filenames, benchmark code, configurations, and measurements retain their original identifiers.

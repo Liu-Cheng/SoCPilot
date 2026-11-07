@@ -3,3 +3,5 @@ data/board_20261031/** -text whitespace=cr-at-eol
 # Serial logs retain their original line endings and terminal control bytes.
 data/board_20261031/*.DAT binary
 data/board_20261031/trade_off.txt binary
+# Preserve the hashes of imported FPGA power reports and synthesis receipts.
+data/chip_area_energy_20261103/** -text whitespace=cr-at-eol

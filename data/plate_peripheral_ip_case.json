@@ -1,0 +1,168 @@
+{
+  "application": "plate_new",
+  "paper_application": "plate_roi",
+  "matching_scope": "peripherals",
+  "status": "needs_review",
+  "source": {
+    "manifest": "D:\\work\\soc_script\\1.requirements_analysis\\results\\benchmark_ip_matching\\20261103_202421_7bebe336\\plate_new\\soc_manifest.json",
+    "manifest_sha256": "d10a2a04065bd10cd73e9b4763255e629dfd800f2031174edd452672759818d4",
+    "library_snapshot_sha256": "d09b180af5bf22171547528aec1924cbad95db09fc926ef9a331d23dc2ca7666",
+    "generated_at": "2026-11-03T12:24:23.226651+00:00",
+    "note": "Display summaries are abridged, not a verbatim LLM transcript."
+  },
+  "structured_requirement": {
+    "schema_version": "socpilot.deployment_requirements.v2",
+    "application": "plate_new",
+    "description": "Parking-entry image node that extracts plate-candidate regions. It does not perform OCR or authorize vehicles.",
+    "deployment_contract": {
+      "system_boundary": "Digitized camera ingress through candidate-region reporting; barrier actuation remains in the host controller.",
+      "input_source": "One camera module with an explicitly chosen CSI-2 link; I2C configures that sensor.",
+      "output_consumer": "Parking-management host on Ethernet.",
+      "input_envelope": "The current application processes 256x256 four-byte-per-pixel images; this does not imply a measured camera throughput.",
+      "platform_context": "Processor, memory, DMA and internal buses are supplied by the existing platform and are outside peripheral matching.",
+      "assumptions": [
+        "CSI-2 and Ethernet are explicit deployment choices, not inferred from plate-localization code."
+      ]
+    },
+    "platform_services": [
+      {
+        "id": "camera_pixels",
+        "service": "frame_ingress",
+        "hard": {
+          "protocol": "csi2",
+          "min_channels": 1,
+          "frame_sync": true
+        },
+        "reason": "The selected external camera delivers one CSI-2 image stream."
+      },
+      {
+        "id": "camera_control",
+        "service": "control_link",
+        "hard": {
+          "protocol": "i2c",
+          "role": "controller"
+        },
+        "reason": "The processor must configure sensor exposure and capture registers."
+      },
+      {
+        "id": "host_records",
+        "service": "host_link",
+        "hard": {
+          "protocol": "ethernet"
+        },
+        "reason": "The deployment host receives candidate-region records and configuration messages over Ethernet."
+      }
+    ],
+    "design_constraints": {},
+    "evidence": [
+      {
+        "url": "https://help.axis.com/en-US/axis-license-plate-verifier",
+        "supports": "Parking-entry and host/event deployment context only; not evidence of our algorithm or a particular controller implementation."
+      }
+    ],
+    "validation_scope": "IP recommendation experiment only; not a completed camera/Ethernet integration or board validation."
+  },
+  "service_results": [
+    {
+      "service_id": "camera_pixels",
+      "service": "frame_ingress",
+      "selected_ip_id": "mipi_csi2",
+      "status": "needs_evidence",
+      "unknown_fields": [
+        "min_channels",
+        "frame_sync"
+      ],
+      "checks": [
+        {
+          "field": "protocol",
+          "required": "csi2",
+          "declared_value": "csi2",
+          "result": "pass",
+          "evidence_level": "legacy_description_only"
+        },
+        {
+          "field": "min_channels",
+          "required": 1,
+          "declared_value": null,
+          "result": "unknown",
+          "evidence_level": "legacy_description_only"
+        },
+        {
+          "field": "frame_sync",
+          "required": true,
+          "declared_value": null,
+          "result": "unknown",
+          "evidence_level": "legacy_description_only"
+        }
+      ],
+      "provenance": {
+        "verification": "legacy_description_only",
+        "source": "extend_ip_library.py",
+        "note": "No bound RTL version, lane count, channel count or throughput evidence"
+      }
+    },
+    {
+      "service_id": "camera_control",
+      "service": "control_link",
+      "selected_ip_id": "camera_i2c_ctrl",
+      "status": "catalog_match",
+      "unknown_fields": [],
+      "checks": [
+        {
+          "field": "protocol",
+          "required": "i2c",
+          "declared_value": "i2c",
+          "result": "pass",
+          "evidence_level": "legacy_description_only"
+        },
+        {
+          "field": "role",
+          "required": "controller",
+          "declared_value": "controller",
+          "result": "pass",
+          "evidence_level": "legacy_description_only"
+        }
+      ],
+      "provenance": {
+        "verification": "legacy_description_only",
+        "source": "extend_ip_library.py"
+      }
+    },
+    {
+      "service_id": "host_records",
+      "service": "host_link",
+      "selected_ip_id": "ethernet",
+      "status": "catalog_match",
+      "unknown_fields": [],
+      "checks": [
+        {
+          "field": "protocol",
+          "required": "ethernet",
+          "declared_value": "ethernet",
+          "result": "pass",
+          "evidence_level": "legacy_description_only"
+        }
+      ],
+      "provenance": {
+        "verification": "legacy_description_only"
+      }
+    }
+  ],
+  "recommended_ids": [
+    "camera_i2c_ctrl",
+    "ethernet",
+    "mipi_csi2"
+  ],
+  "interpretation_provenance": {
+    "interpretation": "provided_structured_contract",
+    "llm_called": false
+  },
+  "total_soc_area_mm2": null,
+  "physical_feasibility": "not_established",
+  "auto_deployable_ip_ids": [],
+  "recommendation_only_ip_ids": [
+    "camera_i2c_ctrl",
+    "ethernet",
+    "mipi_csi2"
+  ]
+}

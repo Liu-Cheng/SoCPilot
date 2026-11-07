@@ -1,0 +1,90 @@
+{
+  "date": "2026-11-03",
+  "source_revision": "ca2474d545f81bffe63f94fff8eac3c4a30d0998",
+  "method": "Active cite/nocite commands reached from SoCPilot.tex; checked against compiled citation list; bibliography dependencies preserved.",
+  "before_count": 68,
+  "retained_count": 58,
+  "removed_count": 10,
+  "removed": [
+    {
+      "key": "kermarrec2019litex",
+      "title": "LiteX: an open-source SoC builder and library based on Migen Python DSL",
+      "entry_type": "inproceedings",
+      "year": "2019",
+      "doi": "",
+      "reason": "No active citation in the manuscript"
+    },
+    {
+      "key": "jellum2023fpgatidbits",
+      "title": "FPGA-tidbits: Rapid Prototyping of FPGA Accelerators in Chisel",
+      "entry_type": "inproceedings",
+      "year": "2023",
+      "doi": "10.1109/DSD60849.2023.00031",
+      "reason": "No active citation in the manuscript"
+    },
+    {
+      "key": "ridnik2024codegenerationalphacodiumprompt",
+      "title": "Code Generation with AlphaCodium: From Prompt Engineering to Flow Engineering",
+      "entry_type": "misc",
+      "year": "2024",
+      "doi": "",
+      "reason": "No active citation in the manuscript"
+    },
+    {
+      "key": "esmaeilzadeh2011darksiliconisca",
+      "title": "Dark silicon and the end of multicore scaling",
+      "entry_type": "inproceedings",
+      "year": "2011",
+      "doi": "10.1145/2000064.2000108",
+      "reason": "No active citation in the manuscript"
+    },
+    {
+      "key": "trummer2011ipxact",
+      "title": "Searching Extended IP-XACT Components for SoC Design Based on Requirements Similarity",
+      "entry_type": "article",
+      "year": "2011",
+      "doi": "10.1109/JSYST.2010.2065010",
+      "reason": "No active citation in the manuscript"
+    },
+    {
+      "key": "shao2015aladdin",
+      "title": "The Aladdin Approach to Accelerator Design and Modeling",
+      "entry_type": "article",
+      "year": "2015",
+      "doi": "10.1109/MM.2015.50",
+      "reason": "No active citation in the manuscript"
+    },
+    {
+      "key": "binkert2011gem5",
+      "title": "The gem5 simulator",
+      "entry_type": "article",
+      "year": "2011",
+      "doi": "10.1145/2024716.2024718",
+      "reason": "No active citation in the manuscript"
+    },
+    {
+      "key": "cadence",
+      "title": "Cadence Stratus HLS Tool",
+      "entry_type": "misc",
+      "year": "2025",
+      "doi": "",
+      "reason": "No active citation in the manuscript"
+    },
+    {
+      "key": "tapca2025",
+      "title": "TAPCA: An Interface-Aware Cache Management Framework for Task Partitioning on CPU-FPGA SoC Platforms",
+      "entry_type": "inproceedings",
+      "year": "2025",
+      "doi": "10.1145/3706628.3708824",
+      "reason": "No active citation in the manuscript"
+    },
+    {
+      "key": "omega2026",
+      "title": "Omega: A Hardware-Software Framework for Complete Design Space Exploration of FPGA-Based Heterogeneous Multi-Core SoCs",
+      "entry_type": "article",
+      "year": "2026",
+      "doi": "10.1109/TC.2025.3624704",
+      "reason": "No active citation in the manuscript"
+    }
+  ]
+}

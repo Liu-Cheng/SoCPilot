@@ -1,0 +1,63 @@
+{
+  "date": "2026-11-03",
+  "source_revision": "f89a667df99c169379a7aec51f2aa6d745751a64",
+  "before_count": 58,
+  "retained_count": 55,
+  "method": "Merge duplicate publications; retain canonical records verbatim and redirect citation keys throughout tracked TeX sources.",
+  "merged": [
+    {
+      "removed_key": "mantovani2020agile",
+      "retained_key": "mantovani2020openesp",
+      "title": "Agile SoC development with open ESP",
+      "doi": "10.1145/3400302.3415753",
+      "cited_at_before": [
+        "sections\\experiments.tex:9",
+        "sections\\related-work.tex:12"
+      ],
+      "reason": "Same publication; duplicate record removed and all citations redirected"
+    },
+    {
+      "removed_key": "chipyard",
+      "retained_key": "amid2020chipyard",
+      "title": "Chipyard: Integrated Design, Simulation, and Implementation Framework for Custom SoCs",
+      "doi": "10.1109/MM.2020.2996616",
+      "cited_at_before": [
+        "sections\\introduction.tex:4",
+        "sections\\introduction.tex:4"
+      ],
+      "reason": "Same publication; duplicate record removed and all citations redirected"
+    },
+    {
+      "removed_key": "collini2024c2hlscleveraginglargelanguage",
+      "retained_key": "collini2024c2hlsc",
+      "title": "C2HLSC: Leveraging Large Language Models to Bridge the Software-to-Hardware Design Gap",
+      "doi": "10.1145/3734524",
+      "removed_url": "https://arxiv.org/abs/2412.00214",
+      "cited_at_before": [
+        "sections\\introduction.tex:8"
+      ],
+      "source_revision": "79cd2d04c11439d66d25216662c45704673d213a",
+      "date": "2026-11-03",
+      "reason": "Preprint and published journal version of the same paper; retain published version and redirect all citations"
+    }
+  ],
+  "updated_tex_files": [
+    "sections/experiments.tex",
+    "sections/introduction.tex",
+    "sections/related-work.tex"
+  ],
+  "last_updated_revision": "79cd2d04c11439d66d25216662c45704673d213a",
+  "updates": [
+    {
+      "date": "2026-11-03",
+      "source_revision": "79cd2d04c11439d66d25216662c45704673d213a",
+      "before_count": 56,
+      "retained_count": 55,
+      "removed_key": "collini2024c2hlscleveraginglargelanguage",
+      "retained_key": "collini2024c2hlsc",
+      "updated_tex_files": [
+        "sections/introduction.tex"
+      ]
+    }
+  ]
+}

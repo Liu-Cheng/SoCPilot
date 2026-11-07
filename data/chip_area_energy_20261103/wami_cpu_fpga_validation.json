@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "application": "wami",
+  "cpu": "ibex",
+  "accelerators": [],
+  "clock_mhz": 75,
+  "fpga_application_ram_kib": 1000,
+  "bitstream_sha256": "b870cc4c70c92bcc68104b24b1c00bd8ab0cd0e89497f90f5f0980a6363d151c",
+  "power_report_sha256": "a62e4d0ea5702dce760f79eda3c5679d03267a888bcd5064127c6e13ca7644d4",
+  "estimated_power_w": 3.695,
+  "route_counts": {
+    "routable nets": 91658,
+    "fully routed nets": 91658,
+    "nets with routing errors": 0
+  },
+  "routed_timing_met": true,
+  "source_file_count": 563,
+  "snapshot": "/dev/shm/cpu_only_five_20261102/wami/snapshot",
+  "board_tested": false,
+  "frozen_at_utc": "2026-11-02T17:43:11.263400"
+}

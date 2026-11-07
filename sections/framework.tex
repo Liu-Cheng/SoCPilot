@@ -143,7 +143,7 @@ As shown in Figure \ref{fig:soc-generation}, the third stage transforms the IP m
 
 
 \textbf{Accelerator and SoC generation.}
-SoCPilot packages the HLS-generated implementations of hardware tasks $T_H$ as ESP-compatible accelerator tiles, providing the required protocol adaptation, control, memory-access, and interrupt interfaces together with registration metadata~\cite{7428012}. It then generates integration scripts and build configurations to assemble these tiles with the selected processor, memory subsystem, interconnect, and I/O components through the ESP system-generation flow, while software tasks $T_S$ remain on the processor. The embedded routines for accelerator configuration, invocation, and data exchange are manually implemented by the authors using the ESP runtime API.
+SoCPilot packages the HLS-generated implementations of hardware tasks $T_H$ as ESP-compatible accelerator tiles, providing the required protocol adaptation, control, memory-access, and interrupt interfaces together with registration metadata~\cite{mantovani2016hlsembedded}. It then generates integration scripts and build configurations to assemble these tiles with the selected processor, memory subsystem, interconnect, and I/O components through the ESP system-generation flow, while software tasks $T_S$ remain on the processor. The embedded routines for accelerator configuration, invocation, and data exchange are manually implemented by the authors using the ESP runtime API.
 
 %%这需要确定dse是按照什么方式阐述
 %目前是先dse生成soc之后没有进行dse
@@ -160,14 +160,14 @@ The initial partition reduces the search space by fixing which functions are imp
           \hline
           \textbf{Design parameter} &
           \textbf{Candidate values or rule} \\ \hline
-          Processor type & Ariane, Ibex, LEON3 \\
+          Processor type & Ariane, Ibex, Leon3 \\
           Accelerator mapping & Fixed by the initial mapping stage \\
           Loop pipeline & Disabled, enabled \\
           Loop unroll factor & Source-dependent candidates, up to 16 \\
           Array partition type & None, cyclic, block, complete$^{*}$ \\
           Array partition factor & Source-dependent candidates, up to 16 \\
           Interface data width (bits) &
-          64 for Ariane; 32 for Ibex and LEON3 \\
+          64 for Ariane; 32 for Ibex and Leon3 \\
           Cache line size (bits) & 128, 256, 512 \\
           L2 sets & $2^{5}, 2^{6}, \ldots, 2^{13}$ \\
           L2 ways & 2, 4, 8 \\
@@ -182,10 +182,10 @@ The initial partition reduces the search space by fixing which functions are imp
       feasibility constraints and the specified area budget.}
   \end{table}
 
-For every sampled configuration, SoCPilot regenerates the relevant ESP configuration and evaluates end-to-end latency together with the estimated area provided by the common area model. HyperMapper \cite{9124618} explores this latency--area design space: its surrogate model proposes new configurations, tool feedback updates the model, and points that violate the application-specific area constraint are discarded. The final design is selected from the feasible configurations according to the latency objective under the specified area budget. If no feasible design is found, SoCPilot returns to the previous stage and revises the hardware/software partition.
+For every sampled configuration, SoCPilot regenerates the relevant ESP configuration and evaluates end-to-end latency together with the estimated area provided by the common area model. HyperMapper \cite{nardi2019hypermapper} explores this latency--area design space: its surrogate model proposes new configurations, tool feedback updates the model, and points that violate the application-specific area constraint are discarded. The final design is selected from the feasible configurations according to the latency objective under the specified area budget. If no feasible design is found, SoCPilot returns to the previous stage and revises the hardware/software partition.
 
 \subsection{FPGA Prototyping and Board Validation}\label{sec:soc-Prototyping}
-SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to the ESP automation scripts \cite{10.1145/3466752.3480065} for FPGA project generation, synthesis, place-and-route, and bitstream generation. Board-level evaluation checks SoC boot and accelerator invocation and records output signatures and application timing, including CPU execution, accelerator invocation, communication, and synchronization overhead. The experimental setup defines the reported timing intervals and states the reference-verification status of the board runs.
+SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to the ESP automation scripts \cite{zuckerman2021cohmeleon} for FPGA project generation, synthesis, place-and-route, and bitstream generation. Board-level evaluation checks SoC boot and accelerator invocation and records output signatures and application timing, including CPU execution, accelerator invocation, communication, and synchronization overhead. The experimental setup defines the reported timing intervals and states the reference-verification status of the board runs.
 
 
 % The success of LLMs across diverse domains motivates the development of SoCPilot, an LLM-driven framework for end-to-end SoC design automation. As illustrated in Figure~\ref{fig: overview}, SoCPilot takes natural language and high-level application descriptions as input and has four tightly integrated stages to generate optimized SoC designs automatically. Leveraging the LLM's strengths in natural language understanding, tool interaction, and code generation, the framework performs expert-level decision-making across the entire design flow including requirement analysis, hardware/software partitioning, design space exploration, and FPGA implementation. This end-to-end approach bridges the gap between abstract specifications and concrete hardware, significantly reducing manual effort while maintaining high design quality. In the following sections, we illustrate each stage of the SoCPilot pipeline in detail.
@@ -303,14 +303,14 @@ SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to 
 % Algorithm~\ref{alg:hw-sw-partitioning} summarizes the initial partitioning logic. Upon obtaining this partition, SoCPilot conducts DSE to refine the architectural and HLS directives around the selected hardware task set—covering processor configuration, cache hierarchy, loop pipelining and unrolling, array partitioning, and interface data-width policy. The finalized design point is then recorded as machine-readable evidence to support subsequent repair, packaging, and validation.
 
 % \textbf{Architecture Optimization:}
-% To refine the partition further, SoCPilot performs multi-objective architecture optimization across processor and accelerator configurations. To explore the parameter space, we apply Bayesian optimization via HyperMapper~\cite{9124618} to investigate trade-offs between power, performance, and area. The final design is selected from Pareto-optimal configurations that meet all design constraints.
+% To refine the partition further, SoCPilot performs multi-objective architecture optimization across processor and accelerator configurations. To explore the parameter space, we apply Bayesian optimization via HyperMapper~\cite{nardi2019hypermapper} to investigate trade-offs between power, performance, and area. The final design is selected from Pareto-optimal configurations that meet all design constraints.
 
 \input{sections/experimental-platform-table}
 
 
 % Following the hardware-software partitioning phase, our framework generates the corresponding HLS accelerator and the SoC on the ESP platform. Subsequently, the system performs RTL-level synthesis to obtain accurate PPA metrics, which drive a final optimization stage using Bayesian optimization, as illustrated in Figure \ref{fig:soc-generation}.
 
-% The ESP platform\cite{7428012} serves as a heterogeneous integration framework that enables agile SoC development. Our framework leverages LLM capabilities to automate the ESP toolchain operation, effectively simulating a domain expert. Beginning with hardware-software partitioning results, the LLM first derives the accelerator's architectural parameters, including register configurations and interface specifications, to generate a parameterized ESP accelerator skeleton. During accelerator implementation, the LLM automatically applies ESP-compliant optimization techniques (double buffering) to the target code.
+% The ESP platform\cite{mantovani2016hlsembedded} serves as a heterogeneous integration framework that enables agile SoC development. Our framework leverages LLM capabilities to automate the ESP toolchain operation, effectively simulating a domain expert. Beginning with hardware-software partitioning results, the LLM first derives the accelerator's architectural parameters, including register configurations and interface specifications, to generate a parameterized ESP accelerator skeleton. During accelerator implementation, the LLM automatically applies ESP-compliant optimization techniques (double buffering) to the target code.
 % \lstset{
 % 		language=C++,
 % 		linewidth=0.48\textwidth,
@@ -445,7 +445,7 @@ SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to 
 %
 \input{sections/application-table}
 
-% Our framework implements a closed-loop verification and optimization pipeline that begins with automated FPGA prototyping. RTL designs are synthesized and implemented on target platforms while leveraging LLM-generated, ESP-compliant embedded verification code for comprehensive functional validation. During execution, the system continuously monitors runtime performance through ESP's API interfaces\cite{10.1145/3466752.3480065}, collecting critical metrics including accelerator execution times, interconnect communication latency, memory access patterns, and cache utilization statistics. The LLM re-optimizes SoC cache configurations (cache coherence modes, memory allocation policies, and NoC bandwidth allocation) based on actual workload characteristics.
+% Our framework implements a closed-loop verification and optimization pipeline that begins with automated FPGA prototyping. RTL designs are synthesized and implemented on target platforms while leveraging LLM-generated, ESP-compliant embedded verification code for comprehensive functional validation. During execution, the system continuously monitors runtime performance through ESP's API interfaces\cite{zuckerman2021cohmeleon}, collecting critical metrics including accelerator execution times, interconnect communication latency, memory access patterns, and cache utilization statistics. The LLM re-optimizes SoC cache configurations (cache coherence modes, memory allocation policies, and NoC bandwidth allocation) based on actual workload characteristics.
 
 
 % Current capabilities focus on functional validation and architectural optimization, with planned extensions to incorporate complete physical verification including design rule checking (DRC), layout versus schematic (LVS) verification, timing closure automation, and manufacturability analysis - ultimately bridging the gap between rapid prototyping and production-ready SoC implementation through this data-driven, closed-loop methodology.

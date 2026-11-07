@@ -1,11 +1,11 @@
 # Single-column requirement-to-IP alternatives
 
 Five alternatives for the paper's requirement-to-IP case study, in application
-order: plate_recognition, recognition, scan, wami, nightvision. Each PDF page
+order: plate_roi, color_target, scan, wami, nightvision. Each PDF page
 contains a 3.5-inch-wide figure with 8 pt monospaced text. Preview titles and the
 width note sit outside the proposed figure.
 
-The active manuscript uses alternative 1 (plate_recognition) as a single-column
+The active manuscript uses alternative 1 (plate_roi) as a single-column
 figure. The remaining alternatives are retained for later selection. The figures
 are editable LaTeX listings, with no rasterized text.
 

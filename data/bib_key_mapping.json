@@ -1,0 +1,227 @@
+{
+  "date": "2026-11-03",
+  "naming": "author + existing entry year + short topic",
+  "source_revision": "558b81a8c007a14521f5671d07facb09532d01cc",
+  "latex_format_fixes": [
+    {"key": "soc-challenges", "field": "journal", "change": "escape ampersand for LaTeX"},
+    {"key": "esp4ml", "field": "booktitle", "change": "escape ampersands for LaTeX"}
+  ],
+  "renamed": [
+    {
+      "old_key": "10.1145/3400302.3415753",
+      "new_key": "mantovani2020openesp",
+      "title": "Agile SoC development with open ESP",
+      "entry_type": "inproceedings",
+      "year": "2020",
+      "cited": true
+    },
+    {
+      "old_key": "kermarrec:hal-02088044",
+      "new_key": "kermarrec2019litex",
+      "title": "LiteX: an open-source SoC builder and library based on Migen Python DSL",
+      "entry_type": "inproceedings",
+      "year": "2019",
+      "cited": false
+    },
+    {
+      "old_key": "Asanovic:EECS-2016-17",
+      "new_key": "asanovic2016rocketchip",
+      "title": "The Rocket Chip Generator",
+      "entry_type": "techreport",
+      "year": "2016",
+      "cited": true
+    },
+    {
+      "old_key": "10456791",
+      "new_key": "jellum2023fpgatidbits",
+      "title": "FPGA-tidbits: Rapid Prototyping of FPGA Accelerators in Chisel",
+      "entry_type": "inproceedings",
+      "year": "2023",
+      "cited": false
+    },
+    {
+      "old_key": "10.1145/3672459",
+      "new_key": "dong2024selfcollaboration",
+      "title": "Self-Collaboration Code Generation via ChatGPT",
+      "entry_type": "article",
+      "year": "2024",
+      "cited": true
+    },
+    {
+      "old_key": "10.1145/3625223.3649280",
+      "new_key": "morgan2024hdlgen",
+      "title": "HDLGen-ChatGPT Case Study: RISC-V Processor VHDL and Verilog Model - Testbench and EDA Project Generation",
+      "entry_type": "inproceedings",
+      "year": "2024",
+      "cited": true
+    },
+    {
+      "old_key": "10.1145/3649476.3660393",
+      "new_key": "paria2024llmsocsecurity",
+      "title": "Navigating SoC Security Landscape on LLM-Guided Paths",
+      "entry_type": "inproceedings",
+      "year": "2024",
+      "cited": true
+    },
+    {
+      "old_key": "10473893",
+      "new_key": "wan2024llmverificationcodesign",
+      "title": "Invited Paper: Software/Hardware Co-design for LLM and Its Application for Design Verification",
+      "entry_type": "inproceedings",
+      "year": "2024",
+      "cited": true
+    },
+    {
+      "old_key": "10779517",
+      "new_key": "paria2024spell",
+      "title": "SPELL: An End-to-End Tool Flow for LLM-Guided Secure SoC Design for Embedded Systems",
+      "entry_type": "article",
+      "year": "2024",
+      "cited": true
+    },
+    {
+      "old_key": "10.1145/2000064.2000108",
+      "new_key": "esmaeilzadeh2011darksiliconisca",
+      "title": "Dark silicon and the end of multicore scaling",
+      "entry_type": "inproceedings",
+      "year": "2011",
+      "cited": false
+    },
+    {
+      "old_key": "10323953",
+      "new_key": "fu2023gpt4aigchip",
+      "title": "GPT4AIGChip: Towards Next-Generation AI Accelerator Design Automation via Large Language Models",
+      "entry_type": "inproceedings",
+      "year": "2023",
+      "cited": true
+    },
+    {
+      "old_key": "10299874",
+      "new_key": "blocklove2023chipchat",
+      "title": "Chip-Chat: Challenges and Opportunities in Conversational Hardware Design",
+      "entry_type": "inproceedings",
+      "year": "2023",
+      "cited": true
+    },
+    {
+      "old_key": "10.1145/3643681",
+      "new_key": "thakur2024verigen",
+      "title": "VeriGen: A Large Language Model for Verilog Code Generation",
+      "entry_type": "article",
+      "year": "2024",
+      "cited": true
+    },
+    {
+      "old_key": "10691856",
+      "new_key": "collini2024c2hlsc",
+      "title": "C2HLSC: Can LLMs Bridge the Software-to-Hardware Design Gap?",
+      "entry_type": "inproceedings",
+      "year": "2024",
+      "cited": true
+    },
+    {
+      "old_key": "10.1145/3670474.3685953",
+      "new_key": "xu2024hlsrepair",
+      "title": "Automated C/C++ Program Repair for High-Level Synthesis via Large Language Models",
+      "entry_type": "inproceedings",
+      "year": "2024",
+      "cited": true
+    },
+    {
+      "old_key": "10720939",
+      "new_key": "liu2025rtlcoder",
+      "title": "RTLCoder: Fully Open-Source and Efficient LLM-Assisted RTL Code Generation Technique",
+      "entry_type": "article",
+      "year": "2025",
+      "cited": true
+    },
+    {
+      "old_key": "10577671",
+      "new_key": "fang2025transferableppa",
+      "title": "Transferable Presynthesis PPA Estimation for RTL Designs With Data Augmentation Techniques",
+      "entry_type": "article",
+      "year": "2025",
+      "cited": true
+    },
+    {
+      "old_key": "computers14030094",
+      "new_key": "sonkin2025workflowcodegen",
+      "title": "Beyond Snippet Assistance: A Workflow-Centric Framework for End-to-End AI-Driven Code Generation",
+      "entry_type": "article",
+      "year": "2025",
+      "cited": true
+    },
+    {
+      "old_key": "5549951",
+      "new_key": "trummer2011ipxact",
+      "title": "Searching Extended IP-XACT Components for SoC Design Based on Requirements Similarity",
+      "entry_type": "article",
+      "year": "2011",
+      "cited": false
+    },
+    {
+      "old_key": "7106399",
+      "new_key": "shao2015aladdin",
+      "title": "The Aladdin Approach to Accelerator Design and Modeling",
+      "entry_type": "article",
+      "year": "2015",
+      "cited": false
+    },
+    {
+      "old_key": "10.1145/2024716.2024718",
+      "new_key": "binkert2011gem5",
+      "title": "The gem5 simulator",
+      "entry_type": "article",
+      "year": "2011",
+      "cited": false
+    },
+    {
+      "old_key": "9124618",
+      "new_key": "nardi2019hypermapper",
+      "title": "HyperMapper: a Practical Design Space Exploration Framework",
+      "entry_type": "inproceedings",
+      "year": "2019",
+      "cited": true
+    },
+    {
+      "old_key": "7428012",
+      "new_key": "mantovani2016hlsembedded",
+      "title": "High-level synthesis of accelerators in embedded scalable platforms",
+      "entry_type": "inproceedings",
+      "year": "2016",
+      "cited": true
+    },
+    {
+      "old_key": "10.1145/3466752.3480065",
+      "new_key": "zuckerman2021cohmeleon",
+      "title": "Cohmeleon: Learning-Based Orchestration of Accelerator Coherence in Heterogeneous SoCs",
+      "entry_type": "inproceedings",
+      "year": "2021",
+      "cited": true
+    },
+    {
+      "old_key": "6807518",
+      "new_key": "schafer2014s2cbench",
+      "title": "S2CBench: Synthesizable SystemC Benchmark Suite for High-Level Synthesis",
+      "entry_type": "article",
+      "year": "2014",
+      "cited": true
+    },
+    {
+      "old_key": "10.1145/1735688.1735702",
+      "new_key": "danalis2010shoc",
+      "title": "The Scalable Heterogeneous Computing (SHOC) benchmark suite",
+      "entry_type": "inproceedings",
+      "year": "2010",
+      "cited": true
+    },
+    {
+      "old_key": "6983050",
+      "new_key": "reagen2014machsuite",
+      "title": "MachSuite: Benchmarks for accelerator design and customized architectures",
+      "entry_type": "inproceedings",
+      "year": "2014",
+      "cited": true
+    }
+  ]
+}

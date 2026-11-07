@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "application": "plate_new",
+  "cpu": "ariane",
+  "accelerators": [],
+  "clock_mhz": 75,
+  "fpga_application_ram_kib": 1000,
+  "bitstream_sha256": "7f25bcb210869d041cdb5e9f5a995cf3d8b145700e6153c5281e2ad6dddaad8c",
+  "power_report_sha256": "1db6b59bab0b587fe579da39f3c8826a8d6cef74a46ee465d6dd00fe8b3f7492",
+  "estimated_power_w": 3.921,
+  "route_counts": {
+    "routable nets": 197462,
+    "fully routed nets": 197462,
+    "nets with routing errors": 0
+  },
+  "routed_timing_met": true,
+  "source_file_count": 546,
+  "snapshot": "/dev/shm/cpu_only_five_20261102/plate_new/snapshot",
+  "board_tested": false,
+  "frozen_at_utc": "2026-11-02T14:15:37.013810"
+}

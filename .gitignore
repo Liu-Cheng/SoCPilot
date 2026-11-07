@@ -9,3 +9,4 @@
 *.synctex.gz
 *.xdv
 /build/
+/scripts/__pycache__/

@@ -16,6 +16,7 @@ from matplotlib.colors import ListedColormap
 from matplotlib.patches import Patch
 from matplotlib.ticker import NullLocator, ScalarFormatter
 from matplotlib.transforms import blended_transform_factory
+from paper_app_names import app_label
 
 ROOT = Path(__file__).resolve().parents[1]
 RESULTS = json.loads((ROOT / "data/experiment_results.json").read_text(encoding="utf-8"))
@@ -90,10 +91,8 @@ def plot_hotspots():
     ax.set_axisbelow(True)
     # Label columns use fixed figure positions, leaving a small, consistent gap.
     transform = blended_transform_factory(fig.transFigure, ax.transData)
-    for i, (app, first, last) in enumerate(groups):
-        if i % 2 == 0:
-            ax.axhspan(first - 0.45, last + 0.45, color="#F5F7F9", zorder=0)
-        ax.text(0.15, (first + last) / 2, app, transform=transform,
+    for app, first, last in groups:
+        ax.text(0.15, (first + last) / 2, app_label(app), transform=transform,
                 ha="right", va="center", fontsize=WIDE_FONT_SIZE)
     for row, y in zip(rows, positions):
         val = row["speedup"]
@@ -135,7 +134,7 @@ def plot_board_applications(pairs):
                 f"{value:.2f}×", ha="left", va="center", fontsize=8.5)
     ax.axhline(4.65, color="#CED3D9", linewidth=0.6)
     ax.axvline(1, color="#4F5964", linestyle="--", linewidth=0.8, zorder=0)
-    ax.set_yticks(y, APPS + ["Geometric\nmean"])
+    ax.set_yticks(y, [app_label(app) for app in APPS] + ["Geometric\nmean"])
     ax.invert_yaxis()
     ax.set_xlim(0, 5.55)
     ax.set_xticks([0, 1, 2, 3, 4, 5])
@@ -177,7 +176,7 @@ def plot_agent_stages():
     ax.set_xticks(range(5), ["Device-ID\ncheck", "BEV\ncompile", "BEV\nexecute",
                            "BEV\nverify", "Catapult\nHLS"])
     ax.xaxis.tick_top()
-    ax.set_yticks(range(5), APPS)
+    ax.set_yticks(range(5), [app_label(app) for app in APPS])
     ax.set_xticks(np.arange(-0.5, 5, 1), minor=True)
     ax.set_yticks(np.arange(-0.5, 5, 1), minor=True)
     ax.grid(which="minor", color="white", linewidth=2.5)

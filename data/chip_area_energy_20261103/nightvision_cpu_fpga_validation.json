@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "application": "nightvision",
+  "cpu": "ariane",
+  "accelerators": [],
+  "clock_mhz": 75,
+  "fpga_application_ram_kib": 1000,
+  "bitstream_sha256": "f8ce010477aebdbe91c88b06d0273f05ff012a779b66adaa8a2bf6b5579ab5c5",
+  "power_report_sha256": "e21b74e88e9a396f8c071e6ed426d54c045a59630b1fd134692524e49581f039",
+  "estimated_power_w": 4.04,
+  "route_counts": {
+    "routable nets": 203972,
+    "fully routed nets": 203972,
+    "nets with routing errors": 0
+  },
+  "routed_timing_met": true,
+  "source_file_count": 546,
+  "snapshot": "/dev/shm/cpu_only_five_20261102/nightvision/snapshot",
+  "board_tested": false,
+  "frozen_at_utc": "2026-11-02T19:04:46.108589"
+}

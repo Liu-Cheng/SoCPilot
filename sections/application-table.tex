@@ -8,10 +8,10 @@
 \toprule
 \textbf{Application} & \textbf{Scenario} & \textbf{Major processing stages} \\
 \midrule
-License-plate localization (\texttt{plate\_recognition}) & Roadside or parking camera &
-Grayscale conversion, morphological enhancement, edge/region extraction, candidate filtering, and plate localization \\
-Color-based object recognition (\texttt{recognition}) & Embedded visual recognition &
-BGR-to-HSV conversion, color masking, dilation, contour localization, and target-center estimation \\
+Plate-region extraction (\texttt{plate\_roi}) & Traffic-camera preprocessing &
+Grayscale conversion, top-hat/black-hat enhancement, Sobel edges, thresholding, and feature fusion into a plate-candidate mask \\
+Color-target localization (\texttt{color\_target}) & Target positioning &
+BGR-to-HSV color segmentation, mask dilation, connected-component filtering, and target-center estimation \\
 Document scanning (\texttt{scan}) & Edge document scanner &
 RGB-to-gray conversion, adaptive thresholding, morphology, edge extraction, document masking, and feature merging \\
 Wide-area motion imagery (\texttt{wami}) & Aerial video analytics &

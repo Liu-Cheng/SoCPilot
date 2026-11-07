@@ -1,0 +1,30 @@
+# 1. Deployment description (abridged)
+"A self-contained low-light viewing terminal:
+ fuse paired images locally; show the result
+ on a nearby display; use a local panel.
+ No physical protocol is prescribed."
+
+# 2. LLM interpretation (before retrieval)
+evidence: "presents the resulting view
+           on a nearby display"
+service: display; explicit constraints: []
+proposals: HDMI / DisplayPort
+basis: inferred (both proposals)
+
+# 3. Function-based library retrieval
+retrieved: hdmi, vga
+DisplayPort: no catalog entry returned
+HDMI metadata: protocol=hdmi; role=unknown
+evidence level: legacy description only
+
+# 4. Library-grounded LLM recommendation
+preferred: hdmi; fallback: vga
+VGA: added after retrieval
+reason: nearby operator display
+confirm: HDMI input, resolution, refresh,
+         video timing, compatible PHY
+
+# 5. Checked output, not deployment
+display: conditional_recommendation
+manifest: needs_review
+deployment: recommendation_only

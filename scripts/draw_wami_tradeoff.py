@@ -1,4 +1,4 @@
-"""Regenerate current selection/measurement tables and the measured WAMI sweep.
+"""Regenerate current selection/measurement tables and the measured wami sweep.
 
 Inputs are frozen in data/experiment_results.json; no remote service is used.
 """
@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
 from matplotlib.ticker import ScalarFormatter
+from paper_app_names import app_label, cpu_label
 
 ROOT = Path(__file__).resolve().parents[1]
 D = json.loads((ROOT / "data/experiment_results.json").read_text(encoding="utf-8"))
@@ -42,7 +43,7 @@ lines = [r"\begin{table*}[t]", r"\centering",
     r"\midrule"]
 for r in D["selected_soc_configs"]:
     p = r["params"]
-    lines.append(f"{tt(r['application'])} & {r['cpu']} & {cache(p, 'l2')} & {cache(p, 'llc')} & {p['cache_line_size']} & {r['budget_mm2']:g} & {r['dse_area_mm2']:.3f} & {r['synthesis_equivalent_mm2']:.3f} & " + ", ".join(tt(a) for a in r["accelerators"]) + r" \\")
+    lines.append(f"{tt(app_label(r['application']))} & {cpu_label(r['cpu'])} & {cache(p, 'l2')} & {cache(p, 'llc')} & {p['cache_line_size']} & {r['budget_mm2']:g} & {r['dse_area_mm2']:.3f} & {r['synthesis_equivalent_mm2']:.3f} & " + ", ".join(tt(a) for a in r["accelerators"]) + r" \\")
 lines += [r"\bottomrule", r"\end{tabularx}", r"\end{table*}"]
 write("selected_soc_configs.tex", lines)
 
@@ -52,7 +53,7 @@ baseline = next(r for r in rows if r["constraint_mm2"] == 1.8)
 baseline_latency = baseline["times"]["WAMI_TIME:total"]["ms"]
 baseline_area = baseline["synthesis_equivalent_mm2"]
 lines = [r"\begin{table*}[t]", r"\centering",
-    r"\caption{Selected WAMI area-budget points: architecture transitions, DSE and normalized synthesis areas (mm$^2$), board-measured application latencies (ms), relative speedups, and normalized performance per area.}",
+    r"\caption{Selected wami area-budget points: architecture transitions, DSE and normalized synthesis areas (mm$^2$), board-measured application latencies (ms), relative speedups, and normalized performance per area.}",
     r"\label{tab:wami_budget_configs}", r"\footnotesize",
     r"\renewcommand{\arraystretch}{1.14}", r"\setlength{\tabcolsep}{3pt}",
     r"\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}rlcccrrrrrr@{}}", r"\toprule",
@@ -63,9 +64,9 @@ for r in rows:
     latency_ms = r["times"]["WAMI_TIME:total"]["ms"]
     speedup = baseline_latency / latency_ms
     normalized_perf_area = speedup / (r["synthesis_equivalent_mm2"] / baseline_area)
-    lines.append(f"{r['constraint_mm2']:g} & {r['cpu']} & {hw} & {cache(p, 'l2')} & {cache(p, 'llc')} & {p['cache_line_size']} & {r['dse_area_mm2']:.3f} & {r['synthesis_equivalent_mm2']:.3f} & {latency_ms:,.3f} & {speedup:.2f}$\\times$ & {normalized_perf_area:.2f}" + r" \\")
+    lines.append(f"{r['constraint_mm2']:g} & {cpu_label(r['cpu'])} & {hw} & {cache(p, 'l2')} & {cache(p, 'llc')} & {p['cache_line_size']} & {r['dse_area_mm2']:.3f} & {r['synthesis_equivalent_mm2']:.3f} & {latency_ms:,.3f} & {speedup:.2f}$\\times$ & {normalized_perf_area:.2f}" + r" \\")
 lines += [r"\bottomrule", r"\end{tabular*}", r"\par\vspace{6pt}\noindent",
-    r"\parbox{\textwidth}{\scriptsize H: \texttt{hessian}; W: \texttt{warp\_image}; S: \texttt{steepest\_descent}. Ibex/LEON3 use DMA32; Ariane uses DMA64. Speedup compares each complete configuration with the 1.8-mm$^2$ CPU-only configuration (44,161.522 ms). Normalized perf./area is $(T_0/T_i)/(A_i/A_0)$, using synthesis area; subscript 0 denotes the 1.8-mm$^2$ configuration, whose value is 1.00.}",
+    r"\parbox{\textwidth}{\scriptsize H: \texttt{hessian}; W: \texttt{warp\_image}; S: \texttt{steepest\_descent}. Ibex/Leon3 use DMA32; Ariane uses DMA64. Speedup compares each complete configuration with the 1.8-mm$^2$ CPU-only configuration (44,161.522 ms). Normalized perf./area is $(T_0/T_i)/(A_i/A_0)$, using synthesis area; subscript 0 denotes the 1.8-mm$^2$ configuration, whose value is 1.00.}",
     r"\end{table*}"]
 write("wami_budget_configs.tex", lines)
 
@@ -111,11 +112,11 @@ for ax in axes:
     ax.set_xlabel("Area budget (mm²; selected points)")
     ax.grid(axis="y", lw=.5, color="#E6E8EB")
     ax.set_axisbelow(True)
-fig.legend(handles=[Line2D([], [], color=colors[cpu], marker=markers[cpu], ls="", label=cpu)
+fig.legend(handles=[Line2D([], [], color=colors[cpu], marker=markers[cpu], ls="", label=cpu_label(cpu))
                     for cpu in colors], loc="lower center", ncol=3, frameon=False,
            bbox_to_anchor=(.5, -.005), fontsize=8)
 fig.subplots_adjust(left=.10, right=.98, bottom=.23, top=.91, wspace=.29)
 for suffix in ["pdf", "png"]:
     fig.savefig(ROOT / f"pic/wami-area-budget-measured.{suffix}", dpi=300)
 plt.close(fig)
-print("Generated two tables and measured WAMI figure from seven selected points.")
+print("Generated two tables and measured wami figure from seven selected points.")

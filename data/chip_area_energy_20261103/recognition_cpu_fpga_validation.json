@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "application": "recognition",
+  "cpu": "leon3",
+  "accelerators": [],
+  "clock_mhz": 75,
+  "fpga_application_ram_kib": 1000,
+  "bitstream_sha256": "d80d5d4f533351385172bf62534b267bc8f9bc62989343ae5d6ded492b90fab6",
+  "power_report_sha256": "683496df358232a0dd3d25966c831e68186a8f167708ad726876adb60c7f011f",
+  "estimated_power_w": 3.813,
+  "route_counts": {
+    "routable nets": 122762,
+    "fully routed nets": 122762,
+    "nets with routing errors": 0
+  },
+  "routed_timing_met": true,
+  "source_file_count": 575,
+  "snapshot": "/dev/shm/cpu_only_five_20261102/recognition/snapshot",
+  "board_tested": false,
+  "frozen_at_utc": "2026-11-02T15:22:49.529710"
+}

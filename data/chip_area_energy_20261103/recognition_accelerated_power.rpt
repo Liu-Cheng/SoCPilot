@@ -1,0 +1,195 @@
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version     : Vivado v.2021.2 (lin64) Build 3367213 Tue Oct 19 02:47:39 MDT 2021
+| Date             : Fri Oct 30 07:59:06 2026
+| Host             : localhost.localdomain running 64-bit CentOS Linux release 7.9.2009 (Core)
+| Command          : report_power -file zynqmp_top_wrapper_power_routed.rpt -pb zynqmp_top_wrapper_power_summary_routed.pb -rpx zynqmp_top_wrapper_power_routed.rpx
+| Design           : zynqmp_top_wrapper
+| Device           : xczu9eg-ffvb1156-2-e
+| Design State     : routed
+| Grade            : extended
+| Process          : typical
+| Characterization : Production
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Power Report
+
+Table of Contents
+-----------------
+1. Summary
+1.1 On-Chip Components
+1.2 Power Supply Summary
+1.3 Confidence Level
+2. Settings
+2.1 Environment
+2.2 Clock Constraints
+3. Detailed Reports
+3.1 By Hierarchy
+
+1. Summary
+----------
+
++--------------------------+--------------+
+| Total On-Chip Power (W)  | 4.015        |
+| Design Power Budget (W)  | Unspecified* |
+| Power Budget Margin (W)  | NA           |
+| Dynamic (W)              | 3.260        |
+| Device Static (W)        | 0.756        |
+| Effective TJA (C/W)      | 1.0          |
+| Max Ambient (C)          | 96.1         |
+| Junction Temperature (C) | 28.9         |
+| Confidence Level         | Low          |
+| Setting File             | ---          |
+| Simulation Activity File | ---          |
+| Design Nets Matched      | NA           |
++--------------------------+--------------+
+* Specify Design Power Budget using, set_operating_conditions -design_power_budget <value in Watts>
+
+
+1.1 On-Chip Components
+----------------------
+
++--------------------------+-----------+----------+-----------+-----------------+
+| On-Chip                  | Power (W) | Used     | Available | Utilization (%) |
++--------------------------+-----------+----------+-----------+-----------------+
+| Clocks                   |     0.155 |        3 |       --- |             --- |
+| CLB Logic                |     0.121 |   219873 |       --- |             --- |
+|   LUT as Logic           |     0.101 |    98400 |    274080 |           35.90 |
+|   CARRY8                 |     0.007 |     2351 |     34260 |            6.86 |
+|   Register               |     0.006 |    96381 |    548160 |           17.58 |
+|   LUT as Shift Register  |     0.004 |      946 |    144000 |            0.66 |
+|   LUT as Distributed RAM |     0.003 |     1416 |    144000 |            0.98 |
+|   BUFG                   |    <0.001 |       11 |        32 |           34.38 |
+|   Others                 |     0.000 |     1796 |       --- |             --- |
+|   F7/F8 Muxes            |     0.000 |     2467 |    274080 |            0.90 |
+| Signals                  |     0.116 |   189062 |       --- |             --- |
+| Block RAM                |     0.141 |      344 |       912 |           37.72 |
+| DSPs                     |     0.005 |       65 |      2520 |            2.58 |
+| I/O                      |     0.003 |       19 |       328 |            5.79 |
+| PS8                      |     2.718 |        1 |       --- |             --- |
+| Static Power             |     0.756 |          |           |                 |
+|   PS Static              |     0.098 |          |           |                 |
+|   PL Static              |     0.657 |          |           |                 |
+| Total                    |     4.015 |          |           |                 |
++--------------------------+-----------+----------+-----------+-----------------+
+
+
+1.2 Power Supply Summary
+------------------------
+
++-----------------+-------------+-----------+-------------+------------+-------------+-------------+------------+
+| Source          | Voltage (V) | Total (A) | Dynamic (A) | Static (A) | Powerup (A) | Budget (A)  | Margin (A) |
++-----------------+-------------+-----------+-------------+------------+-------------+-------------+------------+
+| Vccint          |       0.850 |     0.834 |       0.628 |      0.206 |       NA    | Unspecified | NA         |
+| Vccint_io       |       0.850 |     0.036 |       0.000 |      0.036 |       NA    | Unspecified | NA         |
+| Vccbram         |       0.850 |     0.010 |       0.006 |      0.003 |       NA    | Unspecified | NA         |
+| Vccaux          |       1.800 |     0.193 |       0.000 |      0.193 |       NA    | Unspecified | NA         |
+| Vccaux_io       |       1.800 |     0.033 |       0.000 |      0.033 |       NA    | Unspecified | NA         |
+| Vcco33          |       3.300 |     0.009 |       0.001 |      0.009 |       NA    | Unspecified | NA         |
+| Vcco25          |       2.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco18          |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco15          |       1.500 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco135         |       1.350 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco12          |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vcco10          |       1.000 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| Vccadc          |       1.800 |     0.008 |       0.000 |      0.008 |       NA    | Unspecified | NA         |
+| VCC_PSINTFP     |       0.850 |     1.092 |       1.057 |      0.035 |       NA    | Unspecified | NA         |
+| VCC_PSINTLP     |       0.850 |     0.249 |       0.242 |      0.007 |       NA    | Unspecified | NA         |
+| VPS_MGTRAVCC    |       0.850 |     0.190 |       0.189 |      0.001 |       NA    | Unspecified | NA         |
+| VCC_PSINTFP_DDR |       0.850 |     0.719 |       0.714 |      0.004 |       NA    | Unspecified | NA         |
+| VCC_PSPLL       |       1.200 |     0.071 |       0.069 |      0.002 |       NA    | Unspecified | NA         |
+| VPS_MGTRAVTT    |       1.800 |     0.034 |       0.033 |      0.001 |       NA    | Unspecified | NA         |
+| VCCO_PSDDR_504  |       1.200 |     0.620 |       0.586 |      0.034 |       NA    | Unspecified | NA         |
+| VCC_PSAUX       |       1.800 |     0.002 |       0.000 |      0.002 |       NA    | Unspecified | NA         |
+| VCC_PSBATT      |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| VCC_PSDDR_PLL   |       1.800 |     0.001 |       0.000 |      0.001 |       NA    | Unspecified | NA         |
+| VCCO_PSIO0_500  |       1.800 |     0.001 |       0.001 |      0.001 |       NA    | Unspecified | NA         |
+| VCCO_PSIO1_501  |       1.800 |     0.001 |       0.000 |      0.001 |       NA    | Unspecified | NA         |
+| VCCO_PSIO2_502  |       1.800 |     0.001 |       0.000 |      0.001 |       NA    | Unspecified | NA         |
+| VCCO_PSIO3_503  |       1.800 |     0.001 |       0.000 |      0.001 |       NA    | Unspecified | NA         |
+| VCC_PSADC       |       1.800 |     0.002 |       0.000 |      0.002 |       NA    | Unspecified | NA         |
+| MGTAVcc         |       0.900 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| MGTAVtt         |       1.200 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
+| MGTVccaux       |       1.800 |     0.000 |       0.000 |      0.000 |       NA    | Unspecified | NA         |
++-----------------+-------------+-----------+-------------+------------+-------------+-------------+------------+
+
+
+1.3 Confidence Level
+--------------------
+
++-----------------------------+------------+--------------------------------------------------------+------------------------------------------------------------------------------------------------------------+
+| User Input Data             | Confidence | Details                                                | Action                                                                                                     |
++-----------------------------+------------+--------------------------------------------------------+------------------------------------------------------------------------------------------------------------+
+| Design implementation state | High       | Design is routed                                       |                                                                                                            |
+| Clock nodes activity        | High       | User specified more than 95% of clocks                 |                                                                                                            |
+| I/O nodes activity          | Low        | More than 75% of inputs are missing user specification | Provide missing input activity with simulation results or by editing the "By Resource Type -> I/Os" view   |
+| Internal nodes activity     | Medium     | User specified less than 25% of internal nodes         | Provide missing internal nodes activity with simulation results or by editing the "By Resource Type" views |
+| Device models               | High       | Device models are Production                           |                                                                                                            |
+|                             |            |                                                        |                                                                                                            |
+| Overall confidence level    | Low        |                                                        |                                                                                                            |
++-----------------------------+------------+--------------------------------------------------------+------------------------------------------------------------------------------------------------------------+
+
+
+2. Settings
+-----------
+
+2.1 Environment
+---------------
+
++-----------------------+--------------------------+
+| Ambient Temp (C)      | 25.0                     |
+| ThetaJA (C/W)         | 1.0                      |
+| Airflow (LFM)         | 250                      |
+| Heat Sink             | medium (Medium Profile)  |
+| ThetaSA (C/W)         | 1.5                      |
+| Board Selection       | medium (10"x10")         |
+| # of Board Layers     | 12to15 (12 to 15 Layers) |
+| Board Temperature (C) | 25.0                     |
++-----------------------+--------------------------+
+
+
+2.2 Clock Constraints
+---------------------
+
++----------+---------------------------------------------------------+-----------------+
+| Clock    | Domain                                                  | Constraint (ns) |
++----------+---------------------------------------------------------+-----------------+
+| clk_pl_0 | zynqmpsoc_i/zynq_ultra_ps_e_0/inst/pl_clk_unbuffered[0] |            13.3 |
++----------+---------------------------------------------------------+-----------------+
+
+
+3. Detailed Reports
+-------------------
+
+3.1 By Hierarchy
+----------------
+
++------------------------------------------------+-----------+
+| Name                                           | Power (W) |
++------------------------------------------------+-----------+
+| zynqmp_top_wrapper                             |     3.260 |
+|   esptop_i                                     |     0.536 |
+|     esp_1                                      |     0.472 |
+|       router_gen[0].noc_domain_socket_i        |     0.009 |
+|       router_gen[1].noc_domain_socket_i        |     0.011 |
+|       router_gen[2].noc_domain_socket_i        |     0.009 |
+|       router_gen[3].noc_domain_socket_i        |     0.009 |
+|       router_gen[4].noc_domain_socket_i        |     0.011 |
+|       router_gen[5].noc_domain_socket_i        |     0.008 |
+|       tiles_gen[0].mem_tile.tile_mem_i         |     0.055 |
+|       tiles_gen[1].cpu_tile.tile_cpu_i         |     0.169 |
+|       tiles_gen[2].accelerator_tile.tile_acc_i |     0.024 |
+|       tiles_gen[3].accelerator_tile.tile_acc_i |     0.146 |
+|       tiles_gen[4].io_tile.tile_io_i           |     0.018 |
+|       tiles_gen[5].empty_tile.tile_empty_i     |     0.003 |
+|     pl_init_ddr_gen.pl_systest_ram_i           |     0.062 |
+|   zynqmpsoc_i                                  |     2.722 |
+|     axi_ahblite_bridge_0                       |     0.002 |
+|       U0                                       |     0.002 |
+|     ps8_0_axi_periph                           |     0.002 |
+|       s00_couplers                             |     0.002 |
+|     zynq_ultra_ps_e_0                          |     2.718 |
+|       inst                                     |     2.718 |
++------------------------------------------------+-----------+
+
+

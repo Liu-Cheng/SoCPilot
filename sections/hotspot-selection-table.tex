@@ -1,0 +1,40 @@
+% Audited data: data/hotspot_selection_comparison.json.
+% Candidate sets are nominations, not the final hardware assignments.
+\begin{table*}[t]
+\centering
+\caption{Hotspot candidate nominations and estimated application speedups under matched per-application budgets. Each LLM candidate set and mapping outcome are unchanged across its three calls. $K$ is the nomination limit; Common/$K$ counts shared candidates. Speedups are normalized to the same CPU-only baseline for each application and reported as SoCPilot / LLM.}
+\label{tab:hotspot_selection_comparison}
+\footnotesize
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\textwidth}{@{}lrc>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}Xcc@{}}
+\toprule
+\textbf{Application} & \shortstack{\textbf{Area budget}\\\textbf{(mm$^2$)}} &
+\textbf{$K$} & \textbf{SoCPilot candidates} &
+\textbf{Source-only LLM candidates} & \textbf{Common/$K$} &
+\shortstack{\textbf{Est. speedup ($\times$)}\\\textbf{SoCPilot / LLM}} \\
+\midrule
+\texttt{plate\_roi} & 8.5 & 3 &
+\texttt{morphology\_tophat}\newline
+\texttt{morphology\_close}\newline
+\texttt{morphology\_blackhat} &
+\texttt{morphology\_tophat}\newline
+\texttt{morphology\_close}\newline
+\texttt{morphology\_blackhat} & 3/3 & 2.02 / 2.02 \\
+\midrule
+\texttt{color\_target} & 10 & 2 &
+\texttt{bgr\_to\_hsv}\newline \texttt{dilate\_mask} &
+\texttt{bgr\_to\_hsv}\newline \texttt{dilate\_mask} & 2/2 & 8.72 / 8.72 \\
+\midrule
+\texttt{scan} & 5 & 1 &
+\texttt{scan\_adaptive\_threshold} &
+\texttt{scan\_adaptive\_threshold} & 1/1 & 5.11 / 5.11 \\
+\midrule
+\texttt{wami} & 3 & 3 &
+\texttt{warp\_image}\newline \texttt{steepest\_descent}\newline \texttt{hessian} &
+\texttt{wami\_debayer}\newline \texttt{kernel2\_lucas\_kanade}\newline \texttt{wami\_gmm} & 0/3 & 3.47 / 1.00 \\
+\midrule
+\texttt{nightvision} & 10 & 1 & \texttt{conv2d} & \texttt{conv2d} & 1/1 & 4.82 / 4.82 \\
+\bottomrule
+\end{tabularx}
+\end{table*}

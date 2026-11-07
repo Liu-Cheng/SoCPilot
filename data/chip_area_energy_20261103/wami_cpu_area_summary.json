@@ -1,0 +1,89 @@
+{
+  "success": true,
+  "application": "wami",
+  "expected_dse_run_id": "c511f76009844053ba1479ca815732f8",
+  "cpu": "ibex",
+  "dma_bits": 32,
+  "params": {
+    "CPU_type": 1,
+    "l2_sets": 32,
+    "l2_ways": 4,
+    "llc_sets": 32,
+    "llc_ways": 4,
+    "cache_line_size": 16,
+    "function_name": "wami",
+    "HLS-warp_image-loop-warp_image_loop_0-pipeline": 0,
+    "HLS-warp_image-loop-warp_image_loop_0-unroll": 1,
+    "HLS-warp_image-loop-warp_image_loop_1-pipeline": 0,
+    "HLS-warp_image-loop-warp_image_loop_1-unroll": 1,
+    "HLS-warp_image-loop-warp_image_loop_2-pipeline": 0,
+    "HLS-warp_image-loop-warp_image_loop_2-unroll": 1,
+    "HLS-warp_image-loop-warp_image_loop_3-pipeline": 1,
+    "HLS-warp_image-loop-warp_image_loop_3-unroll": 1,
+    "HLS-warp_image-loop-warp_image_loop_4-pipeline": 0,
+    "HLS-warp_image-loop-warp_image_loop_4-unroll": 1,
+    "HLS-warp_image-loop-warp_image_loop_5-pipeline": 0,
+    "HLS-warp_image-loop-warp_image_loop_5-unroll": 1,
+    "HLS-warp_image-loop-warp_image_loop_6-pipeline": 0,
+    "HLS-warp_image-loop-warp_image_loop_6-unroll": 1,
+    "HLS-warp_image-loop-warp_image_loop_7-pipeline": 0,
+    "HLS-warp_image-loop-warp_image_loop_7-unroll": 1,
+    "HLS_data_width_bits": 32
+  },
+  "accelerators": [],
+  "technology": "TSMC90 typical 1V 25C",
+  "process_nm": 90,
+  "tool": "Pinned Yosys0.68 and ABC with real Memory Generator SRAM cells",
+  "total_area_mm2": 6.195019389600001,
+  "sram_macro_area_mm2": 3.81284958,
+  "standard_cell_area_mm2": 2.3821698096000006,
+  "native_macro_instances": 118,
+  "mapped_cells": 334213,
+  "unmapped_cells": 0,
+  "native_area_counted_once": true,
+  "excluded_application_ram_bytes": 1024000,
+  "selector_proof_reference": {
+    "sparse_select_v1": {
+      "audit_sha256": "f8bc61fd0d1958e86ef20949e8ba2b33f0ca4c0eaf1d72a01c307a582791c392",
+      "source_sha256": "dfa122dc0f2a426b27b1d30176c70664104a0433f43e0d29bdb79f0108037215",
+      "repaired_sha256": "959b29d809b8ae63c520f8276015cca832d76a3c26bdc53b69e74100e8cbf2bb"
+    },
+    "record_select_v1": {
+      "audit_sha256": "a0ee3bae2bd729f7ff6cd5e3765631c26a80fd476b14dd29cabf99434c298ec0",
+      "source_sha256": "959b29d809b8ae63c520f8276015cca832d76a3c26bdc53b69e74100e8cbf2bb",
+      "repaired_sha256": "8da0c7c21ed00cc87843e2c20f9afd1f76b17adece0bdf67b0b2f9be9ede5a98"
+    },
+    "block_select_v3": {
+      "audit_sha256": "c7de3f6b76e0b2c0058c7ca31d3429084a466b3e97e5ea8d07ce2953e3eaedf1",
+      "source_sha256": "8da0c7c21ed00cc87843e2c20f9afd1f76b17adece0bdf67b0b2f9be9ede5a98",
+      "repaired_sha256": "aeae0c6766fb918cf1c83f97ffa7032e031368c519d4ce6fce12120f87f9ebee"
+    }
+  },
+  "macro_modes_verified": "011",
+  "input_hashes_verified": true,
+  "stage_elapsed_s": {
+    "01_prepare": 173.66,
+    "02_logic": 876.93,
+    "03_abc": 80.39
+  },
+  "elapsed_s": 1130.98,
+  "started_at": "2026-11-03T02:01:44.983500+00:00",
+  "finished_at": "2026-11-03T02:44:12.364563+00:00",
+  "post_route": false,
+  "whole_soc_equivalence": false,
+  "timing_closed": false,
+  "final_mapped_directory": "/home/huwanshan/esp_asic_runs/cpu_only_five_20261102/asic/wami/native90/results/latch_bound",
+  "final_binding_mode": "single_negative_latch",
+  "latch_binding_audit_sha256": "0b602e3077fc35dccb0018469e8995f26bfa11d80868c0bde86fabadf6a9e82d",
+  "latch_stimulus_contract": "One settled input transition per comparison. Concurrent enable/data transitions are excluded because library latch and generic latch delta-cycle ordering differs; valid clock gating requires input setup/hold.",
+  "geometric_45nm_equivalent_mm2": 1.5487548474000004,
+  "geometric_scaling_note": "Area divided by four is a geometric 90-to-45nm equivalent, not an actual 45nm process synthesis.",
+  "scope": "Mapped pre-layout cell area; SRAM raw compiler Liberty area times actual final instance population; native area counted once; only 1000KiB application RAM excluded.",
+  "limitations": [
+    "Current memory component differential tests and input graph restoration checks; no whole-SoC equivalence claim",
+    "Explicit SRAM startup and reset contract; half-cycle adapter timing requires physical implementation review",
+    "ABC clock target is not full-chip timing closure",
+    "FPGA clock-gate adaptation assumes enable established during a low clock phase",
+    "Unsupported 3D internal power removed only from ABC area/timing view; full raw Liberty used for area"
+  ]
+}

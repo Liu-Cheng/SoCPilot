@@ -1,0 +1,23 @@
+\begin{table}[t]
+\centering
+\caption{Normalized EDP and synthesis areas of CPU-only and CPU--accelerator systems. Areas are expressed in 45-nm-equivalent mm$^2$.}
+\label{tab:chip_area_energy}
+\footnotesize
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lrrrr@{}}
+\toprule
+ & \multicolumn{2}{c}{\textbf{Norm. EDP}} & \multicolumn{2}{c}{\textbf{Synth. area}} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+\textbf{Application} & \textbf{CPU} & \textbf{Accel.} & \textbf{CPU} & \textbf{Accel.} \\
+\midrule
+plate\_roi & 1.0000 & 0.2846 & 4.283 & 7.075 \\
+color\_target & 1.0000 & 0.2321 & 2.333 & 7.405 \\
+scan & 1.0000 & 0.0557 & 3.641 & 4.602 \\
+wami & 1.0000 & 0.0449 & 1.549 & 2.219 \\
+nightvision & 1.0000 & 0.2326 & 8.802 & 9.355 \\
+\bottomrule
+\end{tabular*}
+\par\vspace{4pt}
+\parbox{\columnwidth}{\scriptsize CPU denotes hardware without accelerator tiles; Accel. denotes the selected CPU--accelerator system. EDP is normalized to each CPU-only baseline; lower is better.}
+\end{table}

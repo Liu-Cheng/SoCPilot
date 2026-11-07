@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "observed_at": "2026-11-03T05:15:39.167226+00:00",
+  "validator_sha256": "516f1b801b99dbe7524b4e59b5e36f662ae7d7aea7760a83b8eb88dd7def4e3d",
+  "input_manifest_sha256": "529627a69a4fe363344acd41e7197ad62934f29d14b72853278ce1a927fc3bc0",
+  "mapped_json_sha256": "fd414843d162800d000962ae10e972a16643ca16a245f1d65424056d0a977dd6",
+  "latch_binding_audit_sha256": "22bba5068499dc20aaf0a7de953a3c0962b8aa6c24c4568c490c70e89a550ca5",
+  "area_summary_sha256": "0bbe4c75cf52fe99ba3a653c3c2a4b5031c94169148bf67f7c35c224ce69685d",
+  "unmapped_cells": 0,
+  "native_area_counted_once": true,
+  "whole_soc_equivalence": false,
+  "post_route": false
+}

@@ -10,6 +10,7 @@ from pathlib import Path
 import hashlib
 import json
 import subprocess
+from paper_app_names import app_label
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,7 +21,7 @@ WIDTH = 48
 
 DISPLAY = {
     "plate_recognition": {
-        "title": "License-plate localization",
+        "title": "Plate-region extraction",
         "description": [
             '"Parking-entrance plate localization:',
             " one MIPI CSI-2 camera; I2C sensor setup;",
@@ -39,7 +40,7 @@ DISPLAY = {
         "gaps": [],
     },
     "recognition": {
-        "title": "Color-based object recognition",
+        "title": "Color-target localization",
         "description": [
             '"Industrial green-marker localization:',
             " BGR frames arrive over SPI; target",
@@ -208,7 +209,7 @@ def main():
         app = case["application"]
         text = listing(case, manifests[app])
         (DEST / (app + ".txt")).write_text(text, encoding="utf-8")
-        title = app.replace("_", r"\_")
+        title = app_label(app).replace("_", r"\_")
         page = rf"""\noindent{{\sffamily\color{{CaseBlue}}\bfseries\fontsize{{11}}{{13}}\selectfont {index:02d}\quad\texttt{{{title}}}}}\par
 \vspace{{3pt}}
 \noindent{{\small {DISPLAY[app]['title']}}}\par

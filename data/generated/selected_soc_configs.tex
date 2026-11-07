@@ -9,9 +9,9 @@
 \toprule
 \textbf{Application} & \textbf{CPU} & \shortstack{\textbf{L2}\\\textbf{sets$\times$ways}} & \shortstack{\textbf{LLC}\\\textbf{sets$\times$ways}} & \shortstack{\textbf{Line}\\\textbf{(B)}} & \shortstack{\textbf{Budget}\\\textbf{(mm$^2$)}} & \shortstack{\textbf{DSE area}\\\textbf{(mm$^2$)}} & \shortstack{\textbf{Synth. area}\\\textbf{(mm$^2$)}} & \textbf{Accelerator(s)} \\
 \midrule
-\texttt{plate\_recognition} & Ariane & $32\times8$ & $32\times4$ & 32 & 8.5 & 7.852 & 7.075 & \texttt{morphology\_close} \\
-\texttt{recognition} & LEON3 & $64\times4$ & $32\times4$ & 16 & 10 & 6.998 & 7.405 & \texttt{bgr\_to\_hsv}, \texttt{dilate\_mask} \\
-\texttt{scan} & LEON3 & $64\times2$ & $32\times4$ & 64 & 5 & 4.984 & 4.602 & \texttt{scan\_adaptive\_threshold} \\
+\texttt{plate\_roi} & Ariane & $32\times8$ & $32\times4$ & 32 & 8.5 & 7.852 & 7.075 & \texttt{morphology\_close} \\
+\texttt{color\_target} & Leon3 & $64\times4$ & $32\times4$ & 16 & 10 & 6.998 & 7.405 & \texttt{bgr\_to\_hsv}, \texttt{dilate\_mask} \\
+\texttt{scan} & Leon3 & $64\times2$ & $32\times4$ & 64 & 5 & 4.984 & 4.602 & \texttt{scan\_adaptive\_threshold} \\
 \texttt{wami} & Ibex & $32\times4$ & $32\times4$ & 16 & 3 & 2.575 & 2.219 & \texttt{hessian}, \texttt{warp\_image} \\
 \texttt{nightvision} & Ariane & $512\times4$ & $512\times16$ & 32 & 10 & 9.987 & 9.355 & \texttt{conv2d} \\
 \bottomrule

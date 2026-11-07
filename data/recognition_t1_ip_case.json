@@ -1,0 +1,198 @@
+{
+  "schema_version": "socpilot.paper.ip_case.v1",
+  "application": "recognition",
+  "paper_display_name": "color_target",
+  "source_repository": "soc_script",
+  "source_manifest": "1.requirements_analysis/results/benchmark_ip_matching/20261105_232752_dd3f5d70/recognition/soc_manifest.json",
+  "manifest_sha256": "ecf38df7e58944e5af36d4a73b5e5ea3bf67be45ce329259581eed4873186970",
+  "matching_scope": "io-interconnect",
+  "description": "We need a compact color-marker inspection node beside an industrial production line. A nearby production controller indicates when an item is positioned; the node captures an image, locates a colored marker, and reports its center coordinates and a validity flag. An operator adjusts the detection settings during commissioning. The camera, trigger wiring and controller communication connection have not been chosen. The node does not directly drive production actuators.\n\nKeep the supplied processor and image storage unchanged. Inside the node, the processor must independently address the camera configuration, trigger status, inspection settings and result-status register banks. These low-volume control transactions need address decoding and register-target selection; they are not bulk frame transfers and must not be confused with the external controller link. Recommend I/O and internal control interconnect functions with endpoint assumptions. Do not invent bus widths, physical protocols, guaranteed response times or a requirement for a routed multi-tile network.\n",
+  "source_sha256": "bb8c86c96c57e871a133c55b1181fbe7e10bd98f9518b0299a0c88453417a92d",
+  "status": "needs_review",
+  "t1_coverage": {
+    "matching_scope": "io-interconnect",
+    "required_classes": [
+      "interconnect",
+      "io"
+    ],
+    "identified_need_counts": {
+      "interconnect": 1,
+      "io": 3
+    },
+    "missing_required_classes": [],
+    "excluded_classes": [
+      "compute",
+      "memory_cache"
+    ],
+    "claim_scope": "requirement classification only, not integrated-SoC completeness"
+  },
+  "services": [
+    {
+      "service_id": "FR1",
+      "functional_key": "frame_ingress",
+      "taxonomy_category": "I/O Interfaces",
+      "taxonomy_tag": "io",
+      "evidence_quote": "the node captures an image",
+      "intent": "Acquire color camera images of positioned items for marker inspection.",
+      "retrieved_catalog_ids": [
+        "ethernet",
+        "luna_usb_device",
+        "mipi_csi2",
+        "usb"
+      ],
+      "decision": {
+        "service_id": "FR1",
+        "selected_proposal_id": "FR1_IF3",
+        "selected_ip_id": "mipi_csi2",
+        "rationale": "MIPI CSI-2 is the only camera-native streaming ingress candidate in the FR1 catalog and does not presume Ethernet/USB vision protocol support.",
+        "conditions": [
+          "A camera module with MIPI CSI-2 output and required lane/clock configuration is selected.",
+          "No Ethernet MAC or USB host/device is assumed for frame ingress.",
+          "Lane count, continuous clock mode, and framing must be validated."
+        ],
+        "clarification_questions": [
+          "What exact MIPI CSI-2 lane count and data rate does the selected camera require?"
+        ],
+        "alternatives": []
+      },
+      "unknown_fields": [
+        "frame_sync",
+        "mode",
+        "role"
+      ],
+      "status": "conditional_recommendation"
+    },
+    {
+      "service_id": "FR2",
+      "functional_key": "trigger",
+      "taxonomy_category": "I/O Interfaces",
+      "taxonomy_tag": "io",
+      "evidence_quote": "nearby production controller indicates when an item is positioned",
+      "intent": "Receive the production controller item-position indication as the acquisition trigger status.",
+      "retrieved_catalog_ids": [
+        "opentitan_gpio"
+      ],
+      "decision": {
+        "service_id": "FR2",
+        "selected_proposal_id": "FR2_IF2",
+        "selected_ip_id": "opentitan_gpio",
+        "rationale": "OpenTitan GPIO offers 32 software-readable digital inputs with configurable edge/level interrupts, matching a wired acquisition trigger.",
+        "conditions": [
+          "A discrete trigger wire is connected to a GPIO pad with appropriate voltage level and timing.",
+          "An ESP control-bus to TL-UL adapter and software integration are provided.",
+          "The trigger is not assumed to be embedded in the controller link."
+        ],
+        "clarification_questions": [
+          "Is the item-position trigger a dedicated discrete signal or embedded in the production controller link?"
+        ],
+        "alternatives": []
+      },
+      "unknown_fields": [
+        "role"
+      ],
+      "status": "conditional_recommendation"
+    },
+    {
+      "service_id": "FR3",
+      "functional_key": "control_link",
+      "taxonomy_category": "I/O Interfaces",
+      "taxonomy_tag": "io",
+      "evidence_quote": "reports its center coordinates and a validity flag. An operator adjusts the detection settings during commissioning.",
+      "intent": "Exchange inspection result reports and operator commissioning settings with the production controller.",
+      "retrieved_catalog_ids": [
+        "camera_i2c_ctrl",
+        "ethernet",
+        "i2c",
+        "spi",
+        "uart"
+      ],
+      "decision": {
+        "service_id": "FR3",
+        "selected_proposal_id": "FR3_IF2",
+        "selected_ip_id": "uart",
+        "rationale": "UART is the simplest catalog control-link candidate for low-volume result/status and commissioning data without requiring a fieldbus stack.",
+        "conditions": [
+          "The production controller and node share a UART physical link with agreed baud/parity/stop settings.",
+          "Pin voltage levels, flow control, and framing are selected and validated.",
+          "The operator commissioning interface is either the same UART or a separately selected local path."
+        ],
+        "clarification_questions": [
+          "Is the production controller link UART, and does it also carry operator commissioning settings?"
+        ],
+        "alternatives": [
+          {
+            "selected_proposal_id": "FR3_IF3",
+            "selected_ip_id": "spi",
+            "rationale": "SPI is a synchronous alternative if the controller can act as SPI master and chip-select framing is acceptable.",
+            "conditions": [
+              "The production controller is the SPI master; the node is an SPI peripheral.",
+              "SPI mode, word size, chip-select, and voltage levels must be validated."
+            ],
+            "clarification_questions": [
+              "Can the production controller provide an SPI master port for this link?"
+            ]
+          }
+        ]
+      },
+      "unknown_fields": [
+        "mode",
+        "role"
+      ],
+      "status": "conditional_recommendation"
+    },
+    {
+      "service_id": "FR4",
+      "functional_key": "control_fabric",
+      "taxonomy_category": "Interconnect",
+      "taxonomy_tag": "axi",
+      "evidence_quote": "the processor must independently address the camera configuration, trigger status, inspection settings and result-status register banks. These low-volume control transactions need address decoding and register-target selection",
+      "intent": "Decode low-volume processor register transactions and provide independent target selects to the camera configuration, trigger status, inspection settings, and result-status register banks.",
+      "retrieved_catalog_ids": [
+        "verilog_axil_crossbar_1x8_w32"
+      ],
+      "decision": {
+        "service_id": "FR4",
+        "selected_proposal_id": "FR4_IF2",
+        "selected_ip_id": "verilog_axil_crossbar_1x8_w32",
+        "rationale": "The AXI4-Lite 1x8 crossbar directly satisfies address decode and independent register-target selection for four required banks without a routed network.",
+        "conditions": [
+          "Processor master is AXI4-Lite; all four target register banks expose AXI4-Lite at common 32-bit width/clock.",
+          "Non-overlapping address windows are assigned.",
+          "Any full AXI, APB, or other endpoint requires separately selected and validated adapters."
+        ],
+        "clarification_questions": [
+          "Confirm the processor control bus is AXI4-Lite and all four register banks accept AXI4-Lite targets."
+        ],
+        "alternatives": []
+      },
+      "unknown_fields": [
+        "mode",
+        "role"
+      ],
+      "status": "conditional_recommendation"
+    }
+  ],
+  "llm_stages": [
+    {
+      "stage": "interpretation",
+      "requested_model": "deepseek-v4-pro",
+      "returned_model": "deepseek-v4-pro",
+      "accepted_attempt": 1
+    },
+    {
+      "stage": "selection",
+      "requested_model": "deepseek-v4-pro",
+      "returned_model": "deepseek-v4-pro",
+      "accepted_attempt": 1
+    }
+  ],
+  "deployment": {
+    "auto_deployable_ip_ids": [],
+    "recommendation_only_ip_ids": [
+      "mipi_csi2",
+      "opentitan_gpio",
+      "uart",
+      "verilog_axil_crossbar_1x8_w32"
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "snapshot_kind": "audited_excerpt_of_actual_scenario_run",
+  "application": "nightvision",
+  "batch": "20261104_054604_3a37d51e",
+  "source": {
+    "manifest_path": "/home/hws/soc_script/1.requirements_analysis/results/benchmark_ip_matching/20261104_054604_3a37d51e/nightvision/soc_manifest.json",
+    "manifest_sha256": "6c08700d73f437f8e21635c5f8dfb378ab27e594a095eb6411621886058070b5",
+    "note": "This is a selected-field excerpt, not a full manifest or a verbatim copy of either API response. The figure is an explicitly abridged rendering."
+  },
+  "source_description": "We want a self-contained low-light viewing terminal for an operator working without a continuous remote connection. The terminal receives paired images from two imaging modules, enhances and fuses them locally, and presents the resulting view on a nearby display. The two image streams must be associated with the correct capture pair rather than mixed across unrelated frames. The operator should be able to change viewing settings using a small local control panel. The imaging modules, display connection, and control-panel electronics have not been chosen, so no physical communication protocol is prescribed. Cloud transmission, automatic object recognition, and control of external actuators are outside the terminal's responsibilities. Recommend external image-acquisition, display, and local-control functions and identify what must be confirmed about the endpoints. Assume the processing and memory platform already exists.\n",
+  "functional_requirement": {
+    "service_id": "FR-DISP",
+    "service": "display",
+    "intent": "Drive a nearby display with the enhanced fused video output.",
+    "evidence_quote": "presents the resulting view on a nearby display",
+    "explicit_constraints": [],
+    "interface_proposals": [
+      {
+        "id": "IF-DISP-HDMI",
+        "interface": {"protocol": "hdmi", "role": "source"},
+        "basis": "inferred",
+        "rationale": "Common monitor interface for nearby operator displays.",
+        "assumptions": ["The selected display has HDMI input and the platform can provide a compatible video timing."],
+        "confirmation_questions": ["Does the display accept HDMI, and what resolution and timing are required?"]
+      },
+      {
+        "id": "IF-DISP-DP",
+        "interface": {"protocol": "displayport", "role": "source"},
+        "basis": "inferred",
+        "rationale": "Alternative digital display interface for higher-resolution or computer monitors.",
+        "assumptions": ["The selected display has DisplayPort input."],
+        "confirmation_questions": ["Does the display accept DisplayPort, and what resolution and timing are required?"]
+      }
+    ]
+  },
+  "post_retrieval_interface_refinements": [
+    {
+      "service_id": "FR-DISP",
+      "proposal": {
+        "id": "IF-DISP-VGA",
+        "interface": {"protocol": "vga", "role": "source"},
+        "basis": "inferred",
+        "rationale": "Fallback analog display path if the nearby display does not have HDMI or DP.",
+        "assumptions": ["The display accepts VGA input."],
+        "confirmation_questions": ["Does the nearby display have a VGA input?"]
+      }
+    }
+  ],
+  "retrieved_catalog": [
+    {"ip_id": "hdmi", "capabilities": {"protocol": "hdmi"}, "provenance": {"verification": "legacy_description_only"}, "ppa_status": "not_characterized"},
+    {"ip_id": "vga", "capabilities": {"protocol": "vga"}, "provenance": {"verification": "legacy_description_only"}, "ppa_status": "not_characterized"}
+  ],
+  "decision": {
+    "service_id": "FR-DISP",
+    "selected_proposal_id": "IF-DISP-HDMI",
+    "selected_ip_id": "hdmi",
+    "rationale": "HDMI is a common digital display interface and the strongest catalog candidate for a nearby display.",
+    "conditions": ["The display must accept HDMI input.", "The platform must provide a compatible HDMI PHY and video timing for the selected resolution."],
+    "clarification_questions": ["What resolution, refresh rate, and timing does the nearby display require?"],
+    "alternatives": [
+      {
+        "selected_proposal_id": "IF-DISP-VGA",
+        "selected_ip_id": "vga",
+        "rationale": "Fallback if the nearby display only has analog VGA input.",
+        "conditions": ["The display must accept VGA input.", "The platform must provide VGA-compatible output and analog video DAC."],
+        "clarification_questions": ["Does the nearby display have VGA input, and what analog timing is required?"]
+      }
+    ]
+  },
+  "validation": {
+    "display_status": "conditional_recommendation",
+    "manifest_status": "needs_review",
+    "catalog_unknown_fields": ["role"],
+    "ppa_selection_status": "not_established",
+    "ppa_selection_changed": false,
+    "report_backed_ppa_records_for_hdmi": 0,
+    "report_backed_ppa_records_for_vga": 0,
+    "legacy_costs_used": false,
+    "physical_feasibility": "not_established",
+    "auto_deployable_ip_ids": [],
+    "recommendation_only_ip_ids": ["hdmi", "i2c", "mipi_csi2"]
+  },
+  "llm_provenance": {
+    "llm_called": true,
+    "fixed_ip_fallback_used": false,
+    "stages": [
+      {"stage": "interpretation", "returned_model": "deepseek-v4-pro", "request_id": "505a3a80-ada5-4b35-8e8c-a845d6f66a33", "accepted_attempt": 1, "accepted_max_tokens": 16000, "finish_reason": "stop", "prompt_tokens": 1558, "completion_tokens": 9196},
+      {"stage": "selection", "returned_model": "deepseek-v4-pro", "request_id": "6e1b2d83-aaf9-4b61-a51f-83b708b067a0", "accepted_attempt": 1, "accepted_max_tokens": 16000, "finish_reason": "stop", "prompt_tokens": 5351, "completion_tokens": 8379}
+    ]
+  }
+}

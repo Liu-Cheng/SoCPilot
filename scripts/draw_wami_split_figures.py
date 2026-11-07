@@ -1,4 +1,4 @@
-"""Regenerate current selection/measurement tables and the measured WAMI sweep.
+"""Regenerate current selection/measurement tables and the measured wami sweep.
 
 Inputs are frozen in data/experiment_results.json; no remote service is used.
 """
@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.lines import Line2D
 from matplotlib.ticker import ScalarFormatter
+from paper_app_names import cpu_label
 
 ROOT = Path(__file__).resolve().parents[1]
 D = json.loads((ROOT / "data/experiment_results.json").read_text(encoding="utf-8"))
@@ -64,7 +65,7 @@ for ax in axes:
     ax.set_xlabel("Area budget (mm²; selected points)")
     ax.grid(axis="y", lw=.5, color="#E6E8EB")
     ax.set_axisbelow(True)
-fig.legend(handles=[Line2D([], [], color=colors[cpu], marker=markers[cpu], ls="", label=cpu)
+fig.legend(handles=[Line2D([], [], color=colors[cpu], marker=markers[cpu], ls="", label=cpu_label(cpu))
                     for cpu in colors], loc="lower center", ncol=3, frameon=False,
            bbox_to_anchor=(.5, -.005), fontsize=8)
 fig.subplots_adjust(left=.10, right=.98, bottom=.23, top=.91, wspace=.29)
@@ -78,7 +79,7 @@ for index, name in enumerate(['wami-latency-budget', 'wami-area-prediction']):
     other.set_visible(False)
     for legend in fig.legends:
         legend.set_visible(False)
-    legend = axes[index].legend(handles=[Line2D([], [], color=colors[cpu], marker=markers[cpu], ls='', label=cpu) for cpu in colors], loc='upper center', bbox_to_anchor=(.5, -.27), ncol=3, frameon=False, fontsize=8)
+    legend = axes[index].legend(handles=[Line2D([], [], color=colors[cpu], marker=markers[cpu], ls='', label=cpu_label(cpu)) for cpu in colors], loc='upper center', bbox_to_anchor=(.5, -.27), ncol=3, frameon=False, fontsize=8)
     if index == 1:
         axes[index].add_artist(legend)
         axes[index].legend(frameon=False, loc='upper left', fontsize=7)
@@ -88,4 +89,4 @@ for index, name in enumerate(['wami-latency-budget', 'wami-area-prediction']):
     other.set_visible(True)
     legend.remove()
 plt.close(fig)
-print("Generated two tables and measured WAMI figure from seven selected points.")
+print("Generated two tables and measured wami figure from seven selected points.")

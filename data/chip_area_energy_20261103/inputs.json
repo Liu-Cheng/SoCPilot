@@ -1,0 +1,402 @@
+{
+  "source": "New true hardware CPU-only batch cpu_only_five_20261102, existing selected accelerator FPGA reports, and unchanged paired board timing records",
+  "experiment_results_semantic_sha256": "f6e4c18f04b44c39c5dbffbab44690dacf31621927cfd71bf3395f420fba5e9b",
+  "applications": [
+    {
+      "application": "plate_recognition",
+      "internal_application": "plate_new",
+      "params": {
+        "CPU_type": 0,
+        "l2_sets": 32,
+        "l2_ways": 8,
+        "llc_sets": 32,
+        "llc_ways": 4,
+        "cache_line_size": 32,
+        "function_name": "plate_new",
+        "HLS-morphology_close-loop-morphology_close_loop_0-pipeline": 0,
+        "HLS-morphology_close-loop-morphology_close_loop_0-unroll": 8,
+        "HLS-morphology_close-loop-morphology_close_loop_1-pipeline": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_1-unroll": 2,
+        "HLS-morphology_close-loop-morphology_close_loop_2-pipeline": 0,
+        "HLS-morphology_close-loop-morphology_close_loop_2-unroll": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_3-pipeline": 0,
+        "HLS-morphology_close-loop-morphology_close_loop_3-unroll": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_4-pipeline": 0,
+        "HLS-morphology_close-loop-morphology_close_loop_4-unroll": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_5-pipeline": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_5-unroll": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_6-pipeline": 0,
+        "HLS-morphology_close-loop-morphology_close_loop_6-unroll": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_7-pipeline": 0,
+        "HLS-morphology_close-loop-morphology_close_loop_7-unroll": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_8-pipeline": 0,
+        "HLS-morphology_close-loop-morphology_close_loop_8-unroll": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_9-pipeline": 0,
+        "HLS-morphology_close-loop-morphology_close_loop_9-unroll": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_10-pipeline": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_10-unroll": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_11-pipeline": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_11-unroll": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_12-pipeline": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_12-unroll": 1,
+        "HLS-morphology_close-loop-morphology_close_loop_13-pipeline": 0,
+        "HLS-morphology_close-loop-morphology_close_loop_13-unroll": 8,
+        "HLS-morphology_close-array-dil-partition_type": "cyclic",
+        "HLS-morphology_close-array-dil-partition_factor": 16,
+        "HLS-morphology_close-array-res-partition_type": "none",
+        "HLS-morphology_close-array-res-partition_factor": 2,
+        "HLS-morphology_close-array-src-partition_type": "cyclic",
+        "HLS-morphology_close-array-src-partition_factor": 8,
+        "HLS-morphology_close-array-tmp-partition_type": "none",
+        "HLS-morphology_close-array-tmp-partition_factor": 16,
+        "HLS_data_width_bits": 64
+      },
+      "cpu_power_report": "data/chip_area_energy_20261103/plate_new_cpu_power.rpt",
+      "accelerated_power_report": "data/chip_area_energy_20261103/plate_new_accelerated_power.rpt",
+      "cpu_fpga_validation": "data/chip_area_energy_20261103/plate_new_cpu_fpga_validation.json",
+      "accelerated_area_summary": "data/board_20261031/plate_recognition_area_summary.json",
+      "cpu_power_remote_source": "/home/huwanshan/esp_asic_runs/cpu_only_five_20261102/fpga_archives/plate_new/delivery/plate_new_cpu_img1/vivado_reports/esp-xilinx-zcu102-xczu9eg.runs/impl_1/zynqmp_top_wrapper_power_routed.rpt",
+      "accelerated_power_source": "D:\\download\\5.experiment\\2.plate_ariane\\plate_new\\plate_new_img1_release\\vivado_reports\\esp-xilinx-zcu102-xczu9eg.runs\\impl_1\\zynqmp_top_wrapper_power_routed.rpt",
+      "cpu_area_summary": "data/chip_area_energy_20261103/plate_new_cpu_area_summary.json",
+      "cpu_area_validation": "data/chip_area_energy_20261103/plate_new_cpu_area_validation.json"
+    },
+    {
+      "application": "recognition",
+      "internal_application": "recognition",
+      "params": {
+        "CPU_type": 2,
+        "l2_sets": 64,
+        "l2_ways": 4,
+        "llc_sets": 32,
+        "llc_ways": 4,
+        "cache_line_size": 16,
+        "function_name": "recognition",
+        "HLS-dilate_mask-loop-dilate_mask_loop_0-pipeline": 1,
+        "HLS-dilate_mask-loop-dilate_mask_loop_0-unroll": 4,
+        "HLS-dilate_mask-loop-dilate_mask_loop_1-pipeline": 0,
+        "HLS-dilate_mask-loop-dilate_mask_loop_1-unroll": 2,
+        "HLS-dilate_mask-loop-dilate_mask_loop_2-pipeline": 0,
+        "HLS-dilate_mask-loop-dilate_mask_loop_2-unroll": 1,
+        "HLS-dilate_mask-loop-dilate_mask_loop_3-pipeline": 0,
+        "HLS-dilate_mask-loop-dilate_mask_loop_3-unroll": 2,
+        "HLS-dilate_mask-loop-dilate_mask_loop_4-pipeline": 0,
+        "HLS-dilate_mask-loop-dilate_mask_loop_4-unroll": 1,
+        "HLS-dilate_mask-loop-dilate_mask_loop_5-pipeline": 1,
+        "HLS-dilate_mask-loop-dilate_mask_loop_5-unroll": 3,
+        "HLS-dilate_mask-loop-dilate_mask_loop_6-pipeline": 0,
+        "HLS-dilate_mask-loop-dilate_mask_loop_6-unroll": 4,
+        "HLS-dilate_mask-loop-dilate_mask_loop_7-pipeline": 0,
+        "HLS-dilate_mask-loop-dilate_mask_loop_7-unroll": 2,
+        "HLS-dilate_mask-array-dilated_local-partition_type": "cyclic",
+        "HLS-dilate_mask-array-dilated_local-partition_factor": 8,
+        "HLS-dilate_mask-array-temp-partition_type": "none",
+        "HLS-dilate_mask-array-temp-partition_factor": 16,
+        "HLS-bgr_to_hsv-loop-bgr_to_hsv_loop_0-pipeline": 0,
+        "HLS-bgr_to_hsv-loop-bgr_to_hsv_loop_0-unroll": 1,
+        "HLS-bgr_to_hsv-loop-bgr_to_hsv_loop_1-pipeline": 0,
+        "HLS-bgr_to_hsv-loop-bgr_to_hsv_loop_1-unroll": 16,
+        "HLS-bgr_to_hsv-loop-bgr_to_hsv_loop_2-pipeline": 1,
+        "HLS-bgr_to_hsv-loop-bgr_to_hsv_loop_2-unroll": 4,
+        "HLS-bgr_to_hsv-loop-bgr_to_hsv_loop_3-pipeline": 1,
+        "HLS-bgr_to_hsv-loop-bgr_to_hsv_loop_3-unroll": 8,
+        "HLS-bgr_to_hsv-array-bgr_row-partition_type": "none",
+        "HLS-bgr_to_hsv-array-bgr_row-partition_factor": 2,
+        "HLS-bgr_to_hsv-array-hsv_row-partition_type": "cyclic",
+        "HLS-bgr_to_hsv-array-hsv_row-partition_factor": 2,
+        "HLS_data_width_bits": 32
+      },
+      "cpu_power_report": "data/chip_area_energy_20261103/recognition_cpu_power.rpt",
+      "accelerated_power_report": "data/chip_area_energy_20261103/recognition_accelerated_power.rpt",
+      "cpu_fpga_validation": "data/chip_area_energy_20261103/recognition_cpu_fpga_validation.json",
+      "accelerated_area_summary": "data/board_20261031/recognition_area_summary.json",
+      "cpu_power_remote_source": "/home/huwanshan/esp_asic_runs/cpu_only_five_20261102/fpga_archives/recognition/delivery/recognition_cpu_img1/vivado_reports/esp-xilinx-zcu102-xczu9eg.runs/impl_1/zynqmp_top_wrapper_power_routed.rpt",
+      "accelerated_power_source": "D:\\download\\5.experiment\\4.wami_all_bits_20261030\\board_files\\batch_20261030\\recognition_release\\board_files\\vivado_reports\\esp-xilinx-zcu102-xczu9eg.runs\\impl_1\\zynqmp_top_wrapper_power_routed.rpt",
+      "cpu_area_summary": "data/chip_area_energy_20261103/recognition_cpu_area_summary.json",
+      "cpu_area_validation": "data/chip_area_energy_20261103/recognition_cpu_area_validation.json"
+    },
+    {
+      "application": "scan",
+      "internal_application": "scan",
+      "params": {
+        "CPU_type": 2,
+        "l2_sets": 64,
+        "l2_ways": 2,
+        "llc_sets": 32,
+        "llc_ways": 4,
+        "cache_line_size": 64,
+        "function_name": "scan",
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_0-pipeline": 0,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_0-unroll": 16,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_1-pipeline": 0,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_1-unroll": 1,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_2-pipeline": 0,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_2-unroll": 1,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_3-pipeline": 0,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_3-unroll": 2,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_4-pipeline": 0,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_4-unroll": 1,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_5-pipeline": 1,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_5-unroll": 1,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_6-pipeline": 1,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_6-unroll": 1,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_7-pipeline": 0,
+        "HLS-scan_adaptive_threshold-loop-scan_adaptive_threshold_loop_7-unroll": 16,
+        "HLS-scan_adaptive_threshold-array-binary_buf-partition_type": "cyclic",
+        "HLS-scan_adaptive_threshold-array-binary_buf-partition_factor": 8,
+        "HLS-scan_adaptive_threshold-array-col_sum-partition_type": "cyclic",
+        "HLS-scan_adaptive_threshold-array-col_sum-partition_factor": 4,
+        "HLS-scan_adaptive_threshold-array-gray_buf-partition_type": "cyclic",
+        "HLS-scan_adaptive_threshold-array-gray_buf-partition_factor": 4,
+        "HLS_data_width_bits": 32
+      },
+      "cpu_power_report": "data/chip_area_energy_20261103/scan_cpu_power.rpt",
+      "accelerated_power_report": "data/chip_area_energy_20261103/scan_accelerated_power.rpt",
+      "cpu_fpga_validation": "data/chip_area_energy_20261103/scan_cpu_fpga_validation.json",
+      "accelerated_area_summary": "data/board_20261031/scan_area_summary.json",
+      "cpu_power_remote_source": "/home/huwanshan/esp_asic_runs/cpu_only_five_20261102/fpga_archives/scan/delivery/scan_cpu_img1/vivado_reports/esp-xilinx-zcu102-xczu9eg.runs/impl_1/zynqmp_top_wrapper_power_routed.rpt",
+      "accelerated_power_source": "D:\\download\\5.experiment\\3.scan_leon3\\scan\\scan_img1_release\\vivado_reports\\esp-xilinx-zcu102-xczu9eg.runs\\impl_1\\zynqmp_top_wrapper_power_routed.rpt",
+      "cpu_area_summary": "data/chip_area_energy_20261103/scan_cpu_area_summary.json",
+      "cpu_area_validation": "data/chip_area_energy_20261103/scan_cpu_area_validation.json"
+    },
+    {
+      "application": "wami",
+      "internal_application": "wami",
+      "params": {
+        "CPU_type": 1,
+        "l2_sets": 32,
+        "l2_ways": 4,
+        "llc_sets": 32,
+        "llc_ways": 4,
+        "cache_line_size": 16,
+        "function_name": "wami",
+        "HLS-warp_image-loop-warp_image_loop_0-pipeline": 0,
+        "HLS-warp_image-loop-warp_image_loop_0-unroll": 1,
+        "HLS-warp_image-loop-warp_image_loop_1-pipeline": 0,
+        "HLS-warp_image-loop-warp_image_loop_1-unroll": 1,
+        "HLS-warp_image-loop-warp_image_loop_2-pipeline": 0,
+        "HLS-warp_image-loop-warp_image_loop_2-unroll": 1,
+        "HLS-warp_image-loop-warp_image_loop_3-pipeline": 1,
+        "HLS-warp_image-loop-warp_image_loop_3-unroll": 1,
+        "HLS-warp_image-loop-warp_image_loop_4-pipeline": 0,
+        "HLS-warp_image-loop-warp_image_loop_4-unroll": 1,
+        "HLS-warp_image-loop-warp_image_loop_5-pipeline": 0,
+        "HLS-warp_image-loop-warp_image_loop_5-unroll": 1,
+        "HLS-warp_image-loop-warp_image_loop_6-pipeline": 0,
+        "HLS-warp_image-loop-warp_image_loop_6-unroll": 1,
+        "HLS-warp_image-loop-warp_image_loop_7-pipeline": 0,
+        "HLS-warp_image-loop-warp_image_loop_7-unroll": 1,
+        "HLS_data_width_bits": 32
+      },
+      "cpu_power_report": "data/chip_area_energy_20261103/wami_cpu_power.rpt",
+      "accelerated_power_report": "data/chip_area_energy_20261103/wami_accelerated_power.rpt",
+      "cpu_fpga_validation": "data/chip_area_energy_20261103/wami_cpu_fpga_validation.json",
+      "accelerated_area_summary": "data/board_20261031/WAMI_all_area_tradeoff_20261030.json",
+      "cpu_power_remote_source": "/home/huwanshan/esp_asic_runs/cpu_only_five_20261102/fpga_archives/wami/delivery/wami_cpu_img1/vivado_reports/esp-xilinx-zcu102-xczu9eg.runs/impl_1/zynqmp_top_wrapper_power_routed.rpt",
+      "accelerated_power_source": "D:\\download\\5.experiment\\4.wami_new\\wami_img1_release_3.0\\vivado_reports\\esp-xilinx-zcu102-xczu9eg.runs\\impl_1\\zynqmp_top_wrapper_power_routed.rpt",
+      "cpu_area_summary": "data/chip_area_energy_20261103/wami_cpu_area_summary.json",
+      "cpu_area_validation": "data/chip_area_energy_20261103/wami_cpu_area_validation.json"
+    },
+    {
+      "application": "nightvision",
+      "internal_application": "nightvision",
+      "params": {
+        "CPU_type": 0,
+        "l2_sets": 512,
+        "l2_ways": 4,
+        "llc_sets": 512,
+        "llc_ways": 16,
+        "cache_line_size": 32,
+        "function_name": "nightvision",
+        "HLS-conv2d-loop-conv2d_loop_0-pipeline": 0,
+        "HLS-conv2d-loop-conv2d_loop_0-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_1-pipeline": 0,
+        "HLS-conv2d-loop-conv2d_loop_1-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_2-pipeline": 0,
+        "HLS-conv2d-loop-conv2d_loop_2-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_3-pipeline": 1,
+        "HLS-conv2d-loop-conv2d_loop_3-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_4-pipeline": 1,
+        "HLS-conv2d-loop-conv2d_loop_4-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_5-pipeline": 0,
+        "HLS-conv2d-loop-conv2d_loop_5-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_6-pipeline": 1,
+        "HLS-conv2d-loop-conv2d_loop_6-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_7-pipeline": 1,
+        "HLS-conv2d-loop-conv2d_loop_7-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_8-pipeline": 1,
+        "HLS-conv2d-loop-conv2d_loop_8-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_9-pipeline": 1,
+        "HLS-conv2d-loop-conv2d_loop_9-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_10-pipeline": 1,
+        "HLS-conv2d-loop-conv2d_loop_10-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_11-pipeline": 1,
+        "HLS-conv2d-loop-conv2d_loop_11-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_12-pipeline": 0,
+        "HLS-conv2d-loop-conv2d_loop_12-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_13-pipeline": 1,
+        "HLS-conv2d-loop-conv2d_loop_13-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_14-pipeline": 0,
+        "HLS-conv2d-loop-conv2d_loop_14-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_15-pipeline": 1,
+        "HLS-conv2d-loop-conv2d_loop_15-unroll": 1,
+        "HLS-conv2d-loop-conv2d_loop_16-pipeline": 0,
+        "HLS-conv2d-loop-conv2d_loop_16-unroll": 1,
+        "HLS-conv2d-array-filter_buf-partition_type": "cyclic",
+        "HLS-conv2d-array-filter_buf-partition_factor": 2,
+        "HLS-conv2d-array-input_buf-partition_type": "cyclic",
+        "HLS-conv2d-array-input_buf-partition_factor": 4,
+        "HLS_data_width_bits": 64
+      },
+      "cpu_power_report": "data/chip_area_energy_20261103/nightvision_cpu_power.rpt",
+      "accelerated_power_report": "data/chip_area_energy_20261103/nightvision_accelerated_power.rpt",
+      "cpu_fpga_validation": "data/chip_area_energy_20261103/nightvision_cpu_fpga_validation.json",
+      "accelerated_area_summary": "data/board_20261031/nightvision_area_summary.json",
+      "cpu_power_remote_source": "/home/huwanshan/esp_asic_runs/cpu_only_five_20261102/fpga_archives/nightvision/delivery/nightvision_cpu_img1/vivado_reports/esp-xilinx-zcu102-xczu9eg.runs/impl_1/zynqmp_top_wrapper_power_routed.rpt",
+      "accelerated_power_source": "D:\\download\\5.experiment\\4.wami_all_bits_20261030\\board_files\\batch_20261030\\nightvision\\board_files\\vivado_reports\\esp-xilinx-zcu102-xczu9eg.runs\\impl_1\\zynqmp_top_wrapper_power_routed.rpt",
+      "cpu_area_summary": "data/chip_area_energy_20261103/nightvision_cpu_area_summary.json",
+      "cpu_area_validation": "data/chip_area_energy_20261103/nightvision_cpu_area_validation.json"
+    }
+  ],
+  "provenance": [
+    {
+      "file": "data/board_20261031/WAMI_all_area_tradeoff_20261030.json",
+      "sha256": "3f2efcd0711fe36f5d3d14210af590e5e88a1b18ded7df60aff76adf1dd9f3ae"
+    },
+    {
+      "file": "data/board_20261031/nightvision_area_summary.json",
+      "sha256": "31d4c283ca457d3278b7e39b73add5ef3b5dd3c1064a0efe586c04202b8fa57d"
+    },
+    {
+      "file": "data/board_20261031/nightvision_ariane_new.DAT",
+      "sha256": "70585620f25b1f441910573b359f452aae5096a2778b5fb39fc6adb26c659b4c"
+    },
+    {
+      "file": "data/board_20261031/plate_recognition_area_summary.json",
+      "sha256": "6df2822ac55cf3451ee44cf1c22b8f9889cc1decfcbfe55b947b8c064df456c0"
+    },
+    {
+      "file": "data/board_20261031/plate_result.DAT",
+      "sha256": "e218b1d31443555e14f78a48c066b42c49a010d1438f11bdef441100ca738352"
+    },
+    {
+      "file": "data/board_20261031/recognition_area_summary.json",
+      "sha256": "a094009b2121085fda30e2c29bdd77a5cf94506e9c4434640dd2ec83b4f7f288"
+    },
+    {
+      "file": "data/board_20261031/recognition_leon3.DAT",
+      "sha256": "4f388eb98a4627eea469f8dab92c7b80155faf8fe41d87bdfeed7e19e5627e46"
+    },
+    {
+      "file": "data/board_20261031/scan_area_summary.json",
+      "sha256": "196ad29e87dbf5091a23e92a99406cc83ae69a04b9e6f77115bb00f59ebc91a3"
+    },
+    {
+      "file": "data/board_20261031/scan_leon3.DAT",
+      "sha256": "d7e2319996117d80a09e39d47833bd4dc26f6796571a2f62b6edf122f259a174"
+    },
+    {
+      "file": "data/board_20261031/wami_ibex.DAT",
+      "sha256": "e70a99fce44d3b8863b747d551a08049b260dfa034e34cf998f2225658163c67"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/nightvision_accelerated_power.rpt",
+      "sha256": "c3c712b896706df4cd3e8c1a2fc406bbd034bdc7b7a69a7271538bde96216aa9"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/nightvision_cpu_area_summary.json",
+      "sha256": "0bbe4c75cf52fe99ba3a653c3c2a4b5031c94169148bf67f7c35c224ce69685d"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/nightvision_cpu_area_validation.json",
+      "sha256": "86089f48fe003c13633d0f1c28f5184dee42ba1c3d3b7d7a21d61636672ccbf9"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/nightvision_cpu_fpga_validation.json",
+      "sha256": "cf270b4151bd5bb25ccbfdbdd821f6dd2d299cc1c75724648f2158ffb196ed97"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/nightvision_cpu_power.rpt",
+      "sha256": "e21b74e88e9a396f8c071e6ed426d54c045a59630b1fd134692524e49581f039"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/plate_new_accelerated_power.rpt",
+      "sha256": "74fd8daa1854c5a6c2d7bc58cb40b9f654feb2baf6b8eeba5f909a5afc64015f"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/plate_new_cpu_area_summary.json",
+      "sha256": "14d7e470b39d1531bb579acf6dc715ae9be22f54df150f33bf6d2e0339e5e9ba"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/plate_new_cpu_area_validation.json",
+      "sha256": "5021b1223c8ace80c30d09479c0fc764064278821c91933d04161e7fee98c28d"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/plate_new_cpu_fpga_validation.json",
+      "sha256": "305d5c599fa352f11b4e9cd36cdfa838b1b352036a71612ec3469d2978cb8272"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/plate_new_cpu_power.rpt",
+      "sha256": "1db6b59bab0b587fe579da39f3c8826a8d6cef74a46ee465d6dd00fe8b3f7492"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/recognition_accelerated_power.rpt",
+      "sha256": "2213f8a91785f9a07613356b91108d9b1a8770e89cbc575624ad29887529c676"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/recognition_cpu_area_summary.json",
+      "sha256": "e0ac74b983d43e1e80f63590b71de9fe58dfb89745b2a77ba587348c8c9eb603"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/recognition_cpu_area_validation.json",
+      "sha256": "e73dbf558a1656f9a72efecc906d3c589ccd5cd8723d1aeaf5c98b44cd391788"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/recognition_cpu_fpga_validation.json",
+      "sha256": "3215b83aab2c45934add105f8e774b535d0278f88aa12c0115e06004b7ce6272"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/recognition_cpu_power.rpt",
+      "sha256": "683496df358232a0dd3d25966c831e68186a8f167708ad726876adb60c7f011f"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/scan_accelerated_power.rpt",
+      "sha256": "887ba3b0774760e4a201752a9728cff735ab1c98f78cccad090eecad0f0ed7aa"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/scan_cpu_area_summary.json",
+      "sha256": "87f0589364b635b653b789a49c307bd429ad95d15f9be3828670900481ddec23"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/scan_cpu_area_validation.json",
+      "sha256": "78303ead7858c8c3c02286a9d840ba26fac5bbfceba6e561daa82d3f7381e640"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/scan_cpu_fpga_validation.json",
+      "sha256": "47f5655edf62c92ddc6fc7b5247e2cae6c46ed71cf3317eafc0394c621e23e5b"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/scan_cpu_power.rpt",
+      "sha256": "d4f8b496780fb619a1b3564c1188bf554ce7bfc730a920524e2ef9ee2f3bd8cb"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/wami_accelerated_power.rpt",
+      "sha256": "8148a76dcefbbb013ea3c1a17b15b7ed2d67121cf9315ccc2686e78a95a10bb9"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/wami_cpu_area_summary.json",
+      "sha256": "44926c7096cb46d3344661be328ce9b0d53f0b6e1321899a7acf27ab91e3f3f6"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/wami_cpu_area_validation.json",
+      "sha256": "43bf2e10577a63d25d31e0f8b5174a3a002efe40850697df61d20e6f9cc65e43"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/wami_cpu_fpga_validation.json",
+      "sha256": "6930a5c57ac8f13c9809b0f61bf21dbaf734d2743454d325e31d01e9c743d024"
+    },
+    {
+      "file": "data/chip_area_energy_20261103/wami_cpu_power.rpt",
+      "sha256": "a62e4d0ea5702dce760f79eda3c5679d03267a888bcd5064127c6e13ca7644d4"
+    }
+  ]
+}
