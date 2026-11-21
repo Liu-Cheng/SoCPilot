@@ -69,31 +69,26 @@ def read_hotspots():
 
 def plot_hotspots():
     rows = read_hotspots()
-    fig, ax = plt.subplots(figsize=(WIDE_FIGURE_WIDTH, 2.95))
-    positions, groups, cursor = [], [], 0.0
+    fig, ax = plt.subplots(figsize=(COLUMN_FIGURE_WIDTH, 2.35))
+    positions, cursor = [], 0.0
     for app in APPS:
         group = [r for r in rows if r["application"] == app]
-        start = cursor
         for row in group:
             positions.append(cursor)
             cursor += 1
-        groups.append((app, start, cursor - 1))
-        cursor += 0.55
+        cursor += 0.2
     ax.set_xscale("log")
     ax.set_xlim(0.75, 1600)
-    ax.set_ylim(cursor - 0.8, -1.1)
+    ax.set_ylim(positions[-1] + 0.65, -1.15)
     ax.set_xticks([1, 10, 100, 1000])
     ax.xaxis.set_major_formatter(ScalarFormatter())
     ax.xaxis.set_minor_locator(NullLocator())
-    ax.set_yticks([])
+    ax.set_yticks(positions, [f"{row['kernel']}/{app_label(row['application'])}"
+                            for row in rows], fontsize=COLUMN_FONT_SIZE)
+    ax.tick_params(axis="y", length=0, pad=3)
     ax.spines["left"].set_visible(False)
     ax.grid(axis="x", color="#E6E8EB", linewidth=0.5)
     ax.set_axisbelow(True)
-    # Label columns use fixed figure positions, leaving a small, consistent gap.
-    transform = blended_transform_factory(fig.transFigure, ax.transData)
-    for app, first, last in groups:
-        ax.text(0.15, (first + last) / 2, app_label(app), transform=transform,
-                ha="right", va="center", fontsize=WIDE_FONT_SIZE)
     for row, y in zip(rows, positions):
         val = row["speedup"]
         color = BLUE_FILL if val >= 1 else ORANGE_FILL
@@ -101,22 +96,19 @@ def plot_hotspots():
         # Bars start at the meaningful 1x reference, never at zero on a log axis.
         ax.barh(y, val - 1, left=1, height=0.58, color=color,
                 edgecolor=edge, linewidth=0.6, zorder=3)
-        ax.text(0.162, y, row["kernel"], transform=transform,
-                ha="left", va="center", fontsize=WIDE_FONT_SIZE)
         ax.text(val * 1.13 if val >= 1 else 1.13, y, f"{val:.2f}\u00d7",
-                ha="left", va="center", fontsize=WIDE_FONT_SIZE,
+                ha="left", va="center", fontsize=COLUMN_FONT_SIZE,
                 color=ORANGE if val < 1 else "#17364D")
     ax.axvline(1, color="#4F5964", linestyle="--", linewidth=0.8, zorder=4)
-    ax.text(0.15, -0.9, "Application", transform=transform, fontsize=WIDE_FONT_SIZE,
-            fontweight="bold", ha="right", va="center")
-    ax.text(0.162, -0.9, "Accelerator", transform=transform, fontsize=WIDE_FONT_SIZE,
-            fontweight="bold", ha="left", va="center")
-    ax.set_xlabel("Measured stage speedup (\u00d7, logarithmic scale)", fontsize=WIDE_FONT_SIZE)
-    ax.tick_params(axis="x", labelsize=WIDE_FONT_SIZE)
+    transform = blended_transform_factory(ax.transAxes, ax.transData)
+    ax.text(-0.025, -0.85, "Kernel/Application", transform=transform,
+            fontsize=COLUMN_FONT_SIZE, fontweight="bold", ha="right", va="center")
+    ax.set_xlabel("Measured stage speedup (\u00d7, log scale)", fontsize=COLUMN_FONT_SIZE)
+    ax.tick_params(axis="x", labelsize=COLUMN_FONT_SIZE)
     fig.legend(handles=[Patch(facecolor=BLUE_FILL, edgecolor=BLUE_EDGE, label="Speedup")],
                loc="upper right", bbox_to_anchor=(0.97, 0.99), frameon=False,
-               ncol=2, handlelength=1.1, columnspacing=1.1, fontsize=WIDE_FONT_SIZE)
-    fig.subplots_adjust(left=0.335, right=0.98, bottom=0.17, top=0.88)
+               ncol=2, handlelength=1.1, columnspacing=1.1, fontsize=COLUMN_FONT_SIZE)
+    fig.subplots_adjust(left=0.47, right=0.985, bottom=0.16, top=0.9)
     save(fig, "hotspot-stage-speedups", tight=False)
     return rows
 

@@ -47,14 +47,14 @@ The CPU executes the remaining application stages and coordinates accelerator in
 
 Figure~\ref{fig:hotspot_stage_speedups} summarizes the board-measured speedups of the seven mapped kernels, all of which outperform their CPU-only implementations. The \texttt{morphology\_close} stage of plate\_roi achieves 15.91$\times$ speedup, while \texttt{warp\_image} and \texttt{hessian} in wami achieve 33.68$\times$ and 201.02$\times$, respectively.
 
-\begin{figure*}[t]
+\begin{figure}[t]
 \centering
-\includegraphics[width=0.88\textwidth,trim=0bp 6bp 0bp 0bp,clip]{pic/hotspot-stage-speedups.pdf}
+\includegraphics[width=\columnwidth]{pic/hotspot-stage-speedups.pdf}
 \par\vspace{-4pt}
 \setlength{\abovecaptionskip}{2pt}
 \caption{Board-measured speedups of the seven mapped kernels. Each ratio is CPU-stage latency divided by hardware replacement-stage latency, using the timing definition in the setup. Invocation, DMA, synchronization, and output conversion remain included. The dashed line marks 1$\times$.}
 \label{fig:hotspot_stage_speedups}
-\end{figure*}
+\end{figure}
 
 \subsubsection{Automation Evaluation}
 \label{subsec:general_agent}
