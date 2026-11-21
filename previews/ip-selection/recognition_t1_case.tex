@@ -12,7 +12,7 @@
   \raggedright
   \textbf{Deployment description}\par\smallskip
   We need a compact color-marker inspection node beside an industrial production line.
-  A nearby production controller indicates when an item is positioned; the node captures an image,
+  A nearby production controller indicates when an item is positioned. The node captures an image,
   locates a colored marker, and reports its center coordinates and a validity flag.
   An operator adjusts the detection settings during commissioning.
   \par\smallskip
@@ -63,14 +63,14 @@ Report coordinates/status and receive commissioning settings.
   \texttt{i2c}\newline \texttt{spi}\newline \texttt{uart}
 & \textbf{Preferred:} \texttt{uart}\newline
   \textbf{Fallback:} \texttt{spi}
-& Controller-side UART support, baud/framing, voltage, and flow control; SPI fallback needs agreed master/peripheral roles. \\
+& Controller-side UART support, baud/framing, voltage, and flow control. SPI fallback needs agreed master/peripheral roles. \\
 \midrule
 \textbf{Register interconnect}\newline
 Decode processor accesses to four independent control/status banks.
 & Interconnect\newline \texttt{axi}
 & \texttt{verilog\_axil\_}\newline \texttt{crossbar\_1x8\_w32}
 & \texttt{verilog\_axil\_}\newline \texttt{crossbar\_1x8\_w32}
-& AXI4-Lite endpoints, common 32-bit width and clock, nonoverlapping address windows; separate adapters for other protocols. \\
+& AXI4-Lite endpoints, common 32-bit width and clock, nonoverlapping address windows. Other protocols require separate adapters. \\
 \bottomrule
 \end{tabularx}
 \endgroup

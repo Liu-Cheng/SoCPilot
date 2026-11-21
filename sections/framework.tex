@@ -3,9 +3,7 @@ Application-driven SoC customization requires coordinated decisions across appli
 
 \subsection{SoCPilot Overview}
 \label{sec:socpilot-overview}
-As shown in Figure~\ref{fig: overview}, SoCPilot uses an LLM-based orchestration agent to coordinate four functional stages and their interactions with design and analysis tools. The agent provides shared orchestration through task planning, code generation, and feedback reasoning, connecting application requirements and source code to customized SoC designs and FPGA evaluation.
-
-Given the requirements, source code, and intermediate design results, the orchestration agent reasons about the tasks within each stage and generates the code and configuration proposals needed to carry them out. It coordinates tool calls and the exchange of design artifacts through a script-backed execution mechanism, then interprets tool reports and diagnostics to guide subsequent actions and iterative refinement. This interaction allows LLM reasoning to support the SoC customization process while quantitative mapping and design space exploration algorithms evaluate hardware allocation and configuration choices.
+As shown in Figure~\ref{fig: overview}, SoCPilot uses an LLM-based orchestration agent to coordinate four functional stages and their interactions with design and analysis tools. The agent provides shared orchestration through task planning, code generation, and feedback reasoning, connecting application requirements and source code to customized SoC designs and FPGA evaluation. Given the requirements, source code, and intermediate design results, the orchestration agent reasons about the tasks within each stage and generates the code and configuration proposals needed to carry them out. It coordinates tool calls and the exchange of design artifacts through a script-backed execution mechanism, then interprets tool reports and diagnostics to guide subsequent actions and iterative refinement. This interaction allows LLM reasoning to support the SoC customization process while quantitative mapping and design space exploration algorithms evaluate hardware allocation and configuration choices.
 
 The four functional stages cover complementary aspects of SoC customization. Requirement interpretation and IP selection translates user intent into a structured specification and selects compatible components from reusable libraries. Application profiling and hardware/software partitioning identifies hotspots, generates candidate accelerators through LLM--HLS collaboration, and selects hardware tasks using latency, communication, and area estimates. System-level design space exploration refines processor, cache, and accelerator configurations for the selected hardware/software map. SoC generation and implementation validation packages and integrates the accelerators with the selected system IPs, followed by FPGA implementation and board-level evaluation.
 
@@ -23,7 +21,7 @@ The first stage determines the reusable system components required by the target
 
 
 
-The structured specification records three types of information: (1) the required system functions, such as sensing and communication; (2) quantitative constraints, including latency, throughput, power, area, and memory capacity; and (3) integration attributes, such as data types, protocols, and external interfaces. Missing or ambiguous fields trigger an interactive clarification step. This representation decomposes a high-level application scenario into explicit IP categories and target specifications, providing a stable interface between user intent and the implementation flow.
+The structured specification records three types of information. System functions cover needs such as sensing and communication. Quantitative constraints specify latency, throughput, power, area, and memory capacity. Integration attributes describe data types, protocols, and external interfaces. Missing or ambiguous fields trigger an interactive clarification step. This representation decomposes a high-level application scenario into explicit IP categories and target specifications, providing a stable interface between user intent and the implementation flow.
 
 \begin{table*}[htb]
 \centering
@@ -91,21 +89,19 @@ The structured specification records three types of information: (1) the require
    % 表格下方的注释区域
   \begin{tablenotes}
     \footnotesize
-    \item[a] T0 identifies the application domain; T1 describes primary hardware components; T2 captures cross-layer constraints; and T3 records implementation and integration constraints.
+    \item[a] T0 identifies the application domain. T1 describes primary hardware components. T2 captures cross-layer constraints. T3 records implementation and integration constraints.
   \end{tablenotes}
 
 \end{threeparttable}
 \end{table*}
 
-Table~\ref{tab:req_taxonomy} summarizes the taxonomy used to organize both requirements and IP metadata. Each library entry contains a functional description, supported configurations, interface protocols, resource and performance characterization, verification status, and known dependencies. The LLM decomposes the structured SoC specification into IP queries, retrieves candidates from the hierarchical IP library, and filters them using hard constraints such as protocol compatibility, capacity, and resource limits. The remaining candidates are ranked by their match to the requested performance targets.
-
-The output of this stage is a machine-readable SoC manifest that records the selected processor, memory hierarchy, interconnect, I/O components, and their initial configurations. Application-specific compute kernels are not assumed to exist in the reusable IP library; instead, their accelerator implementations are determined by the profiling and hardware/software partitioning stage described next.
+Table~\ref{tab:req_taxonomy} summarizes the taxonomy used to organize both requirements and IP metadata. Each library entry contains a functional description, supported configurations, interface protocols, resource and performance characterization, verification status, and known dependencies. The LLM decomposes the structured SoC specification into IP queries, retrieves candidates from the hierarchical IP library, and filters them using hard constraints such as protocol compatibility, capacity, and resource limits. The remaining candidates are ranked by their match to the requested performance targets. The output of this stage is a machine-readable SoC manifest that records the selected processor, memory hierarchy, interconnect, I/O components, and their initial configurations. Application-specific compute kernels are not assumed to exist in the reusable IP library. Instead, their accelerator implementations are determined by the profiling and hardware/software partitioning stage described next.
 
 \subsection{Application Profiling and Hardware/Software Partitioning}
 The second stage determines which application functions should remain on the CPU and which should be implemented as custom accelerators. Hotspot detection alone cannot make this decision: a frequently executed function may provide little net benefit after accelerator latency, hardware cost, invocation overhead, and data movement are considered. SoCPilot therefore treats profiling as candidate extraction and defers the mapping decision to an explicit hardware/software partitioning model.
 
 \textbf{Application profiling and candidate extraction.}
-SoCPilot compiles and executes the application with representative inputs and uses Callgrind to collect function-level instruction counts, call frequencies, and calling relationships. System routines, library wrappers, initialization code, and error-handling paths are removed from the profile, leaving application-defined functions with substantial execution cost as the initial candidate set. A lightweight static pass then analyzes each candidate together with its type definitions and calling context and records potential synthesis obstacles, including recursion, dynamic allocation, irregular pointer accesses, and complex control flow. This pass determines whether a function can be evaluated by the HLS flow; it does not decide whether the function should be mapped to hardware. The LLM combines the dynamic profile, static call information, and source-level context to construct a task graph $G=(V,E)$, where nodes represent profiled functions and edges capture the control and data dependencies inferred between them.
+SoCPilot compiles and executes the application with representative inputs and uses Callgrind to collect function-level instruction counts, call frequencies, and calling relationships. System routines, library wrappers, initialization code, and error-handling paths are removed from the profile, leaving application-defined functions with substantial execution cost as the initial candidate set. A lightweight static pass then analyzes each candidate together with its type definitions and calling context and records potential synthesis obstacles, including recursion, dynamic allocation, irregular pointer accesses, and complex control flow. This pass determines whether a function can be evaluated by the HLS flow. It does not decide whether the function should be mapped to hardware. The LLM combines the dynamic profile, static call information, and source-level context to construct a task graph $G=(V,E)$, where nodes represent profiled functions and edges capture the control and data dependencies inferred between them.
 
 \textbf{LLM-assisted hardware evaluation.}
 For each candidate hotspot, SoCPilot reuses the LLM-guided HLS generation and optimization procedure introduced in HLSPilot \cite{xiong2024hlspilot}. The LLM isolates or refactors the candidate into synthesizable C/C++, generates a functional testbench, and iteratively inserts HLS pragmas for pipelining, loop unrolling, and array partitioning. HLS reports provide the latency of one accelerator invocation and the synthesis information used by the common analytical area model to obtain an accelerator-area estimate $a_i$. The per-invocation latency is multiplied by the profiled call count to obtain the workload-level accelerator time $t_i^{\mathrm{acc}}$. Candidates that pass synthesis and verification proceed to the partitioning algorithm, while the remaining candidates stay in software. Thus, HLS compatibility, latency, and area cost are measured or tool-derived rather than inferred from source appearance alone.
@@ -133,9 +129,7 @@ the task graph subject to the application-specific area budget:
 \end{aligned}
 \label{eq:partition}
 \end{equation}
-where $A_{\mathrm{CPU}}$ denotes the area of the initially selected processor configuration.
-
-Non-candidate functions are fixed to software. The implementation uses the marginal-gain heuristic in Algorithm~\ref{alg:hw-sw-partitioning}. Starting from an all-software mapping, it tentatively maps each feasible candidate to hardware, recomputes the task-graph completion time including boundary communication, and selects the candidate with the largest latency reduction per normalized unit of estimated area. The process stops when no feasible candidate produces a positive end-to-end benefit.
+where $A_{\mathrm{CPU}}$ denotes the area of the initially selected processor configuration. Non-candidate functions are fixed to software. The implementation uses the marginal-gain heuristic in Algorithm~\ref{alg:hw-sw-partitioning}. Starting from an all-software mapping, it tentatively maps each feasible candidate to hardware, recomputes the task-graph completion time including boundary communication, and selects the candidate with the largest latency reduction per normalized unit of estimated area. The process stops when no feasible candidate produces a positive end-to-end benefit.
 
 
 \begin{algorithm}
@@ -182,10 +176,10 @@ $T_S\leftarrow V\setminus T_H$\;
 \vspace{0.4em}
 {\footnotesize
 \textit{Notation:}
-$C_f$ denotes the currently feasible candidate set;
-$\Delta_i$ is the predicted reduction in application completion time;
-$\rho_i$ is the normalized area cost;
-$s_i$ is the latency-reduction-per-area score; and
+$C_f$ denotes the currently feasible candidate set.
+$\Delta_i$ is the predicted reduction in application completion time.
+$\rho_i$ is the normalized area cost.
+$s_i$ is the latency-reduction-per-area score.
 $i^\star$ is the selected candidate.
 }
 
@@ -227,7 +221,7 @@ The initial partition reduces the search space by fixing which functions are imp
           Array partition type & None, cyclic, block, complete$^{*}$ \\
           Array partition factor & Source-dependent candidates, up to 16 \\
           Interface data width (bits) &
-          64 for Ariane; 32 for Ibex and Leon3 \\
+          64 for Ariane, 32 for Ibex and Leon3 \\
           Cache line size (bits) & 128, 256, 512 \\
           L2 sets & $2^{5}, 2^{6}, \ldots, 2^{13}$ \\
           L2 ways & 2, 4, 8 \\

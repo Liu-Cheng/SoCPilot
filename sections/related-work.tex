@@ -109,8 +109,8 @@ within a unified end-to-end flow.
     \begin{minipage}{\textwidth}
     \footnotesize
     \textit{Notation:} 
-    \checkmark~denotes explicit support; 
-    $\triangle$ denotes partial support or a limited scope; 
+    \checkmark~denotes explicit support.
+    $\triangle$ denotes partial support or a limited scope.
     -- denotes functionality that is not addressed as a primary objective.
     \end{minipage}
 \end{table*}
@@ -118,7 +118,7 @@ within a unified end-to-end flow.
 
 
 \subsection{Benchmarks for LLM-Based SoC Design}
-Application benchmarks provide the workloads needed to evaluate customized architectures. S2CBench contains synthesizable SystemC designs for HLS research \cite{schafer2014s2cbench}; SHOC provides kernels and applications for evaluating heterogeneous computing systems \cite{danalis2010shoc}; and MachSuite supplies accelerator-oriented kernels spanning diverse computation and memory-access patterns \cite{reagen2014machsuite}. These suites support quantitative evaluation of performance and hardware cost, but they assume that the design flow and tool orchestration are already available. They therefore do not directly measure whether an LLM agent can complete the multistage process required to construct a working SoC.
+Application benchmarks provide the workloads needed to evaluate customized architectures. S2CBench contains synthesizable SystemC designs for HLS research \cite{schafer2014s2cbench}. SHOC provides kernels and applications for evaluating heterogeneous computing systems \cite{danalis2010shoc}. MachSuite supplies accelerator-oriented kernels spanning diverse computation and memory-access patterns \cite{reagen2014machsuite}. These suites support quantitative evaluation of performance and hardware cost, but they assume that the design flow and tool orchestration are already available. They therefore do not directly measure whether an LLM agent can complete the multistage process required to construct a working SoC.
 
 System-level benchmarks for LLM-assisted SoC design have recently begun to address this gap. SoCDevBench evaluates LLM-generated TCL workflows for Vivado using design pass rate, FPGA resource utilization, and tool feedback \cite{socdev2025}. SLDB targets heterogeneous SoC integration and configuration with ESP-compatible designs, extending evaluation beyond isolated RTL generation \cite{sldb2025}. HSCO-Bench broadens the scope to end-to-end hardware/software co-design, covering kernel identification, HLS accelerator generation, ESP-based integration, and FPGA deployment \cite{hscobench2026}.
 \begin{figure*}[htp]

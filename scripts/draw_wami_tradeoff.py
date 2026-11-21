@@ -66,7 +66,7 @@ for r in rows:
     normalized_perf_area = speedup / (r["synthesis_equivalent_mm2"] / baseline_area)
     lines.append(f"{r['constraint_mm2']:g} & {cpu_label(r['cpu'])} & {hw} & {cache(p, 'l2')} & {cache(p, 'llc')} & {p['cache_line_size']} & {r['dse_area_mm2']:.3f} & {r['synthesis_equivalent_mm2']:.3f} & {latency_ms:,.3f} & {speedup:.2f}$\\times$ & {normalized_perf_area:.2f}" + r" \\")
 lines += [r"\bottomrule", r"\end{tabular*}", r"\par\vspace{6pt}\noindent",
-    r"\parbox{\textwidth}{\scriptsize H: \texttt{hessian}; W: \texttt{warp\_image}; S: \texttt{steepest\_descent}. Ibex/Leon3 use DMA32; Ariane uses DMA64. Speedup compares each complete configuration with the 1.8-mm$^2$ CPU-only configuration (44,161.522 ms). Normalized perf./area is $(T_0/T_i)/(A_i/A_0)$, using synthesis area; subscript 0 denotes the 1.8-mm$^2$ configuration, whose value is 1.00.}",
+    r"\parbox{\textwidth}{\scriptsize H: \texttt{hessian}. W: \texttt{warp\_image}. S: \texttt{steepest\_descent}. Ibex/Leon3 use DMA32. Ariane uses DMA64. Speedup compares each complete configuration with the 1.8-mm$^2$ CPU-only configuration (44,161.522 ms). Normalized perf./area is $(T_0/T_i)/(A_i/A_0)$, using synthesis area. Subscript 0 denotes the 1.8-mm$^2$ configuration, whose value is 1.00.}",
     r"\end{table*}"]
 write("wami_budget_configs.tex", lines)
 

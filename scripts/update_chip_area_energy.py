@@ -62,6 +62,6 @@ for row in rows:
     area='---' if row['cpu_area_45nm_equivalent_mm2'] is None else f"{row['cpu_area_45nm_equivalent_mm2']:.3f}"
     name=row['display_name'].replace('_',r'\_')
     tex.append(f"{name} & 1.0000 & {row['accelerated_normalized_edp']:.4f} & {area} & {row['accelerated_area_45nm_equivalent_mm2']:.3f}"+r' \\')
-tex += [r'\bottomrule',r'\end{tabular*}',r'\par\vspace{4pt}',r'\parbox{\columnwidth}{\scriptsize CPU denotes hardware without accelerator tiles; Accel. denotes the selected CPU--accelerator system. EDP is normalized to each CPU-only baseline; lower is better.'+(' Dashes indicate pending area validation.' if not result['area_complete'] else '')+'}',r'\end{table}']
+tex += [r'\bottomrule',r'\end{tabular*}',r'\par\vspace{4pt}',r'\parbox{\columnwidth}{\scriptsize CPU denotes hardware without accelerator tiles. Accel. denotes the selected CPU--accelerator system. EDP is normalized to each CPU-only baseline. Lower is better.'+(' Dashes indicate pending area validation.' if not result['area_complete'] else '')+'}',r'\end{table}']
 (ROOT/'data/generated/chip_area_energy.tex').write_text('\n'.join(tex)+'\n')
 print(json.dumps(dict(success=True,applications=len(rows),area_complete=result['area_complete'],rows=rows),indent=2))

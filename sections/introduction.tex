@@ -16,14 +16,13 @@ Beyond their technical strengths, LLM-based automation has the potential to impr
     \includegraphics[width=\columnwidth,trim=0bp 12bp 0bp 0bp,clip]{pic/nre-break-even.pdf}
     \par\vspace{-6pt}
     \setlength{\abovecaptionskip}{2pt}
-    \caption{Conceptual effect of LLM-assisted design on ASIC economics. Lower design-related NRE reduces amortized unit cost and shifts the break-even production volume to the left. The shaded interval indicates volumes where customization becomes cost-competitive after NRE reduction. Recurring ASIC unit cost and the off-the-shelf alternative are held fixed.}
+    \caption{Lower design-related NRE reduces amortized unit cost and shifts the break-even production volume to the left. The shaded interval indicates volumes where customization becomes cost-competitive after NRE reduction. Recurring ASIC unit cost and the off-the-shelf alternative are held fixed.}
     \label{fig:nre-break-even}
+    \vspace{-6pt}
 \end{figure}
 
 
-Motivated by both the technical and economic potentials, we propose SoCPilot, an LLM-powered framework for application-driven CPU--accelerator SoC customization and FPGA validation. SoCPilot begins by interpreting user requirements and selecting appropriate IPs through semantic search and library matching. It then performs hardware/software partitioning using application profiling, accelerator latency and area estimation, and communication-aware cost evaluation. For hardware-mapped tasks, the LLM generates ESP-compatible accelerators \cite{mantovani2020openesp, esp4ml}, while system-level DSE refines processor, cache, and accelerator parameters under area constraints. The selected SoC is finally synthesized and validated on an FPGA board. By automating application analysis, hardware generation, architectural selection, and SoC integration, SoCPilot reduces the cross-layer engineering effort required to construct customized CPU--accelerator systems.
-
-This work makes the following key contributions.
+Motivated by both the technical and economic potentials, we propose SoCPilot, an LLM-powered framework for application-driven CPU--accelerator SoC customization and FPGA validation. SoCPilot begins by interpreting user requirements and selecting appropriate IPs through semantic search and library matching. It then performs hardware/software partitioning using application profiling, accelerator latency and area estimation, and communication-aware cost evaluation. For hardware-mapped tasks, the LLM generates ESP-compatible accelerators \cite{mantovani2020openesp, esp4ml}, while system-level DSE refines processor, cache, and accelerator parameters under area constraints. The selected SoC is finally synthesized and validated on an FPGA board. By automating application analysis, hardware generation, architectural selection, and SoC integration, SoCPilot reduces the cross-layer engineering effort required to construct customized CPU--accelerator systems. This work makes the following key contributions.
 \begin{itemize}
 \item We propose \textbf{SoCPilot}, an end-to-end agentic framework for application-driven SoC customization. It incorporates domain knowledge into a structured workflow that connects application analysis, accelerator implementation, and SoC integration, using explicit intermediate representations and tool feedback to guide LLM reasoning and code generation.
 
