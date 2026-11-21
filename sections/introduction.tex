@@ -25,11 +25,11 @@ Motivated by both the technical and economic potentials, we propose SoCPilot, an
 
 This work makes the following key contributions.
 \begin{itemize}
-\item We propose \textbf{SoCPilot}, an end-to-end agentic framework for application-driven SoC customization. By combining LLM-based task reasoning and code understanding with orchestrated tool invocation and feedback-driven refinement, SoCPilot automates the complex workflow from application requirements to customized CPU--accelerator SoC designs.
+\item We propose \textbf{SoCPilot}, an end-to-end agentic framework for application-driven SoC customization. Guided by domain knowledge, its LLM-based orchestration agent coordinates application analysis, accelerator implementation, and SoC integration through task planning, code generation, and tool-feedback reasoning.
 
-\item We combine LLM-based reasoning with static analysis and dynamic profiling to extract computational hotspots and rewrite them into self-contained, synthesizable kernels. Through iterative collaboration with HLS tools, the LLM generates and optimizes dedicated accelerators for application bottlenecks.
+\item We develop an application-level hardware/software partitioning and configuration flow that considers computation, communication overhead, and hardware cost. Building on LLM-assisted hotspot extraction and HLS-based accelerator generation, it selects functions for hardware acceleration and subsequently explores CPU, cache, and accelerator configurations under area constraints.
 
-\item Prototype measurements on five representative applications show a geometric mean application speedup of 2.79$\times$ over matched CPU-only execution. Using DeepSeek, SoCPilot generates SoC designs that achieve FPGA execution for all five applications, whereas a general-purpose agent using the same model completes none of the evaluated HSCO-Bench generation flows, highlighting the effectiveness of structured agentic orchestration.
+\item We evaluate SoCPilot on five representative applications, achieving a geometric mean application speedup of 2.79$\times$ over matched CPU-only execution on FPGA prototypes. SoCPilot reaches FPGA execution for all five applications, while a general-purpose agent using the same underlying LLM completes none of the evaluated HSCO-Bench generation flows.
 \end{itemize}
 
 
