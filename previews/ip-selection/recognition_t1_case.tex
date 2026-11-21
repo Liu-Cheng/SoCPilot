@@ -15,16 +15,11 @@
   A nearby production controller indicates when an item is positioned; the node captures an image,
   locates a colored marker, and reports its center coordinates and a validity flag.
   An operator adjusts the detection settings during commissioning.
-  The camera, trigger wiring and controller communication connection have not been chosen.
-  The node does not directly drive production actuators.
   \par\smallskip
-  Keep the supplied processor and image storage unchanged.
   Inside the node, the processor must independently address the camera configuration, trigger status,
   inspection settings and result-status register banks.
-  These low-volume control transactions need address decoding and register-target selection;
-  they are not bulk frame transfers and must not be confused with the external controller link.
+  These low-volume control transactions require address decoding and register-target selection and are distinct from bulk frame transfers and external controller communication.
   Recommend I/O and internal control interconnect functions with endpoint assumptions.
-  Do not invent bus widths, physical protocols, guaranteed response times or a requirement for a routed multi-tile network.
   \end{minipage}}
 \par\vspace{5pt}
 {\centering\color[HTML]{226A9D}\textbf{Functional interpretation

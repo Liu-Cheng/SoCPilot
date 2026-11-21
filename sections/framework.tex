@@ -16,46 +16,79 @@ The first stage determines the reusable system components required by the target
     \centering
     \includegraphics[width=0.95\textwidth,trim=0bp 140bp 0bp 78bp,clip]{pic/soc-spec.pdf}
     \setlength{\abovecaptionskip}{2pt}
-    \caption{Structured SoC specification generation. The LLM translates natural-language requirements into system functions, quantitative constraints, and integration attributes, while resolving missing or ambiguous fields through interactive clarification. The example illustrates the resulting machine-readable specification used for subsequent IP retrieval.}
+    \caption{Requirement interpretation, IP retrieval, and SoC manifest generation. The LLM converts natural-language requirements into a structured SoC specification, resolves missing or ambiguous information through interactive clarification, and uses the resulting specification to retrieve and filter verified reusable IPs. The selected components and their initial configurations are recorded in a machine-readable SoC manifest.}
 \label{fig:soc-spec}
     \vspace{-1em}
 \end{figure*}
 
 
 
-The structured specification records three types of information: (1) the required system functions, such as sensing, communication, and application processing; (2) quantitative constraints, including latency, throughput, power, area, and memory capacity; and (3) integration attributes, such as data types, protocols, and external interfaces. Missing or ambiguous fields trigger an interactive clarification step. This representation decomposes a high-level application scenario into explicit IP categories and target specifications, providing a stable interface between user intent and the implementation flow.
+The structured specification records three types of information: (1) the required system functions, such as sensing and communication; (2) quantitative constraints, including latency, throughput, power, area, and memory capacity; and (3) integration attributes, such as data types, protocols, and external interfaces. Missing or ambiguous fields trigger an interactive clarification step. This representation decomposes a high-level application scenario into explicit IP categories and target specifications, providing a stable interface between user intent and the implementation flow.
 
 \begin{table*}[htb]
 \centering
 \begin{threeparttable}
-  \caption{Requirement-to-IP Taxonomy for SoC Customization}
+  \caption{Requirement Taxonomy for IP Retrieval and SoC Customization}
   \label{tab:req_taxonomy}
   \footnotesize
-  \begin{tabularx}{0.8\linewidth}{cllX}
+\begin{tabularx}{0.9\linewidth}{
+  p{0.55cm}
+  p{2.8cm}
+  p{2.1cm}
+  X}
     \toprule
-    \textbf{Tier\tnote{a}} & \textbf{Category} & \textbf{Tag} & \textbf{Description / Examples} \\
+    \textbf{Tier\tnote{a}} &
+    \textbf{Category} &
+    \textbf{Tag} &
+    \textbf{Description / Examples} \\
     \midrule
+
     \multirow{1}{*}{T0}
-      & Application Domain       & \texttt{domain} & AI inference, sensor hub, audio DSP, ISPs, etc. \\
+      & Application Domain
+      & \texttt{domain}
+      & Computer vision, AI inference, audio processing, sensor processing \\
+
     \midrule
     \multirow{4}{*}{T1}
-      & Compute                  & \texttt{cpu}, \texttt{dsp}, \texttt{ai} & RISC-V, Arm cores, DSPs, AI accelerators\\
-      & Memory and Cache         & \texttt{mem}     & DDR/LPDDR, SRAM, cache hierarchy and coherency, scratchpad \\
-      & Interconnect             & \texttt{noc}, \texttt{axi}, \texttt{pcie} & Mesh NoC, AXI buses, PCIe root complex \\
-      & I/O Interfaces           & \texttt{io}      & USB, SPI, I2C, CAN, MIPI CSI/DSI, GPIO \\
+      & Compute
+      & \texttt{cpu}, \texttt{dsp}, \texttt{ai}
+      & RISC-V and Arm processors, DSPs, AI accelerators \\
+
+      & Memory and Cache
+      & \texttt{mem}
+      & DDR/LPDDR, SRAM, cache hierarchy and coherence, scratchpad \\
+
+      & Interconnect
+      & \texttt{noc}, \texttt{axi}, \texttt{pcie}
+      & Mesh NoC, AXI buses, PCIe root complex \\
+
+      & I/O Interfaces
+      & \texttt{io}
+      & USB, SPI, I2C, CAN, MIPI CSI/DSI, GPIO \\
+
     \midrule
-    \multirow{4}{*}{T2}
-      & Power and Energy         & \texttt{power}   & Power budget, DVFS, retention memory \\
-      & Security and Safety      & \texttt{sec}     & AES engine, secure boot, ASIL level \\
-      & Reliability / Lifetime   & \texttt{rel}     & ECC, watchdog, over-temperature protection \\
-      & Thermal and Packaging    & \texttt{pkg}     & Thermal budget, packaging constraints \\
+    \multirow{3}{*}{T2}
+      & Performance and Area
+      & \texttt{perf}, \texttt{area}
+      & Latency, throughput, clock target, area budget \\
+
+      & Power and Energy
+      & \texttt{power}
+      & Power budget, energy target, DVFS requirements \\
+
+      & Reliability and Safety
+      & \texttt{rel}, \texttt{safe}
+      & ECC requirements, watchdog, safety constraints \\
+
     \midrule
     \multirow{1}{*}{T3}
-      & Integration Constraints  & \texttt{pkg}     & I/O count, physical interface compatibility (e.g., PHYs, pads) \\
+      & Integration Constraints
+      & \texttt{intg}
+      & Protocol compatibility, I/O count, external-interface constraints \\
+
     \bottomrule
   \end{tabularx}
-
-  % 表格下方的注释区域
+   % 表格下方的注释区域
   \begin{tablenotes}
     \footnotesize
     \item[a] T0 identifies the application domain; T1 describes primary hardware components; T2 captures cross-layer constraints; and T3 records implementation and integration constraints.
@@ -72,10 +105,10 @@ The output of this stage is a machine-readable SoC manifest that records the sel
 The second stage determines which application functions should remain on the CPU and which should be implemented as custom accelerators. Hotspot detection alone cannot make this decision: a frequently executed function may provide little net benefit after accelerator latency, hardware cost, invocation overhead, and data movement are considered. SoCPilot therefore treats profiling as candidate extraction and defers the mapping decision to an explicit hardware/software partitioning model.
 
 \textbf{Application profiling and candidate extraction.}
-SoCPilot compiles and executes the application with representative inputs and uses Callgrind to collect function-level instruction counts, call frequencies, and calling relationships. System routines, library wrappers, initialization code, and error-handling paths are removed from the profile, leaving application-defined functions that account for substantial execution time. A lightweight static pass then extracts each candidate with its type definitions and calling context and records potential synthesis obstacles, including recursion, dynamic allocation, irregular pointer accesses, and complex control flow. This pass determines whether a function can be evaluated by the HLS flow. It does not decide whether the function should be mapped to hardware. The LLM combines the dynamic profile and static call information into a task graph $G=(V,E)$, where nodes represent profiled functions and edges record control and data dependencies.
+SoCPilot compiles and executes the application with representative inputs and uses Callgrind to collect function-level instruction counts, call frequencies, and calling relationships. System routines, library wrappers, initialization code, and error-handling paths are removed from the profile, leaving application-defined functions with substantial execution cost as the initial candidate set. A lightweight static pass then analyzes each candidate together with its type definitions and calling context and records potential synthesis obstacles, including recursion, dynamic allocation, irregular pointer accesses, and complex control flow. This pass determines whether a function can be evaluated by the HLS flow; it does not decide whether the function should be mapped to hardware. The LLM combines the dynamic profile, static call information, and source-level context to construct a task graph $G=(V,E)$, where nodes represent profiled functions and edges capture the control and data dependencies inferred between them.
 
 \textbf{LLM-assisted hardware evaluation.}
-For each candidate hotspot, SoCPilot reuses the LLM-guided HLS generation and optimization procedure introduced in HLSPilot \cite{xiong2024hlspilot}. The LLM isolates or refactors the candidate into synthesizable C/C++, generates a functional testbench, and iteratively inserts HLS pragmas for pipelining, loop unrolling, and array partitioning. HLS reports provide the latency of one accelerator invocation and the synthesis information used by the common analytical area model to obtain an accelerator-area estimate $a_i$. The per-invocation latency is multiplied by the profiled call count to obtain the workload-level accelerator time $t_i^{\mathrm{acc}}$. Candidates that fail synthesis or verification remain software tasks. Candidates with valid implementations proceed to the partitioning algorithm, even when their estimated area is high. Thus, HLS compatibility, latency, and area cost are measured or tool-derived rather than inferred from source appearance alone.
+For each candidate hotspot, SoCPilot reuses the LLM-guided HLS generation and optimization procedure introduced in HLSPilot \cite{xiong2024hlspilot}. The LLM isolates or refactors the candidate into synthesizable C/C++, generates a functional testbench, and iteratively inserts HLS pragmas for pipelining, loop unrolling, and array partitioning. HLS reports provide the latency of one accelerator invocation and the synthesis information used by the common analytical area model to obtain an accelerator-area estimate $a_i$. The per-invocation latency is multiplied by the profiled call count to obtain the workload-level accelerator time $t_i^{\mathrm{acc}}$. Candidates that pass synthesis and verification proceed to the partitioning algorithm, while the remaining candidates stay in software. Thus, HLS compatibility, latency, and area cost are measured or tool-derived rather than inferred from source appearance alone.
 
 \textbf{CPU and communication models.}
 The workload-level CPU latency $t_i^{\mathrm{cpu}}$ of each task is obtained from profiling and fast simulation with Sniper \cite{sniper}. For a hardware task, the model also accumulates accelerator launch and synchronization overhead as $t_i^{\mathrm{launch}}$. Each dependency $(i,j)\in E$ is annotated with its aggregate transfer volume $D_{ij}$ over the representative execution. If two dependent tasks are placed in different execution domains, their communication cost is approximated as
@@ -90,43 +123,74 @@ x_i\left(t_i^{\mathrm{acc}}+t_i^{\mathrm{launch}}\right).
 \end{equation}
 
 \textbf{Partitioning formulation and algorithm.}
-Given these estimates, SoCPilot minimizes the predicted completion time of the task graph subject to the application-specific area budget:
+Given these estimates, SoCPilot minimizes the predicted completion time of
+the task graph subject to the application-specific area budget:
 \begin{equation}
 \begin{aligned}
 \min_{\mathbf{x}}\quad &T_{\mathrm{app}}(\mathbf{x})
 =\operatorname{Makespan}\!\left(G,\{d_i\},\{c_{ij}\}\right),\\
-\mathrm{s.t.}\quad &\sum_{i\in V}x_i a_i\leq A^{\max}.
+\mathrm{s.t.}\quad &A_{\mathrm{CPU}}+\sum_{i\in V}x_i a_i\leq A^{\max}.
 \end{aligned}
 \label{eq:partition}
 \end{equation}
+where $A_{\mathrm{CPU}}$ denotes the area of the initially selected processor configuration.
+
 Non-candidate functions are fixed to software. The implementation uses the marginal-gain heuristic in Algorithm~\ref{alg:hw-sw-partitioning}. Starting from an all-software mapping, it tentatively maps each feasible candidate to hardware, recomputes the task-graph completion time including boundary communication, and selects the candidate with the largest latency reduction per normalized unit of estimated area. The process stops when no feasible candidate produces a positive end-to-end benefit.
+
 
 \begin{algorithm}
 \caption{Hardware/Software Partitioning}
 \label{alg:hw-sw-partitioning}
-\KwIn{Task graph $G=(V,E)$; candidates $C$; timing estimates; area estimates $a_i$; area budget $A^{\max}$}
+\KwIn{Task graph $G=(V,E)$; candidates $C$; timing estimates; 
+area estimates $a_i$; initial CPU area $A_{\mathrm{CPU}}$; area budget $A^{\max}$}
 \KwOut{Hardware set $T_H$ and software set $T_S$}
 
-$x_i\leftarrow 0,\ \forall i\in V$; $A_{\mathrm{used}}\leftarrow 0$\;
+$x_i\leftarrow 0,\ \forall i\in V$; 
+$A_{\mathrm{used}}\leftarrow A_{\mathrm{CPU}}$\;
+
 \While{true}{
-    $C_f\leftarrow\{i\in C\mid x_i=0,\ A_{\mathrm{used}}+a_i\leq A^{\max}\}$\;
+    $C_f\leftarrow\{i\in C\mid x_i=0,\ 
+    A_{\mathrm{used}}+a_i\leq A^{\max}\}$\;
+    
     \If{$C_f=\emptyset$}{break\;}
+    
     \ForEach{$i\in C_f$}{
-        $\mathbf{x}^{(i)}\leftarrow\mathbf{x}$; $x_i^{(i)}\leftarrow 1$\;
+        $\mathbf{x}^{(i)}\leftarrow\mathbf{x}$; 
+        $x_i^{(i)}\leftarrow 1$\;
+        
         $\Delta_i\leftarrow T_{\mathrm{app}}(\mathbf{x})
         -T_{\mathrm{app}}(\mathbf{x}^{(i)})$\;
+        
         $\rho_i\leftarrow a_i/A^{\max}$\;
         $s_i\leftarrow\Delta_i/\rho_i$\;
     }
+    
     $i^\star\leftarrow\arg\max_{i\in C_f}s_i$\;
+    
     \If{$\Delta_{i^\star}\leq 0$}{break\;}
+    
     $x_{i^\star}\leftarrow 1$\;
-    $A_{\mathrm{used}}\leftarrow A_{\mathrm{used}}+a_{i^\star}$\;
+    $A_{\mathrm{used}}\leftarrow
+    A_{\mathrm{used}}+a_{i^\star}$\;
 }
+
 $T_H\leftarrow\{i\mid x_i=1\}$\;
 $T_S\leftarrow V\setminus T_H$\;
+
 \Return{$T_H,T_S$}
+
+\vspace{0.4em}
+{\footnotesize
+\textit{Notation:}
+$C_f$ denotes the currently feasible candidate set;
+$\Delta_i$ is the predicted reduction in application completion time;
+$\rho_i$ is the normalized area cost;
+$s_i$ is the latency-reduction-per-area score; and
+$i^\star$ is the selected candidate.
+}
+
 \end{algorithm}
+
 
 The resulting partition fixes the accelerator set and provides the initial architecture for SoC generation. The subsequent DSE stage fine-tunes processor, memory-system, interconnect, and accelerator parameters without repeatedly changing this mapping. Only when no feasible design can be found under the specified constraints does SoCPilot return to the partitioning stage and revise the hardware task set.
 
@@ -137,18 +201,14 @@ As shown in Figure \ref{fig:soc-generation}, the third stage transforms the IP m
     \centering
     \includegraphics[width=0.92\textwidth,trim=0bp 60bp 0bp 0bp,clip]{pic/soc-generation.pdf}
     \setlength{\abovecaptionskip}{2pt}
-    \caption{LLM-guided accelerator generation and system-level DSE. SoCPilot converts hardware-mapped functions into verified ESP-compatible accelerator tiles, integrates them with the selected system IPs and software, and refines the resulting SoC through system-level design space exploration. Infeasible designs trigger a revision of the hardware/software partition.}
+    \caption{LLM-guided accelerator generation and system-level DSE. SoCPilot prepares accelerator implementations, explores system configurations through DSE, and integrates the selected design using ESP. Infeasible designs trigger hardware/software repartitioning.}
     \label{fig:soc-generation}
 \end{figure*}
 
 
-\textbf{Accelerator and SoC generation.}
-SoCPilot packages the HLS-generated implementations of hardware tasks $T_H$ as ESP-compatible accelerator tiles, providing the required protocol adaptation, control, memory-access, and interrupt interfaces together with registration metadata~\cite{mantovani2016hlsembedded}. It then generates integration scripts and build configurations to assemble these tiles with the selected processor, memory subsystem, interconnect, and I/O components through the ESP system-generation flow, while software tasks $T_S$ remain on the processor. The embedded routines for accelerator configuration, invocation, and data exchange are manually implemented by the authors using the ESP runtime API.
 
-%%这需要确定dse是按照什么方式阐述
-%目前是先dse生成soc之后没有进行dse
 \textbf{System-level design space exploration.}
-The initial partition reduces the search space by fixing which functions are implemented as accelerators. SoCPilot then explores a parameter vector $\boldsymbol{\theta}$ that covers the available processor configuration, cache hierarchy, interconnect settings, and candidate accelerator implementations produced by the HLS stage. Accelerator choices include pragma configurations and interface parameters. System choices include cache capacity and associativity, cache-line size, and NoC buffering. Table~\ref{table:node parameter-all} lists the principal dimensions used in the current implementation.
+The initial partition reduces the search space by fixing which functions are implemented as accelerators. SoCPilot then explores a parameter vector $\boldsymbol{\theta}$ covering processor type, cache hierarchy, and accelerator implementation parameters. Accelerator parameters include loop pipelining, loop-unroll factors, array-partition configurations, and interface data width. System parameters include cache-line size and the number of sets and ways in the L2 cache and LLC. Table~\ref{table:node parameter-all} lists the principal dimensions used in the current implementation.
  \begin{table}[t]
       \centering
       \caption{Principal parameters for system-level DSE}
@@ -182,8 +242,10 @@ The initial partition reduces the search space by fixing which functions are imp
       feasibility constraints and the specified area budget.}
   \end{table}
 
-For every sampled configuration, SoCPilot regenerates the relevant ESP configuration and evaluates end-to-end latency together with the estimated area provided by the common area model. HyperMapper \cite{nardi2019hypermapper} explores this latency--area design space: its surrogate model proposes new configurations, tool feedback updates the model, and points that violate the application-specific area constraint are discarded. The final design is selected from the feasible configurations according to the latency objective under the specified area budget. If no feasible design is found, SoCPilot returns to the previous stage and revises the hardware/software partition.
+For every sampled configuration, SoCPilot evaluates the corresponding processor, cache, and accelerator settings and estimates end-to-end latency together with the area provided by the common area model. HyperMapper \cite{nardi2019hypermapper} explores this latency--area design space: its surrogate model proposes new configurations, tool feedback updates the model, and points that violate the application-specific area constraint are discarded. The final design is selected from the feasible configurations according to the latency objective under the specified area budget. If no feasible design is found, SoCPilot returns to the previous stage and revises the hardware/software partition.
 
+\textbf{Accelerator and SoC generation.}
+After DSE selects the target configuration, SoCPilot packages the HLS-generated implementations of hardware tasks $T_H$ as ESP-compatible accelerator tiles, providing the required protocol adaptation, control, memory-access, and interrupt interfaces together with registration metadata~\cite{mantovani2016hlsembedded}. It then generates integration scripts and build configurations to assemble these tiles with the selected processor, memory subsystem, interconnect, and I/O components through the ESP system-generation flow, while software tasks $T_S$ remain on the processor. The embedded routines for accelerator configuration, invocation, and data exchange are manually implemented by the authors using the ESP runtime API.
 \subsection{FPGA Prototyping and Board Validation}\label{sec:soc-Prototyping}
 SoCPilot passes the finalized ESP configuration and packaged accelerator RTL to the ESP automation scripts \cite{zuckerman2021cohmeleon} for FPGA project generation, synthesis, place-and-route, and bitstream generation. Board-level evaluation checks SoC boot and accelerator invocation and records output signatures and application timing, including CPU execution, accelerator invocation, communication, and synchronization overhead. The experimental setup defines the reported timing intervals and states the reference-verification status of the board runs.
 

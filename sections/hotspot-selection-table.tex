@@ -7,34 +7,42 @@
 \footnotesize
 \renewcommand{\arraystretch}{1.15}
 \setlength{\tabcolsep}{3pt}
-\begin{tabularx}{\textwidth}{@{}lrc>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}Xcc@{}}
+\begin{tabularx}{0.85\textwidth}{@{}lrc>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}Xcc@{}}
 \toprule
 \textbf{Application} & \shortstack{\textbf{Area budget}\\\textbf{(mm$^2$)}} &
 \textbf{$K$} & \textbf{SoCPilot candidates} &
 \textbf{Source-only LLM candidates} & \textbf{Common/$K$} &
 \shortstack{\textbf{Est. speedup ($\times$)}\\\textbf{SoCPilot / LLM}} \\
 \midrule
-\texttt{plate\_roi} & 8.5 & 3 &
-\texttt{morphology\_tophat}\newline
-\texttt{morphology\_close}\newline
-\texttt{morphology\_blackhat} &
-\texttt{morphology\_tophat}\newline
-\texttt{morphology\_close}\newline
-\texttt{morphology\_blackhat} & 3/3 & 2.02 / 2.02 \\
+plate\_roi & 8.5 & 3 &
+morphology\_tophat\newline
+morphology\_close\newline
+morphology\_blackhat &
+morphology\_tophat\newline
+morphology\_close\newline
+morphology\_blackhat & 3/3 & 2.02 / 2.02 \\
 \midrule
-\texttt{color\_target} & 10 & 2 &
-\texttt{bgr\_to\_hsv}\newline \texttt{dilate\_mask} &
-\texttt{bgr\_to\_hsv}\newline \texttt{dilate\_mask} & 2/2 & 8.72 / 8.72 \\
+color\_target & 10 & 2 &
+bgr\_to\_hsv\newline
+dilate\_mask &
+bgr\_to\_hsv\newline
+dilate\_mask & 2/2 & 8.72 / 8.72 \\
 \midrule
-\texttt{scan} & 5 & 1 &
-\texttt{scan\_adaptive\_threshold} &
-\texttt{scan\_adaptive\_threshold} & 1/1 & 5.11 / 5.11 \\
+scan & 5 & 1 &
+scan\_adaptive\_threshold &
+scan\_adaptive\_threshold & 1/1 & 5.11 / 5.11 \\
 \midrule
-\texttt{wami} & 3 & 3 &
-\texttt{warp\_image}\newline \texttt{steepest\_descent}\newline \texttt{hessian} &
-\texttt{wami\_debayer}\newline \texttt{kernel2\_lucas\_kanade}\newline \texttt{wami\_gmm} & 0/3 & 3.47 / 1.00 \\
+wami & 3 & 3 &
+warp\_image\newline
+steepest\_descent\newline
+hessian &
+wami\_debayer\newline
+kernel2\_lucas\_kanade\newline
+wami\_gmm & 0/3 & 3.47 / 1.00 \\
 \midrule
-\texttt{nightvision} & 10 & 1 & \texttt{conv2d} & \texttt{conv2d} & 1/1 & 4.82 / 4.82 \\
+nightvision & 10 & 1 &
+conv2d &
+conv2d & 1/1 & 4.82 / 4.82 \\
 \bottomrule
 \end{tabularx}
 \end{table*}

@@ -1,23 +1,36 @@
+
 \begin{table*}[!t]
 \centering
 \caption{Complete edge applications used throughout the evaluation.}
 \label{tab:e2e_applications}
 \footnotesize
 \renewcommand{\arraystretch}{1.12}
-\begin{tabularx}{\textwidth}{p{3.25cm}p{3.0cm}X}
+
+\begin{tabularx}{\textwidth}{p{3.1cm}p{4.0cm}X}
 \toprule
 \textbf{Application} & \textbf{Scenario} & \textbf{Major processing stages} \\
 \midrule
-Plate-region extraction (\texttt{plate\_roi}) & Traffic-camera preprocessing &
-Grayscale conversion, top-hat/black-hat enhancement, Sobel edges, thresholding, and feature fusion into a plate-candidate mask \\
-Color-target localization (\texttt{color\_target}) & Target positioning &
-BGR-to-HSV color segmentation, mask dilation, connected-component filtering, and target-center estimation \\
-Document scanning (\texttt{scan}) & Edge document scanner &
-RGB-to-gray conversion, adaptive thresholding, morphology, edge extraction, document masking, and feature merging \\
-Wide-area motion imagery (\texttt{wami}) & Aerial video analytics &
+
+Plate-region extraction (\texttt{plate\_roi}) &
+Traffic-camera plate preprocessing &
+Grayscale conversion, top-hat/black-hat enhancement, Sobel edge extraction, thresholding, and feature fusion into a plate-candidate mask \\
+
+Color-target localization (\texttt{color\_target}) &
+Industrial target localization &
+BGR-to-HSV conversion, color segmentation, mask dilation, connected-component filtering, and target-center estimation \\
+
+Document scanning (\texttt{scan}) &
+Edge document scanning &
+RGB-to-gray conversion, adaptive thresholding, morphological processing, edge extraction, document masking, and feature merging \\
+
+Wide-area motion imagery (\texttt{wami}) &
+Aerial video analytics &
 Debayering, image warping, Lucas--Kanade tracking, Hessian construction, and foreground modeling \\
-Night-vision enhancement (\texttt{nightvision}) & Low-light camera &
-Filtering, median denoising, histogram equalization, convolution, wavelet transform, and image fusion \\
+
+Night-vision enhancement (\texttt{nightvision}) &
+Low-light vision enhancement &
+Median denoising, histogram equalization, convolution, wavelet transform, and image fusion \\
+
 \bottomrule
 \end{tabularx}
 \end{table*}

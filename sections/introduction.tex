@@ -16,7 +16,7 @@ Beyond their technical strengths, LLM-based automation has the potential to impr
     \includegraphics[width=\columnwidth,trim=0bp 12bp 0bp 0bp,clip]{pic/nre-break-even.pdf}
     \par\vspace{-6pt}
     \setlength{\abovecaptionskip}{2pt}
-    \caption{Conceptual effect of LLM-assisted design on ASIC economics. Lower design-related NRE reduces amortized unit cost and shifts the break-even production volume to the left. The shaded interval indicates volumes where customization becomes cost-competitive only after NRE reduction. Curves are illustrative, not measured; recurring ASIC unit cost and the off-the-shelf alternative are held fixed.}
+    \caption{Conceptual effect of LLM-assisted design on ASIC economics. Lower design-related NRE reduces amortized unit cost and shifts the break-even production volume to the left. The shaded interval indicates volumes where customization becomes cost-competitive after NRE reduction. Recurring ASIC unit cost and the off-the-shelf alternative are held fixed.}
     \label{fig:nre-break-even}
 \end{figure}
 
@@ -29,8 +29,10 @@ This work makes the following key contributions.
 
 \item We combine LLM-based reasoning with static analysis and dynamic profiling to extract computational hotspots and rewrite them into self-contained, synthesizable kernels. Through iterative collaboration with HLS tools, the LLM generates and optimizes dedicated accelerators for application bottlenecks.
 
-\item Prototype-based measurements on five representative applications show a geometric mean application speedup of 2.79$\times$ over matched CPU-only execution. Using DeepSeek, SoCPilot generates SoC designs that reach FPGA execution for all five applications, whereas a general-purpose agent using the same model completes the evaluated HSCO-Bench generation flow for none, highlighting the effectiveness of structured agentic orchestration.
+\item Prototype measurements on five representative applications show a geometric mean application speedup of 2.79$\times$ over matched CPU-only execution. Using DeepSeek, SoCPilot generates SoC designs that achieve FPGA execution for all five applications, whereas a general-purpose agent using the same model completes none of the evaluated HSCO-Bench generation flows, highlighting the effectiveness of structured agentic orchestration.
 \end{itemize}
+
+
 
 
 
